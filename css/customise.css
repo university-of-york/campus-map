@@ -1,0 +1,291 @@
+/*============================================================
+		CUSTOMISE COLOURS  - includes code from t4.css
+============================================================*/
+
+/*============================================================
+		HEADER
+============================================================*/
+/*header font colour,background colour and background image*/
+div#header{
+	color:#FFF;
+	background-color:#095E2D;
+	background-image: url("../images/watermark.gif");
+}
+
+	/*--header h1 area title colour--*/
+	div#header div#location h1{
+		color:#FFF;
+	}
+
+	/*--search label colour--*/
+	div#header form label{
+		color:#FFF;
+	}
+	
+	/*--search box border colour--*/
+	div#header form input{
+		color:#013919;
+		border:1px solid #013919;
+	}
+	
+	/*--search button border colour, text colour, background colour--*/
+	div#header form input.submit{
+		color:#013919;
+		background-color:#EEF4F8;
+		border:1px solid #013919;
+	}
+	
+		
+
+/*============================================================
+		EXTRA LINKS
+============================================================*/
+/*--extra-links text colour,background colour--*/
+div#extra-links{	
+	color:#FFF;
+	background-color:#013919;
+}
+	
+	/*--highlight surrounding links background colour--*/
+	div#extra-links p span{
+		background-color:#287549;
+	}
+	
+		/*--link colours for extra-links--*/
+		/*link*/
+		div#extra-links p span a:link{
+			color:#FFF;
+		}
+		/*visited*/
+		div#extra-links p span a:visited{
+			color:#FFF;
+		}
+		/*hover*/
+		div#extra-links p span a:hover{
+			color:#FFF;
+		}
+		
+
+/*============================================================
+		BREADCRUMB
+============================================================*/
+/*--breadcrumb text colour, background colour--*/
+div#breadcrumb{
+	color:#013919;
+	background-color:#DFEDD1;
+}
+
+	/*--link colours for breadcrumb--*/
+	/*link*/
+	div#breadcrumb a:link{
+		color:#013919;
+	}
+		/*visited*/
+		div#breadcrumb a:visited{
+			color:#013919;
+		}
+		/*hover*/
+		div#breadcrumb a:hover{
+			color:#013919;
+		}
+		
+/*============================================================
+		LEFT COLUMN BLOCKED NAVIGATION
+============================================================*/
+
+#nav li a , #nav li li a, #nav li li li a , #nav li li li li a {
+	color: #000;
+	border-bottom: 1px solid white;
+	background-image:url("../images/arrow_nav.gif"); 
+}
+
+
+
+#nav li span.currentbranch0 a, #nav li span.currentbranch1 a, #nav li span.currentbranch2 a, #nav li span.currentbranch3 a, #nav li span.currentbranch4 a {
+	background-image: url("../images/arrow_nav_down.gif")
+}
+
+#nav li span.parent, #nav li span.parent a.parent {
+	color:#FFF;  
+	background-color:#287549; 
+	background-image:url("../images/arrow_nav_down_white.gif");
+}
+
+
+#nav .children {
+	color:#000; 
+	background-color:#F3F6ED; 
+	background-image:url("../images/arrow_nav.gif");
+}
+
+/* all levels hover*/
+#nav li a:hover {
+	color:#FFF !important;
+	background-color:#669900 !important;
+	background-image: url("../images/arrow_white.gif");	
+}
+
+#nav li span.currentbranch0 a:hover, #nav li span.currentbranch1 a:hover, #nav li span.currentbranch2 a:hover, #nav li span.currentbranch3 a:hover, #nav li span.currentbranch4 a:hover   {
+	background-image: url("../images/arrow_nav_down_white.gif");
+}
+
+
+/*============================================================
+		BOXOUT REGIONS
+============================================================*/
+
+
+
+.boxout, .leftBox, .rightBox {
+	background-color:#F3F6ED;
+	border-color:#D7E8C6;
+}
+
+.boxoutAlt {
+	background-color:#E5E3E3;
+	border-color:#E5E3E3;
+	
+}
+
+
+
+
+
+/*============================================================
+		MIDDLE COLUMN TEXT FORMATTING
+============================================================*/
+
+/*--H1 to H6 text colour--*/
+div#mdcolumn h1, div#mdcolumn h2, div#mdcolumn h3, div#mdcolumn h4, div#mdcolumn h5, div#mdcolumn h6{
+	color:#095E2D;
+}
+
+div#mdcolumn h2 {border-bottom:3px solid #D7E8C6; 
+
+}
+
+/* override h2 colour for links  in columns*/
+div#mdcolumn .col-half h2 a:link, div#mdcolumn .col-third h2 a:link,
+div#mdcolumn .col-half h2 a:visited, div#mdcolumn .col-third h2 a:visited,
+div#mdcolumn .col-half h2 a:hover, div#mdcolumn .col-third h2 a:hover{
+	color:white;
+}
+
+div#mdcolumn li, div#mdcolumn ol ul li  {
+	background:transparent url("../images/bullet.gif") no-repeat  0px 4px; 
+}
+
+/*--HR colour,background colour (BOTH VALUES MUST BE SAME COLOUR)--*/
+div#mdcolumn hr{
+	color:#FFFFFF;
+	background-color:#FFFFFF;
+}
+
+
+	/*--table header border colour, background colour--*/
+	table tr th{
+		background-color:#669900;
+		color:#FFFFFF; 
+	}
+	
+	table tr th a:link, table tr th a:visited, table tr th a:hover {
+		color:#FFF; 
+	}
+	
+	/*--table subheader--*/
+	table tbody tr th {
+		background-color:#dfedd1;
+		color:#111; 
+	}
+	table tbody tr th a:link, table tbody tr th a:visited, table tbody tr th a:hover{
+		color:#008E00;
+	}
+	
+
+div#mdcolumn input.submit, div#rhcolumn input.submit {
+	border:1px solid #095E2D; 
+	background-color:#008E00; 
+	color:#FFF; 
+}
+
+div#mdcolumn form.searchnewsarchive input{
+	padding:5px; 
+	width:290px; 
+}
+
+div#mdcolumn form.searchnewsarchive input.submit {
+	overflow:visible; 
+	font-weight:bold; 
+	width:170px; 
+}
+
+
+#mdcolumn blockquote.boxout #latestnews hr {
+	color:#F3F6ED; 
+	background-color:#F3F6ED; 
+}
+
+
+div#mdcolumn ul.tabNavigation li a.selected, div#mdcolumn ul.tabNavigation li a.selected:hover {
+	color: #008E00; 
+}
+
+/*============================================================
+		HOMEPAGE FORMATTING
+============================================================*/
+div#mdcolumn .col-half h2, div#mdcolumn .col-third  h2{
+	color:#FFF; 
+	background-color:#095E2D; 
+}
+div#mdcolumn .col-half .boxoutAlt h2, div#mdcolumn .col-third  .boxoutAlt h2{
+	color:#FFF; 
+	background-color:#777; 
+}
+
+/*============================================================
+		RIGHT COLUMN TEXT FORMATTING
+============================================================*/
+/*--H1 to H4 text colour--*/
+/*H1 colour*/
+div#rhcolumn h1,div#rhcolumn h2,div#rhcolumn h3,div#rhcolumn h4{
+	color:#095E2D;
+}
+
+div#rhcolumn ul { 
+	list-style-type: square;
+	list-style-image:  url("../images/bullet.gif");
+}
+
+ /*Upcomg concerts in right hand column*/
+
+div#rhcolumn #upcoming-concerts .concert {
+	margin-bottom:15px; 
+}
+
+div#rhcolumn #upcoming-concerts .title {
+	font-weight:bold; 
+}
+
+div#rhcolumn #upcoming-concerts .date {
+	font-size:85%; 
+}
+/*============================================================
+		FOOTER
+============================================================*/
+div#footer{
+	border-top:1px solid #D7E8C6;
+}
+
+/*============================================================
+		General link formatting
+============================================================*/
+	
+a:link{
+	color:#008E00;
+}
+a:visited{
+		color:#416B53;
+	}
+a:hover{
+		color:#008E00;
+	}
