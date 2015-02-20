@@ -20,10 +20,11 @@
 #mapdiv .infobox {
   min-width: 250px;
   padding: 12px;
-  border: 1px solid #666;
-  background: #ffe;
+  border: 1px solid #ccc;
+  background: #f2f4f5;
   font-size: 18px;
-  border-radius:6px;
+  border-radius:3px;
+  font-family: Georgia,'Times New Roman',Times,serif;
 }
 #mapdiv .infobox-content img {
 	width:100%;
@@ -31,6 +32,7 @@
 div#mapdiv .infobox-content h4 {
   margin: 0;
   text-align:center;
+  font-weight: normal;
 }
 div#mapdiv .infobox-content p {
   margin-bottom: 0.6em;
