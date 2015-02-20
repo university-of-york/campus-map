@@ -19,21 +19,24 @@ $(function() {
       col1: false,
       col2: 53.947007,
       col3: -1.052949,
-      col4: 16
+      col4: 16,
+      col5: false
     },
     'heslington-east': {
       col0: 'Heslington East',
       col1: false,
       col2: 53.947449,
       col3: -1.030397,
-      col4: 16
+      col4: 16,
+      col5: false
     },
     'kings-manor': {
       col0: 'King\'s Manor',
       col1: false,
       col2: 53.96224,
       col3: -1.086445,
-      col4: 17
+      col4: 17,
+      col5: 'K'
     },
     // Might be better to get the centre from the bounds?
     'default': {
@@ -41,9 +44,11 @@ $(function() {
       col1: false,
       col2: 53.947007,
       col3: -1.052949,
-      col4: 16
+      col4: 16,
+      col5: false
     }
   }
+  var buildingsArray = [];
   var isLive = window.location.hostname === "www.york.ac.uk";
 
   // set the map type to use cloudmade tiles, have name 'Campus map' and not allow zoom beyond level 18
@@ -207,120 +212,126 @@ $(function() {
 
   function initialiseMap() {
 
-      // fetch some coordinates and optional zoom level to centre the initial view on
-      var location = lookupHashCoords();
+    // fetch some coordinates and optional zoom level to centre the initial view on
+    var location = lookupHashCoords();
 
-      // if a zoom level is set the use that, otherwise set a default of 16
-      var zoomLevel = parseInt(location.col4,10) || 16;
+    // if a zoom level is set the use that, otherwise set a default of 16
+    var zoomLevel = parseInt(location.col4,10) || 16;
 
-      var myOptions = {
-        maxZoom: 18,
-        minZoom: 13,
-        zoom: zoomLevel,
-        center: new google.maps.LatLng(location.col2, location.col3),
-        mapTypeControlOptions: {
-          mapTypeIds: ['cloudMade', google.maps.MapTypeId.SATELLITE]
-        },
-        mapTypeId: 'cloudMade'
-      };
-      map = new google.maps.Map(document.getElementById('mapdiv'), myOptions);
-      map.mapTypes.set('cloudMade', cloudMadeMapType);
-      map.setMapTypeId('cloudMade');
+    var myOptions = {
+      maxZoom: 18,
+      minZoom: 13,
+      zoom: zoomLevel,
+      center: new google.maps.LatLng(location.col2, location.col3),
+      mapTypeControlOptions: {
+        mapTypeIds: ['cloudMade', google.maps.MapTypeId.SATELLITE]
+      },
+      mapTypeId: 'cloudMade'
+    };
+    map = new google.maps.Map(document.getElementById('mapdiv'), myOptions);
+    map.mapTypes.set('cloudMade', cloudMadeMapType);
+    map.setMapTypeId('cloudMade');
 
-      // if location is not one of the defaults, trigger a click on the marker
-      if (location.col1 !== false) {
-        $('a[href=#'+makeID(location.col0)+']').click();
-      }
-
-      // track StreetView being activated with Analytics
-      var theStreetView = map.getStreetView();
-
-      google.maps.event.addListener(theStreetView, 'visible_changed', function() {
-        if (theStreetView.getVisible() && (isLive === true)) {
-          pageTracker._trackEvent('Map', 'Show StreetView');
-        }
-      });
+    // if location is not one of the defaults, trigger a click on the marker
+    if (location.col1 !== false) {
+      $('a[href=#'+makeID(location.col0)+']').click();
     }
-    // create the locations list
+
+    // track StreetView being activated with Analytics
+    var theStreetView = map.getStreetView();
+
+    google.maps.event.addListener(theStreetView, 'visible_changed', function() {
+      if (theStreetView.getVisible() && (isLive === true)) {
+        pageTracker._trackEvent('Map', 'Show StreetView');
+      }
+    });
+  }
+
+  // create the locations list
   function createLocationsList(locationsObj) {
 
-      var locationRows = locationsObj.query.results.row;
-      // Remove first row (headers)
-      locationRows.shift();
+    var locationRows = locationsObj.query.results.row;
+    // Remove first row (headers)
+    locationRows.shift();
 
-      // remove the loaading indicator
-      $loadingIndicator.remove();
+    // remove the loaading indicator
+    $loadingIndicator.remove();
 
-      var locationCategory = ''; // is the location a bus stop, college, building etc.
-      var categoryID = ''; // storage for a version of the category suitable for use as an ID
-      $.each(locationRows, function(key, location) { // for every row in the data
-        // check if category is empty or doesn't match current one, and start new group if so
-        if (locationCategory == '' || locationCategory != location.col1) {
-          // get the name of the category
-          locationCategory = location.col1;
-          // create a version of the category suitable for use in an ID
-          categoryID = makeID(locationCategory);
-          // take a copy of the #templateFAQ div, set the ID, replace the H3 text with the category name and append to the #tab-1 element
-          var clonedFAQ = $('#templateFAQ').clone(true);
-          clonedFAQ.attr('id', categoryID + '-links');
-          clonedFAQ.find('h3').text(locationCategory);
-          clonedFAQ.find('a').text('Show all ' + locationCategory.substring(0, 1).toLowerCase() + locationCategory.substring(1));
-          clonedFAQ.find('a').attr('id', categoryID + '-show-all');
-          var currentCategory = locationCategory.toLowerCase();
-          // set the first of many onclick events to be triggered when a 'show all' is triggered (the others being one per pin added outside of this if statement)
-          clonedFAQ.find('a').click(function() {
-            $('body').trigger('map:click');
-            //clear any existing markers
-            clearOverlays();
-            // clear the mapBounds object, ready for all the points for this group to be added
-            mapBounds = new google.maps.LatLngBounds();
-            // track the click to Analytics
-            if (isLive === true) {
-              pageTracker._trackEvent('Map', 'Drop pin', 'Show all ' + currentCategory);
-            }
-          });
-          // add the FAQ object to the tab container
-          $tab1.append(clonedFAQ);
-        }
-        // get the location name
-        var locationName = location.col0;
-        // get the list matching the current element and append a list item
-        var currentList = $('#' + categoryID + '-links ul');
-        currentList.append(createMapLink(location));
-        // add to locations object
-        locations[makeID(locationName)] = location;
-        // get the 'show all' link and add an event handler to drop a pin
-        var showAllLink = $('#' + categoryID + '-show-all');
-        showAllLink.click(function() {
-          //  remove any other markers
+    var locationCategory = ''; // is the location a bus stop, college, building etc.
+    var categoryID = ''; // storage for a version of the category suitable for use as an ID
+    $.each(locationRows, function(key, location) { // for every row in the data
+      // check if category is empty or doesn't match current one, and start new group if so
+      if (locationCategory == '' || locationCategory != location.col1) {
+        // get the name of the category
+        locationCategory = location.col1;
+        // create a version of the category suitable for use in an ID
+        categoryID = makeID(locationCategory);
+        // take a copy of the #templateFAQ div, set the ID, replace the H3 text with the category name and append to the #tab-1 element
+        var clonedFAQ = $('#templateFAQ').clone(true);
+        clonedFAQ.attr('id', categoryID + '-links');
+        clonedFAQ.find('h3').text(locationCategory);
+        clonedFAQ.find('a').text('Show all ' + locationCategory.substring(0, 1).toLowerCase() + locationCategory.substring(1));
+        clonedFAQ.find('a').attr('id', categoryID + '-show-all');
+        var currentCategory = locationCategory.toLowerCase();
+        // set the first of many onclick events to be triggered when a 'show all' is triggered (the others being one per pin added outside of this if statement)
+        clonedFAQ.find('a').click(function() {
+          $('body').trigger('map:click');
+          //clear any existing markers
           clearOverlays();
-
-          // create marker and infobox
-          var myMarker = createMapMarker(location);
-
-          // store the current marker so that we can clear it later
-          markersArray.push(myMarker.marker);
-          // add the current location to the boundaries so we can scale the viewport
-          mapBounds.extend(myMarker.location);
-          // remove street view overlay, if any, and set null position to put pegman back on his perch
-          clearStreetView();
-
-          // Add the marker to the map
-          var myTimeout = 200 + (Math.random() * 800);
-          setTimeout(function() {
-            myMarker.marker.setMap(map);
-            // scale the viewport to fit all the points
-            map.fitBounds(mapBounds);
-          }, myTimeout);
-          return false; // stop default link behaviour
+          // clear the mapBounds object, ready for all the points for this group to be added
+          mapBounds = new google.maps.LatLngBounds();
+          // track the click to Analytics
+          if (isLive === true) {
+            pageTracker._trackEvent('Map', 'Drop pin', 'Show all ' + currentCategory);
+          }
         });
-        if(key === locationRows.length-1) {
-          //console.log(locations);
-          initialiseMap();
-        }
+        // add the FAQ object to the tab container
+        $tab1.append(clonedFAQ);
+      }
+      // get the location name
+      var locationName = location.col0;
+      // get the list matching the current element and append a list item
+      var currentList = $('#' + categoryID + '-links ul');
+      currentList.append(createMapLink(location));
+      // add to locations object
+      locations[makeID(locationName)] = location;
+      // get the 'show all' link and add an event handler to drop a pin
+      var showAllLink = $('#' + categoryID + '-show-all');
+      showAllLink.click(function() {
+        //  remove any other markers
+        clearOverlays();
+
+        // create marker and infobox
+        var myMarker = createMapMarker(location);
+
+        // store the current marker so that we can clear it later
+        markersArray.push(myMarker.marker);
+        // add the current location to the boundaries so we can scale the viewport
+        mapBounds.extend(myMarker.location);
+        // remove street view overlay, if any, and set null position to put pegman back on his perch
+        clearStreetView();
+
+        // Add the marker to the map
+        var myTimeout = 200 + (Math.random() * 800);
+        setTimeout(function() {
+          myMarker.marker.setMap(map);
+          // scale the viewport to fit all the points
+          map.fitBounds(mapBounds);
+        }, myTimeout);
+        return false; // stop default link behaviour
       });
-    }
-    // create a marker. returns and object with a marker, a location and an infobox property
+      // Add building (col5) to buildingsArray
+      if (location.col5) {
+        buildingsArray = buildingsArray.concat(location.col5.split(';'))
+      }
+      if(key === locationRows.length-1) {
+        initialiseMap();
+        initialiseSearch();
+      }
+    });
+  }
+
+  // create a marker. returns and object with a marker, a location and an infobox property
   function createMapMarker(location) {
 
     // add the current location as a pin to be dropped when the 'show all' link is clicked
@@ -444,6 +455,85 @@ $(function() {
       jsonURL = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20csv%20where%20url%3D%22https%3A%2F%2Fdocs.google.com%2Fspreadsheet%2Fpub%3Fhl%3Den_GB%26hl%3Den_GB%26key%3D0AumxFaPyjySpdERqbE1KNXpDd1NkMzd1NVdUaEplWHc%26single%3Dtrue%26gid%3D0%26output%3Dcsv%22&format=json&diagnostics=true'
     }
     return jsonURL;
+  }
+
+  function initialiseSearch() {
+    $('#room-search-submit').click(function(e) {
+      e.preventDefault();
+      var roomValue = $('#room-search-value').val();
+      var matchedLocation = searchLocations(roomValue);
+    })
+  }
+
+  // Returns room object with building, block , floor and number keys
+  function searchLocations(roomValue) {
+
+    var room = {};
+    var roomDetails;
+    var buildingDetails;
+    var roomParts = roomValue.toUpperCase().split('/');
+
+    // With slashes: format BBBB/LLLL where B is Building and L is block
+    if (roomParts.length > 1) {
+      room.building = roomParts[0];
+      if (roomParts.length > 2) {
+        // there's a slash between block and room!
+        room.block = roomParts[1];
+        roomDetails = getRoom(roomParts[2]);
+      } else {
+        var roomPartsParts = roomParts[1].match(/^([A-Za-z]{0,4})([0-9]+[A-Za-z]{0,2})$/);
+        // If only one number, it's part of block e.g.GSH/B1 (Goodricke Oliver Sheldon Court Block B1)
+        if (roomPartsParts[2].length === 1) {
+          room.block = roomParts[1];
+          roomDetails = { floor: false, number: false };
+        } else {
+          room.block = roomPartsParts[1] == "" ? false : roomPartsParts[1] ;
+          // Otherwise it's a room number
+          roomDetails = getRoom(roomPartsParts[2]);
+        }
+      }
+    } else {
+      // If no slashes, match Building code+room code
+      roomParts = roomValue.toUpperCase().match(/^([A-Za-z]{1,6})([0-9]+[A-Za-z]{0,2})$/);
+      // Usually text is buiulding/block, and numbers are room
+      // If only one number, it's part of block e.g.GSH/B1 (Goodricke Oliver Sheldon Court Block B1)
+      if (roomParts[2].length === 1) {
+        buildingDetails = getBuilding(roomParts[1])
+        buildingDetails.block = buildingDetails.block+roomParts[2];
+        roomDetails = { floor: false, number: false };
+      } else {
+        buildingDetails = getBuilding(roomParts[1]);
+        roomDetails = getRoom(roomParts[2]);
+      }
+      room.building = buildingDetails.building;
+      room.block = buildingDetails.block;
+    }
+    room.floor = roomDetails.floor;
+    room.number = roomDetails.number;
+
+    console.log(room);
+
+    return room;
+  }
+
+  function getBuilding(building) {
+    if (building.length === 1 || $.inArray(building, buildingsArray) > -1 ) { // e.g. V045
+      return {
+        building: building,
+        block: false
+      }
+    } else { // Block is (usually!) last digit
+      return {
+        building: building.substr(0, building.length-1),
+        block: building.substr(building.length-1, 1)
+      }
+    }
+  }
+
+  function getRoom(room) {
+    // For room code: format FRR(S) where F is floor, RR is room number and S is optional space signifier
+    var roomDetails = room.match(/^([0-9]{1})([0-9]+[A-Za-z]{0,2})$/);
+    return { floor: roomDetails[1], number: roomDetails[2] };
   }
 
   init();
