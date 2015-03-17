@@ -20,7 +20,7 @@ $(function() {
       col2: 53.947007,
       col3: -1.052949,
       col4: 16,
-      col5: false
+      col5: null
     },
     'heslington-east': {
       col0: 'Heslington East',
@@ -28,7 +28,7 @@ $(function() {
       col2: 53.947449,
       col3: -1.030397,
       col4: 16,
-      col5: false
+      col5: null
     },
     'kings-manor': {
       col0: 'King\'s Manor',
@@ -36,7 +36,7 @@ $(function() {
       col2: 53.96224,
       col3: -1.086445,
       col4: 17,
-      col5: 'K'
+      col5: ['K']
     },
     // Might be better to get the centre from the bounds?
     'default': {
@@ -45,7 +45,7 @@ $(function() {
       col2: 53.947007,
       col3: -1.052949,
       col4: 16,
-      col5: false
+      col5: null
     }
   }
   var buildingsArray = [];
@@ -322,7 +322,9 @@ $(function() {
       });
       // Add building (col5) to buildingsArray
       if (location.col5) {
-        buildingsArray = buildingsArray.concat(location.col5.split(';'))
+        var l = location.col5.split(';');
+        location.col5 = l;
+        buildingsArray = buildingsArray.concat(l)
       }
       if(key === locationRows.length-1) {
         initialiseMap();
@@ -345,14 +347,10 @@ $(function() {
       animation: google.maps.Animation.DROP
     });
 
-    var boxText = $("<div>").addClass('infobox-content');
-    boxText.append($('<h4>').text(location.col0));
-    // boxText.append($('<p>').text('You can add text here'));
-    // boxText.append($('<p>').text('And other information'));
-    // boxText.append($('<img>').attr({
-    //   'src': 'http://placehold.it/200x100&text=Or+even+an+image',
-    //   'alt': 'Or even an image'
-    // }));
+    var boxText = makeBoxContent({
+      'title':location.col0,
+      'content':location.content || false
+    });
 
     var myOptions = {
       alignBottom: true,
@@ -363,11 +361,13 @@ $(function() {
       zIndex: null,
       closeBoxMargin: "4px 2px",
       closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif",
-      infoBoxClearance: new google.maps.Size(12, 12)
+      infoBoxClearance: new google.maps.Size(12, 12),
+      disableAutoPan: true
     };
 
     google.maps.event.addListener(myMarker, "click", function(e) {
       $('body').trigger('map:click');
+      map.panTo(markerLocation);
       infobox.open(map, this);
     });
 
@@ -384,6 +384,15 @@ $(function() {
     };
   }
 
+  function makeBoxContent(opts) {
+    var boxContent = $("<div>").addClass('infobox-content');
+    boxContent.append($('<h4>').text(opts.title));
+    if (opts.content !== false) {
+      boxContent.append(opts.content);
+    }
+    return boxContent;
+  }
+
   // create a link and add it to list
   function createMapLink(locationValues) {
     // create a new list item
@@ -395,36 +404,43 @@ $(function() {
     link.innerHTML = locationValues.col0;
     // add onclick behaviour to drop a pin
     link.onclick = function() {
-
-      $('body').trigger('map:click');
-
-      var myMarker = createMapMarker(locationValues);
-
-      google.maps.event.addListener(myMarker.marker, 'click', function() {
-        if (isLive === true) {
-          pageTracker._trackEvent('Map', 'Click pin', locationValues.col1 + ' - ' + locationValues.col0);
-        }
-      });
-      //  remove any other markers
-      clearOverlays();
-      // store this marker so we can remove it later
-      markersArray.push(myMarker.marker);
-      // remove street view overlay, if any, and set null position to put pegman back on his perch
-      clearStreetView();
-      // centre on location
-      map.panTo(myMarker.location);
-      // drop the pin
-      myMarker.marker.setMap(map);
-      // track the action in Analytics if running on live site
-      if (isLive === true) {
-        pageTracker._trackEvent('Map', 'Drop pin', locationValues.col1 + ' - ' + locationValues.col0);
-      }
+      showMarker(locationValues);
     };
     // add the link to the list item
     listItem.appendChild(link);
     // return the list item to be added to the list
     return listItem;
   }
+
+  // Show marker on map
+  function showMarker(locationValues) {
+
+    $('body').trigger('map:click');
+
+    var myMarker = createMapMarker(locationValues);
+
+    google.maps.event.addListener(myMarker.marker, 'click', function() {
+      if (isLive === true) {
+        pageTracker._trackEvent('Map', 'Click pin', locationValues.col1 + ' - ' + locationValues.col0);
+      }
+    });
+    //  remove any other markers
+    clearOverlays();
+    // store this marker so we can remove it later
+    markersArray.push(myMarker.marker);
+    // remove street view overlay, if any, and set null position to put pegman back on his perch
+    clearStreetView();
+    // centre on location
+    map.panTo(myMarker.location);
+    // drop the pin
+    myMarker.marker.setMap(map);
+    // track the action in Analytics if running on live site
+    if (isLive === true) {
+      pageTracker._trackEvent('Map', 'Drop pin', locationValues.col1 + ' - ' + locationValues.col0);
+    }
+
+  }
+
   // remove any existing overlay markers
   function clearOverlays() {
     if (markersArray) {
@@ -462,6 +478,17 @@ $(function() {
       e.preventDefault();
       var roomValue = $('#room-search-value').val();
       var matchedLocation = searchLocations(roomValue);
+      $.each(locations, function(i, location) {
+        if (location.col5 === null) return;
+        if ($.inArray(matchedLocation.building, location.col5) > -1) {
+          // TODO: Make call to room API
+          // Add new content to marker infobox
+          location.col0 = roomValue;
+          location.content = $('<p>').text('Turn left after the vending machines, go through the double doors and the room is the third door on the right');
+          showMarker(location);
+          return false;
+        }
+      });
     })
   }
 
@@ -481,7 +508,7 @@ $(function() {
         room.block = roomParts[1];
         roomDetails = getRoom(roomParts[2]);
       } else {
-        var roomPartsParts = roomParts[1].match(/^([A-Za-z]{0,4})([0-9]+[A-Za-z]{0,2})$/);
+        var roomPartsParts = roomParts[1].trim().match(/^([A-Za-z]{0,4})([0-9\&]*[A-Za-z-]{0,8})$/);
         // If only one number, it's part of block e.g.GSH/B1 (Goodricke Oliver Sheldon Court Block B1)
         if (roomPartsParts[2].length === 1) {
           room.block = roomParts[1];
@@ -494,8 +521,8 @@ $(function() {
       }
     } else {
       // If no slashes, match Building code+room code
-      roomParts = roomValue.toUpperCase().match(/^([A-Za-z]{1,6})([0-9]+[A-Za-z]{0,2})$/);
-      // Usually text is buiulding/block, and numbers are room
+      roomParts = roomValue.toUpperCase().match(/^([A-Za-z]{1,6})([0-9]*[A-Za-z]{0,8})$/);
+      // Usually text is building/block, and numbers are room
       // If only one number, it's part of block e.g.GSH/B1 (Goodricke Oliver Sheldon Court Block B1)
       if (roomParts[2].length === 1) {
         buildingDetails = getBuilding(roomParts[1])
@@ -511,13 +538,11 @@ $(function() {
     room.floor = roomDetails.floor;
     room.number = roomDetails.number;
 
-    console.log(room);
-
     return room;
   }
 
   function getBuilding(building) {
-    if (building.length === 1 || $.inArray(building, buildingsArray) > -1 ) { // e.g. V045
+    if (building.length === 1 || $.inArray(building, buildingsArray) > -1 ) { // e.g. V045 or ARC
       return {
         building: building,
         block: false
@@ -532,10 +557,25 @@ $(function() {
 
   function getRoom(room) {
     // For room code: format FRR(S) where F is floor, RR is room number and S is optional space signifier
-    var roomDetails = room.match(/^([0-9]{1})([0-9]+[A-Za-z]{0,2})$/);
-    return { floor: roomDetails[1], number: roomDetails[2] };
+    // Exceptions P/1X, codes with no number (e.g. YNiC)
+    var r = { floor: false, number: false };
+    var roomDetails = room.match(/^([0-9]{1})([0-9]*[A-Za-z]{0,2})$/);
+    if (roomDetails === null) return r;
+    r.floor = roomDetails[1];
+    r.number = roomDetails[2];
+    return r;
   }
 
   init();
 
 });
+
+if (!String.prototype.trim) {
+  (function() {
+    // Make sure we trim BOM and NBSP
+    var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+    String.prototype.trim = function() {
+      return this.replace(rtrim, '');
+    };
+  })();
+}
