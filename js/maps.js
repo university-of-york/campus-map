@@ -54,7 +54,7 @@ $(function() {
   // set the map type to use cloudmade tiles, have name 'Campus map' and not allow zoom beyond level 18
   var cloudMadeMapType = new google.maps.ImageMapType({
     getTileUrl: function(coord, zoom) {
-      return "http://www.york.ac.uk/about/maps/campus/data/tiles/" +
+      return "https://www.york.ac.uk/about/maps/campus/data/tiles/" +
         zoom + "/" + coord.x + "/" + coord.y + ".png";
     },
     tileSize: new google.maps.Size(256, 256),
@@ -360,7 +360,7 @@ $(function() {
       pixelOffset: new google.maps.Size(-125, -42),
       zIndex: null,
       closeBoxMargin: "4px 2px",
-      closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif",
+      closeBoxURL: "https://www.google.com/intl/en_us/mapfiles/close.gif",
       infoBoxClearance: new google.maps.Size(12, 12),
       disableAutoPan: true
     };
@@ -468,7 +468,7 @@ $(function() {
       jsonURL = protocol + "www.york.ac.uk/about/maps/campus/data/locations.json";
     } else {
       // jsonURL = 'locations.json';
-      jsonURL = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20csv%20where%20url%3D%22https%3A%2F%2Fdocs.google.com%2Fspreadsheet%2Fpub%3Fhl%3Den_GB%26hl%3Den_GB%26key%3D0AumxFaPyjySpdERqbE1KNXpDd1NkMzd1NVdUaEplWHc%26single%3Dtrue%26gid%3D0%26output%3Dcsv%22&format=json&diagnostics=true'
+      jsonURL = 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20csv%20where%20url%3D%22https%3A%2F%2Fdocs.google.com%2Fspreadsheet%2Fpub%3Fhl%3Den_GB%26hl%3Den_GB%26key%3D0AumxFaPyjySpdERqbE1KNXpDd1NkMzd1NVdUaEplWHc%26single%3Dtrue%26gid%3D0%26output%3Dcsv%22&format=json&diagnostics=true'
     }
     return jsonURL;
   }
