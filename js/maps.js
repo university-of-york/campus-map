@@ -4,6 +4,7 @@ $(function() {
   // Declare them at the top so jQuery only has to process them once
   var $window = $(window);
   var $document = $(document);
+  var $body = $('body');
   var $mapNavigation = $('#mapnavigation');
   var $mapDiv = $('#mapdiv');
   var $tab1 = $('#tab-1');
@@ -48,7 +49,10 @@ $(function() {
       col5: null
     }
   }
-  var buildingsArray = [];
+  // Buildings we don't have on the map yet
+  // Can't include BK as it conflicts with B/K
+  // Cant' include GN as it conflicts with G/N
+  var buildingsArray = ['SP', 'ADS', 'CSE', 'CS', 'MRC', 'HXH', 'SQ', 'RT', 'MP', 'GZ', 'RCH', 'HRL', 'FX'];
   var isLive = window.location.hostname === "www.york.ac.uk";
 
   // set the map type to use cloudmade tiles, have name 'Campus map' and not allow zoom beyond level 18
@@ -81,19 +85,18 @@ $(function() {
         height = parseInt($window.height());
         mapWidth = windowWidth - ($mapNavigation.width());
         $mapDiv.width(mapWidth).height(height);
-        // console.log("resizing!");
         google.maps.event.trigger(map, 'resize');
       };
     });
 
     // call the map initialisation function on page load
     //google.maps.event.addDomListener(window, 'load', initialiseMap);
-    // load list of points for display as markers  and call function to create the list
+    // load list of points for display as markers and call function to create the list
     var jsonURL = makeDataURL();
     $.getJSON(jsonURL, function(data) {
       createLocationsList(data);
     });
-    $(window).hashchange(function() {
+    $window.hashchange(function() {
       hashChangeCentreMap();
     });
   };
@@ -275,7 +278,7 @@ $(function() {
         var currentCategory = locationCategory.toLowerCase();
         // set the first of many onclick events to be triggered when a 'show all' is triggered (the others being one per pin added outside of this if statement)
         clonedFAQ.find('a').click(function() {
-          $('body').trigger('map:click');
+          $body.trigger('map:click');
           //clear any existing markers
           clearOverlays();
           // clear the mapBounds object, ready for all the points for this group to be added
@@ -359,19 +362,19 @@ $(function() {
       maxWidth: 250,
       pixelOffset: new google.maps.Size(-125, -42),
       zIndex: null,
-      closeBoxMargin: "4px 2px",
+      // closeBoxMargin: "4px 2px",
       closeBoxURL: "https://www.google.com/intl/en_us/mapfiles/close.gif",
       infoBoxClearance: new google.maps.Size(12, 12),
       disableAutoPan: true
     };
 
     google.maps.event.addListener(myMarker, "click", function(e) {
-      $('body').trigger('map:click');
+      $body.trigger('map:click');
       map.panTo(markerLocation);
       infobox.open(map, this);
     });
 
-    $('body').bind('map:click', function(e) {
+    $body.bind('map:click', function(e) {
       infobox.close();
     });
 
@@ -415,7 +418,7 @@ $(function() {
   // Show marker on map
   function showMarker(locationValues) {
 
-    $('body').trigger('map:click');
+    $body.trigger('map:click');
 
     var myMarker = createMapMarker(locationValues);
 
@@ -438,6 +441,8 @@ $(function() {
     if (isLive === true) {
       pageTracker._trackEvent('Map', 'Drop pin', locationValues.col1 + ' - ' + locationValues.col0);
     }
+
+    return myMarker;
 
   }
 
@@ -476,29 +481,60 @@ $(function() {
   function initialiseSearch() {
     $('#room-search-submit').click(function(e) {
       e.preventDefault();
+      $body.trigger('map:click');
+      errorMessage(false);
       var roomValue = $('#room-search-value').val();
       var matchedLocation = searchLocations(roomValue);
+      console.log(matchedLocation);
+      if(matchedLocation === false) return errorMessage('That room number doesn\'t seem to be right');
+      var noMatch = true;
       $.each(locations, function(i, location) {
         if (location.col5 === null) return;
         if ($.inArray(matchedLocation.building, location.col5) > -1) {
-          // TODO: Make call to room API
-          // Add new content to marker infobox
-          location.col0 = roomValue;
-          location.content = $('<p>').text('Turn left after the vending machines, go through the double doors and the room is the third door on the right');
-          showMarker(location);
+          noMatch = false;
+          location.col6 = matchedLocation;
+          callRoomAPI(roomValue, location);
           return false;
         }
       });
+      if (noMatch === true) {
+        // console.log('There was no match for the building code so there is no pin to drop :(')
+      }
     })
   }
 
-  // Returns room object with building, block , floor and number keys
+  // Calls the room API and displays markers/error messages as appropriate
+  function callRoomAPI(roomValue, location) {
+    //console.log(location);
+    // Make call to room API
+    var roomAPIRoot = 'https://www.york.ac.uk/api/campus/rooms/';
+    $.getJSON(roomAPIRoot+roomValue, function(data) {
+      //console.log('API call succeeded', data);
+      // Add new content to marker infobox
+      location.col0 = roomValue;
+      location.content = $('<p>').text(data.directions);
+      var thisLocation = showMarker(location);
+      thisLocation.infobox.open(map, thisLocation.marker);
+    }).fail(function() {
+      // console.log('API call failed');
+      // Try again with slashes added
+      var newRoomCode = makeSensibleRoomCode(location);
+      if (newRoomCode !== roomValue) {
+        callRoomAPI(newRoomCode, location);
+      } else {
+        errorMessage('There are no directions available for this room. Please check that you have the right room code.');
+      }
+    });
+
+  }
+
+  // Returns room object with building, block, floor and number keys
   function searchLocations(roomValue) {
 
     var room = {};
     var roomDetails;
     var buildingDetails;
-    var roomParts = roomValue.toUpperCase().split('/');
+    var roomParts = roomValue.split('/');
 
     // With slashes: format BBBB/LLLL where B is Building and L is block
     if (roomParts.length > 1) {
@@ -510,6 +546,7 @@ $(function() {
       } else {
         var roomPartsParts = roomParts[1].trim().match(/^([A-Za-z]{0,4})([0-9\&]*[A-Za-z-]{0,8})$/);
         // If only one number, it's part of block e.g.GSH/B1 (Goodricke Oliver Sheldon Court Block B1)
+        if(!roomPartsParts) return false;
         if (roomPartsParts[2].length === 1) {
           room.block = roomParts[1];
           roomDetails = { floor: false, number: false };
@@ -521,52 +558,127 @@ $(function() {
       }
     } else {
       // If no slashes, match Building code+room code
-      roomParts = roomValue.toUpperCase().match(/^([A-Za-z]{1,6})([0-9]*[A-Za-z]{0,8})$/);
-      // Usually text is building/block, and numbers are room
-      // If only one number, it's part of block e.g.GSH/B1 (Goodricke Oliver Sheldon Court Block B1)
-      if (roomParts[2].length === 1) {
-        buildingDetails = getBuilding(roomParts[1])
-        buildingDetails.block = buildingDetails.block+roomParts[2];
-        roomDetails = { floor: false, number: false };
-      } else {
-        buildingDetails = getBuilding(roomParts[1]);
-        roomDetails = getRoom(roomParts[2]);
-      }
+      roomParts = roomValue.match(/^([A-Za-z]*)([0-9\&]*[A-Za-z-]{0,8})$/);
+      if(!roomParts) return false;
+      buildingDetails = getBuilding(roomParts[1]);
+      roomDetails = getRoom(roomParts[2]);
       room.building = buildingDetails.building;
       room.block = buildingDetails.block;
+      if (buildingDetails.extra !== false) {
+        roomDetails.floor = buildingDetails.extra;
+      }
     }
     room.floor = roomDetails.floor;
     room.number = roomDetails.number;
-
     return room;
   }
 
   function getBuilding(building) {
+    var r = {
+      building: building,
+      block: false,
+      extra: false
+    };
+    if (building == 'YNiC') return r;
+    building = building.toUpperCase();
+    //console.log(building, buildingsArray, $.inArray(building, buildingsArray));
     if (building.length === 1 || $.inArray(building, buildingsArray) > -1 ) { // e.g. V045 or ARC
-      return {
-        building: building,
-        block: false
-      }
-    } else { // Block is (usually!) last digit
-      return {
-        building: building.substr(0, building.length-1),
-        block: building.substr(building.length-1, 1)
-      }
+      r.building = building;
+      return r;
     }
+    // Block is (usually!) last digit (excpetions EXT, CSTS)
+    var isExt = building.match(/^([A-Z]*)(EXT|CSTS|AM)([A-Z]*)$/);
+    if (isExt) {
+      r.building = isExt[1];
+      r.block = isExt[2]; // This will be 'EXT' or 'CSTS'
+      r.extra = isExt[3] || false; // If set, this should be added to the room
+      return r;
+    }
+    r.building = building.substr(0, building.length-1);
+    r.block = building.substr(building.length-1, 1);
+    return r;
   }
 
   function getRoom(room) {
     // For room code: format FRR(S) where F is floor, RR is room number and S is optional space signifier
     // Exceptions P/1X, codes with no number (e.g. YNiC)
     var r = { floor: false, number: false };
-    var roomDetails = room.match(/^([0-9]{1})([0-9]*[A-Za-z]{0,2})$/);
+    var roomDetails = room.match(/^([0-9]{1})([0-9\&-]*[A-Za-z]{0,4})$/);
     if (roomDetails === null) return r;
-    r.floor = roomDetails[1];
-    r.number = roomDetails[2];
+    if (roomDetails[2] === '') {
+      r.number = roomDetails[1];
+    } else {
+      r.floor = roomDetails[1];
+      r.number = roomDetails[2];
+    }
     return r;
   }
 
+  function makeSensibleRoomCode(location) {
+    var l = location.col6;
+    if (!l) return false;
+    var r = l.building;
+    if (l.block) r+= '/'+l.block;
+    if (l.floor || l.number) r+= '/';
+    // Remove slash for:
+    // King's Manor (e.g. K/G07)
+    if (l.building === 'K' && l.block === 'G') r = r.slice(0,-1);
+    // Hes Hall Ground floor (e.g. H/G16)
+    if (l.building === 'H' && l.block === 'G') r = r.slice(0,-1);
+    if (l.building === 'H' && l.block === 'EXT') r = r.slice(0,-1);
+    // GNU/X01
+    if (l.building === 'GNU' && l.block === 'X') r = r.slice(0,-1);
+    if (l.floor) r+= l.floor;
+    if (l.number) r+= l.number;
+    return r;
+  }
+
+  function errorMessage(message) {
+    var $messageBox = $('#room-search-message');
+    if (message === false) return $messageBox.removeClass('active');
+    $messageBox.html(message).addClass('active');
+  }
+
   init();
+
+  // Testing facilty
+  window.test = {
+    singleRoom: function(roomCode) {
+      var noSlashCode = roomCode.replace(/\//g, ''),
+          location = {
+            col6: searchLocations(noSlashCode)
+          },
+          fixedCode = makeSensibleRoomCode(location);
+      return {
+        success: (roomCode === fixedCode),
+        roomCode: roomCode,
+        noSlashCode: noSlashCode,
+        fixedCode: fixedCode
+      }
+    },
+    allRooms: function() {
+      var that = this;
+      $.getJSON('rooms.json', function(data) {
+        var l = data.length, i = 0, errorCount = 0, successCount = 0;
+        for (;i < l; i++) {
+          var r = that.singleRoom(data[i].name)
+          if (r.success === true) {
+            successCount++;
+            //console.info((i+1)+': '+r.fixedCode+' matches original code '+r.roomCode+' (success #'+successCount+')');
+          } else {
+            errorCount++;
+            console.warn((i+1)+': '+r.fixedCode+' does not match original code '+r.roomCode+' (error #'+errorCount+')');
+          }
+          if (i === l-1) {
+            console.info('There were '+successCount+' correct room guesses');
+            console.warn('There were '+errorCount+' incorrect room guesses');
+
+          }
+        }
+      });
+      return 'Testing room codes...';
+    }
+  }
 
 });
 

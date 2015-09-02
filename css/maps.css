@@ -1,3 +1,9 @@
+#room-search-message {
+  display:none;
+}
+#room-search-message.active {
+  display:block;
+}
 #mapcontainer {
   margin-top: 25px;
   background-color: #eee;
