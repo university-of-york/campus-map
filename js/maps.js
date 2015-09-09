@@ -498,6 +498,7 @@ $(function() {
         }
       });
       if (noMatch === true) {
+        errorMessage('That code doesn\'t match anything in our system. Please try again.');
         // console.log('There was no match for the building code so there is no pin to drop :(')
       }
     })
