@@ -511,6 +511,7 @@ $(function() {
     var roomAPIRoot = 'https://www.york.ac.uk/api/campus/rooms/';
     $.getJSON(roomAPIRoot+roomValue, function(data) {
       //console.log('API call succeeded', data);
+      errorMessage(false);
       // Add new content to marker infobox
       location.col0 = roomValue;
       location.content = $('<p>').text(data.directions);
@@ -535,7 +536,7 @@ $(function() {
     var room = {};
     var roomDetails;
     var buildingDetails;
-    var roomParts = roomValue.split('/');
+    var roomParts = roomValue.toUpperCase().split('/');
 
     // With slashes: format BBBB/LLLL where B is Building and L is block
     if (roomParts.length > 1) {
