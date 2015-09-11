@@ -72,6 +72,8 @@ $(function() {
 
     addFullScreenLink();
 
+    addRoomSearch();
+
     // Loading Indicator
     $loadingIndicator = $('<img/>').attr({
       'src': 'images/loading.gif',
@@ -99,6 +101,15 @@ $(function() {
     $window.hashchange(function() {
       hashChangeCentreMap();
     });
+  };
+
+  var addRoomSearch = function() {
+      var clonedFAQ = $('#templateFAQ').clone(true);
+      clonedFAQ.attr('id', 'room-search-links');
+      clonedFAQ.find('h3').text('Room code search');
+      clonedFAQ.find('ul').remove();
+      clonedFAQ.find('.a').append($('<form id="room-search-form"><input type="text" id="room-search-value" name="room-search-value" placeholder="Enter room number"><input type="submit" id="room-search-submit" value="Search"></form>\n<div id="room-search-message"></div>'));
+      $tab1.append(clonedFAQ);
   };
 
   var addFullScreenLink = function() {
@@ -350,50 +361,15 @@ $(function() {
       animation: google.maps.Animation.DROP
     });
 
-    var boxText = makeBoxContent({
-      'title':location.col0,
-      'content':location.content || false
-    });
-
-    var myOptions = {
-      alignBottom: true,
-      boxClass: "infobox",
-      content: boxText.get(0), // has to be text or a dom node, not a jQuery object
-      maxWidth: 250,
-      pixelOffset: new google.maps.Size(-125, -42),
-      zIndex: null,
-      // closeBoxMargin: "4px 2px",
-      closeBoxURL: "https://www.google.com/intl/en_us/mapfiles/close.gif",
-      infoBoxClearance: new google.maps.Size(12, 12),
-      disableAutoPan: true
-    };
-
     google.maps.event.addListener(myMarker, "click", function(e) {
       $body.trigger('map:click');
       map.panTo(markerLocation);
-      infobox.open(map, this);
     });
-
-    $body.bind('map:click', function(e) {
-      infobox.close();
-    });
-
-    var infobox = new InfoBox(myOptions);
 
     return {
       marker: myMarker,
-      location: markerLocation,
-      infobox: infobox
+      location: markerLocation
     };
-  }
-
-  function makeBoxContent(opts) {
-    var boxContent = $("<div>").addClass('infobox-content');
-    boxContent.append($('<h4>').text(opts.title));
-    if (opts.content !== false) {
-      boxContent.append(opts.content);
-    }
-    return boxContent;
   }
 
   // create a link and add it to list
@@ -479,14 +455,14 @@ $(function() {
   }
 
   function initialiseSearch() {
-    $('#room-search-submit').click(function(e) {
+    $('#room-search-form').submit(function(e) {
       e.preventDefault();
       $body.trigger('map:click');
-      errorMessage(false);
+      roomMessage(false);
       var roomValue = $('#room-search-value').val();
       var matchedLocation = searchLocations(roomValue);
-      console.log(matchedLocation);
-      if(matchedLocation === false) return errorMessage('That room number doesn\'t seem to be right');
+      // console.log(matchedLocation);
+      if(matchedLocation === false) return roomMessage('That room number doesn\'t seem to be right');
       var noMatch = true;
       $.each(locations, function(i, location) {
         if (location.col5 === null) return;
@@ -498,7 +474,7 @@ $(function() {
         }
       });
       if (noMatch === true) {
-        errorMessage('That code doesn\'t match anything in our system. Please try again.');
+        roomMessage('That code doesn\'t match anything in our system. Please try again.');
         // console.log('There was no match for the building code so there is no pin to drop :(')
       }
     })
@@ -511,12 +487,18 @@ $(function() {
     var roomAPIRoot = 'https://www.york.ac.uk/api/campus/rooms/';
     $.getJSON(roomAPIRoot+roomValue, function(data) {
       //console.log('API call succeeded', data);
-      errorMessage(false);
+      roomMessage(false);
       // Add new content to marker infobox
-      location.col0 = roomValue;
+      location.name = data.name;
       location.content = $('<p>').text(data.directions);
-      var thisLocation = showMarker(location);
-      thisLocation.infobox.open(map, thisLocation.marker);
+      // var thisLocation = showMarker(location);
+      var messageContent = $('<h4>').text(data.name)
+                                    .add($('<p>').text(data.directions))
+                                    .add($('<p>').html($('<a href="#">').text('Show building location').click(function(e) {
+        e.preventDefault();
+        showMarker(location);
+      })));
+      roomMessage(messageContent);
     }).fail(function() {
       // console.log('API call failed');
       // Try again with slashes added
@@ -524,7 +506,9 @@ $(function() {
       if (newRoomCode !== roomValue) {
         callRoomAPI(newRoomCode, location);
       } else {
-        errorMessage('There are no directions available for this room. Please check that you have the right room code.');
+        console.log(location);
+        showMarker(location);
+        roomMessage('<p>We don\'t have directions for that room, but it looks like it might be in '+location.col0+'. Please double check the room code before you go.</p>');
       }
     });
 
@@ -627,6 +611,7 @@ $(function() {
     if (l.building === 'K' && l.block === 'G') r = r.slice(0,-1);
     // Hes Hall Ground floor (e.g. H/G16)
     if (l.building === 'H' && l.block === 'G') r = r.slice(0,-1);
+    if (l.building === 'H' && l.block === 'B') r = r.slice(0,-1);
     if (l.building === 'H' && l.block === 'EXT') r = r.slice(0,-1);
     // GNU/X01
     if (l.building === 'GNU' && l.block === 'X') r = r.slice(0,-1);
@@ -635,7 +620,7 @@ $(function() {
     return r;
   }
 
-  function errorMessage(message) {
+  function roomMessage(message) {
     var $messageBox = $('#room-search-message');
     if (message === false) return $messageBox.removeClass('active');
     $messageBox.html(message).addClass('active');

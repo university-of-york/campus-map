@@ -130,6 +130,36 @@ div#mdcolumn ul.tabNavigation li a.selected, div#mdcolumn ul.tabNavigation li a.
 #templateFAQ {
   display: none;
 }
+/* ROOM SEARCH */
+#room-search-links .q {
+  background: url(https://www.york.ac.uk/media/global/2013/images/frame/icn-search.png) 0 -32px no-repeat;
+  padding-left:24px;
+}
+#room-search-form {
+  margin:0 0 1em;
+  display:table;
+}
+#room-search-value {
+  width:56%;
+  padding:6px 2%;
+  display:table-cell;
+  vertical-align:bottom;
+}
+#room-search-submit {
+  width:36%;
+  height:29px;
+  line-height:27px;
+  padding-left:2%;
+  padding-right:2%;
+  display:table-cell;
+  vertical-align:bottom;
+}
+#room-search-message {
+  margin:1em 0;
+}
+#room-search-message h4 {
+  margin:0 0 1em;
+}
 @media print {
   #mapcentre, #mapnavigation {
     display: none !important;
