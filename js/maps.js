@@ -462,7 +462,7 @@ $(function() {
       var roomValue = $('#room-search-value').val();
       var matchedLocation = searchLocations(roomValue);
       // console.log(matchedLocation);
-      if(matchedLocation === false) return roomMessage('That room number doesn\'t seem to be right');
+      if(matchedLocation === false) return roomMessage('<strong>Sorry, no results found.</strong> Make sure you have entered a room number (eg \"H/G/21\") rather than the name of a room or building.');
       var noMatch = true;
       $.each(locations, function(i, location) {
         if (location.col5 === null) return;
@@ -474,7 +474,7 @@ $(function() {
         }
       });
       if (noMatch === true) {
-        roomMessage('That code doesn\'t match anything in our system. Please try again.');
+        roomMessage('<strong>Sorry, no results found.</strong> Please double check the code you entered.');
         // console.log('There was no match for the building code so there is no pin to drop :(')
       }
     })
@@ -494,7 +494,7 @@ $(function() {
       // var thisLocation = showMarker(location);
       var messageContent = $('<h4>').text(data.name)
                                     .add($('<p>').text(data.directions))
-                                    .add($('<p>').html($('<a href="#">').text('Show building location').click(function(e) {
+                                    .add($('<p>').html($('<a href="#" class="cta">').text('Show building location').click(function(e) {
         e.preventDefault();
         showMarker(location);
       })));
