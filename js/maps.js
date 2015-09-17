@@ -108,7 +108,7 @@ $(function() {
       clonedFAQ.attr('id', 'room-search-links');
       clonedFAQ.find('h3').text('Room code search');
       clonedFAQ.find('ul').remove();
-      clonedFAQ.find('.a').append($('<form id="room-search-form"><input type="text" id="room-search-value" name="room-search-value" placeholder="Enter room number"><input type="submit" id="room-search-submit" value="Search"></form>\n<div id="room-search-message"></div>'));
+      clonedFAQ.find('.a').append($('<form id="room-search-form"><input type="text" id="room-search-value" name="room-search-value" placeholder="Enter room number"><button type="submit" id="room-search-submit">Search</button></form>\n<div id="room-search-message"></div>'));
       $tab1.append(clonedFAQ);
   };
 
@@ -458,16 +458,25 @@ $(function() {
     $('#room-search-form').submit(function(e) {
       e.preventDefault();
       $body.trigger('map:click');
+      // Add spinner to button
+      $('#room-search-submit').html('<img src="images/loading.gif" alt="Loading..." style="vertical-align:middle;">');
       roomMessage(false);
       var roomValue = $('#room-search-value').val();
       var matchedLocation = searchLocations(roomValue);
       // console.log(matchedLocation);
-      if(matchedLocation === false) return roomMessage('<strong>Sorry, no results found.</strong> Make sure you have entered a room number (eg \"H/G/21\") rather than the name of a room or building.');
+      if(matchedLocation === false) {
+        roomMessage('<strong>Sorry, no results found.</strong> Make sure you have entered a room number (eg \"H/G/21\") rather than the name of a room or building.');
+        if (isLive === true) {
+          pageTracker._trackEvent('Map', 'Room Code Search', roomValue+' failed (not valid room code)');
+        }
+        return;
+      }
       var noMatch = true;
       $.each(locations, function(i, location) {
         if (location.col5 === null) return;
         if ($.inArray(matchedLocation.building, location.col5) > -1) {
           noMatch = false;
+          location.search = roomValue;
           location.col6 = matchedLocation;
           callRoomAPI(roomValue, location);
           return false;
@@ -475,6 +484,9 @@ $(function() {
       });
       if (noMatch === true) {
         roomMessage('<strong>Sorry, no results found.</strong> Please double check the code you entered.');
+        if (isLive === true) {
+          pageTracker._trackEvent('Map', 'Room Code Search', roomValue+' failed (no matching building)');
+        }
         // console.log('There was no match for the building code so there is no pin to drop :(')
       }
     })
@@ -499,6 +511,10 @@ $(function() {
         showMarker(location);
       })));
       roomMessage(messageContent);
+      // Track search term
+      if (isLive === true) {
+        pageTracker._trackEvent('Map', 'Room Code Search', location.search+' succeeded');
+      }
     }).fail(function() {
       // console.log('API call failed');
       // Try again with slashes added
@@ -506,9 +522,13 @@ $(function() {
       if (newRoomCode !== roomValue) {
         callRoomAPI(newRoomCode, location);
       } else {
-        console.log(location);
+        // console.log(location);
         showMarker(location);
         roomMessage('<p>We don\'t have directions for that room, but it looks like it might be in '+location.col0+'. Please double check the room code before you go.</p>');
+        // Track search term
+        if (isLive === true) {
+          pageTracker._trackEvent('Map', 'Room Code Search', location.search+' failed (room code not found)');
+        }
       }
     });
 
@@ -615,6 +635,8 @@ $(function() {
     if (l.building === 'H' && l.block === 'EXT') r = r.slice(0,-1);
     // GNU/X01
     if (l.building === 'GNU' && l.block === 'X') r = r.slice(0,-1);
+    // MSD/B06
+    if (l.building === 'MSD' && l.block === 'B') r = r.slice(0,-1);
     if (l.floor) r+= l.floor;
     if (l.number) r+= l.number;
     return r;
@@ -623,47 +645,49 @@ $(function() {
   function roomMessage(message) {
     var $messageBox = $('#room-search-message');
     if (message === false) return $messageBox.removeClass('active');
+    $('#room-search-submit').html('Search');
     $messageBox.html(message).addClass('active');
   }
 
   init();
 
   // Testing facilty
-  window.test = {
-    singleRoom: function(roomCode) {
-      var noSlashCode = roomCode.replace(/\//g, ''),
-          location = {
-            col6: searchLocations(noSlashCode)
-          },
-          fixedCode = makeSensibleRoomCode(location);
-      return {
-        success: (roomCode === fixedCode),
-        roomCode: roomCode,
-        noSlashCode: noSlashCode,
-        fixedCode: fixedCode
-      }
-    },
-    allRooms: function() {
-      var that = this;
-      $.getJSON('rooms.json', function(data) {
-        var l = data.length, i = 0, errorCount = 0, successCount = 0;
-        for (;i < l; i++) {
-          var r = that.singleRoom(data[i].name)
-          if (r.success === true) {
-            successCount++;
-            //console.info((i+1)+': '+r.fixedCode+' matches original code '+r.roomCode+' (success #'+successCount+')');
-          } else {
-            errorCount++;
-            console.warn((i+1)+': '+r.fixedCode+' does not match original code '+r.roomCode+' (error #'+errorCount+')');
-          }
-          if (i === l-1) {
-            console.info('There were '+successCount+' correct room guesses');
-            console.warn('There were '+errorCount+' incorrect room guesses');
-
-          }
+  if (!isLive) {
+    window.test = {
+      singleRoom: function(roomCode) {
+        var noSlashCode = roomCode.replace(/\//g, ''),
+            location = {
+              col6: searchLocations(noSlashCode)
+            },
+            fixedCode = makeSensibleRoomCode(location);
+        return {
+          success: (roomCode === fixedCode),
+          roomCode: roomCode,
+          noSlashCode: noSlashCode,
+          fixedCode: fixedCode
         }
-      });
-      return 'Testing room codes...';
+      },
+      allRooms: function() {
+        var that = this;
+        $.getJSON('rooms.json', function(data) {
+          var l = data.length, i = 0, errorCount = 0, successCount = 0;
+          for (;i < l; i++) {
+            var r = that.singleRoom(data[i].name)
+            if (r.success === true) {
+              successCount++;
+              //console.info((i+1)+': '+r.fixedCode+' matches original code '+r.roomCode+' (success #'+successCount+')');
+            } else {
+              errorCount++;
+              // console.warn((i+1)+': '+r.fixedCode+' does not match original code '+r.roomCode+' (error #'+errorCount+')');
+            }
+            if (i === l-1) {
+              // console.info('There were '+successCount+' correct room guesses');
+              // console.warn('There were '+errorCount+' incorrect room guesses');
+            }
+          }
+        });
+        return 'Testing room codes...';
+      }
     }
   }
 
