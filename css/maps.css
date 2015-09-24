@@ -140,18 +140,18 @@ div#mdcolumn ul.tabNavigation li a.selected, div#mdcolumn ul.tabNavigation li a.
   display:table;
 }
 #room-search-value {
-  width:62%;
-  padding:6px 2%;
-  display:table-cell;
+  width:136px;
+  padding:6px;
+  display:inline-block;
   vertical-align:bottom;
 }
 #room-search-submit {
-  width:30%;
+  width:42px;
   height:29px;
   line-height:27px;
-  padding-left:2%;
-  padding-right:2%;
-  display:table-cell;
+  padding-left:6px;
+  padding-right:6px;
+  display:inline-block;
   vertical-align:bottom;
 }
 #room-search-message {
@@ -162,6 +162,9 @@ div#mdcolumn ul.tabNavigation li a.selected, div#mdcolumn ul.tabNavigation li a.
 }
 #room-search-message h4 {
   margin:0 0 1em;
+}
+#room-search-message .cta {
+  display:inline-block;
 }
 @media print {
   #mapcentre, #mapnavigation {

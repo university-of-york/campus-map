@@ -53,7 +53,9 @@ $(function() {
   // Can't include BK as it conflicts with B/K
   // Cant' include GN as it conflicts with G/N
   var buildingsArray = ['SP', 'ADS', 'CSE', 'CS', 'MRC', 'HXH', 'SQ', 'RT', 'MP', 'GZ', 'RCH', 'HRL', 'FX'];
-  var isLive = window.location.hostname === "www.york.ac.uk";
+  var isLive = (window.location.hostname === "www.york.ac.uk") || (window.location.hostname === "cms.york.ac.uk");
+  var protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+  var loadingImg = protocol + "www.york.ac.uk/about/maps/campus/data/loading.gif";
 
   // set the map type to use cloudmade tiles, have name 'Campus map' and not allow zoom beyond level 18
   var cloudMadeMapType = new google.maps.ImageMapType({
@@ -76,7 +78,7 @@ $(function() {
 
     // Loading Indicator
     $loadingIndicator = $('<img/>').attr({
-      'src': 'images/loading.gif',
+      'src': loadingImg,
       'alt': 'Loading...'
     }).addClass('loading').appendTo($tab1);
 
@@ -106,9 +108,9 @@ $(function() {
   var addRoomSearch = function() {
       var clonedFAQ = $('#templateFAQ').clone(true);
       clonedFAQ.attr('id', 'room-search-links');
-      clonedFAQ.find('h3').text('Room code search');
+      clonedFAQ.find('h3').html('Room code search <sup>beta</sup>');
       clonedFAQ.find('ul').remove();
-      clonedFAQ.find('.a').append($('<form id="room-search-form"><input type="text" id="room-search-value" name="room-search-value" placeholder="Enter room number"><button type="submit" id="room-search-submit">Search</button></form>\n<div id="room-search-message"></div>'));
+      clonedFAQ.find('.a').append($('<form id="room-search-form"><input type="text" id="room-search-value" name="room-search-value" placeholder="Enter room number"><button type="submit" id="room-search-submit">Go</button></form>\n<div id="room-search-message" class="active"><strong>Note:</strong> Room search covers most teaching rooms but not residences or staff offices.</div>'));
       $tab1.append(clonedFAQ);
   };
 
@@ -445,11 +447,10 @@ $(function() {
   function makeDataURL() {
     var jsonURL;
     if (isLive === true) {
-      var protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
       jsonURL = protocol + "www.york.ac.uk/about/maps/campus/data/locations.json";
     } else {
-      // jsonURL = 'locations.json';
-      jsonURL = 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20csv%20where%20url%3D%22https%3A%2F%2Fdocs.google.com%2Fspreadsheet%2Fpub%3Fhl%3Den_GB%26hl%3Den_GB%26key%3D0AumxFaPyjySpdERqbE1KNXpDd1NkMzd1NVdUaEplWHc%26single%3Dtrue%26gid%3D0%26output%3Dcsv%22&format=json&diagnostics=true'
+      jsonURL = 'locations.json';
+      //jsonURL = 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20csv%20where%20url%3D%22https%3A%2F%2Fdocs.google.com%2Fspreadsheet%2Fpub%3Fhl%3Den_GB%26hl%3Den_GB%26key%3D0AumxFaPyjySpdERqbE1KNXpDd1NkMzd1NVdUaEplWHc%26single%3Dtrue%26gid%3D0%26output%3Dcsv%22&format=json&diagnostics=true'
     }
     return jsonURL;
   }
@@ -459,7 +460,7 @@ $(function() {
       e.preventDefault();
       $body.trigger('map:click');
       // Add spinner to button
-      $('#room-search-submit').html('<img src="images/loading.gif" alt="Loading..." style="vertical-align:middle;">');
+      $('#room-search-submit').html('<img src="'+loadingImg+'" alt="Loading..." style="vertical-align:middle;">');
       roomMessage(false);
       var roomValue = $('#room-search-value').val();
       var matchedLocation = searchLocations(roomValue);
@@ -498,7 +499,7 @@ $(function() {
     // Make call to room API
     var roomAPIRoot = 'https://www.york.ac.uk/api/campus/rooms/';
     $.getJSON(roomAPIRoot+roomValue, function(data) {
-      //console.log('API call succeeded', data);
+      // console.log('API call succeeded', data);
       roomMessage(false);
       // Add new content to marker infobox
       location.name = data.name;
@@ -515,8 +516,8 @@ $(function() {
       if (isLive === true) {
         pageTracker._trackEvent('Map', 'Room Code Search', location.search+' succeeded');
       }
-    }).fail(function() {
-      // console.log('API call failed');
+    }).fail(function(jqxhr, textStatus, error) {
+      // console.log('API call failed\n'+jqxhr.statusText+'\n'+textStatus+'\n'+error);
       // Try again with slashes added
       var newRoomCode = makeSensibleRoomCode(location);
       if (newRoomCode !== roomValue) {
@@ -645,7 +646,7 @@ $(function() {
   function roomMessage(message) {
     var $messageBox = $('#room-search-message');
     if (message === false) return $messageBox.removeClass('active');
-    $('#room-search-submit').html('Search');
+    $('#room-search-submit').html('Go');
     $messageBox.html(message).addClass('active');
   }
 
