@@ -519,7 +519,7 @@ $(function() {
     }).fail(function(jqxhr, textStatus, error) {
       // console.log('API call failed\n'+jqxhr.statusText+'\n'+textStatus+'\n'+error);
       // Try again with slashes added
-      var newRoomCode = makeSensibleRoomCode(location);
+      var newRoomCode = makeSensibleRoomCode(location, roomValue);
       if (newRoomCode !== roomValue) {
         callRoomAPI(newRoomCode, location);
       } else {
@@ -621,11 +621,13 @@ $(function() {
     return r;
   }
 
-  function makeSensibleRoomCode(location) {
+  function makeSensibleRoomCode(location, currentValue) {
     var l = location.col6;
     if (!l) return false;
     var r = l.building;
     if (l.block) r+= '/'+l.block;
+    // If it's already been through this process, add an 'N' block
+    if (!l.block && currentValue.indexOf('/') > -1) r+= '/N';
     if (l.floor || l.number) r+= '/';
     // Remove slash for:
     // King's Manor (e.g. K/G07)
@@ -654,6 +656,26 @@ $(function() {
 
   // Testing facilty
   if (!isLive) {
+
+    var roomsList = [];
+
+    var addItemsToList = function(items) {
+      roomsList = roomsList.concat(items);
+    };
+    var getRoomData = function(page, onComplete) {
+      var that = this;
+      $.getJSON('https://www.york.ac.uk/api/campus/rooms?page='+page, function(data) {
+        var links = data['_links'];
+        onComplete(links.item);
+        if (links.next) {
+          // Go to next page
+          getRoomData(++page, addItemsToList);
+        } else {
+          console.log(roomsList);
+        }
+      });
+    };
+
     window.test = {
       singleRoom: function(roomCode) {
         var noSlashCode = roomCode.replace(/\//g, ''),
@@ -688,6 +710,10 @@ $(function() {
           }
         });
         return 'Testing room codes...';
+      },
+      getAllRoomData: function() {
+        getRoomData(1, addItemsToList);
+        return 'Getting room data...';
       }
     }
   }
