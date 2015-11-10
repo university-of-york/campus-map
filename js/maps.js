@@ -8,6 +8,7 @@ $(function() {
   var $mapNavigation = $('#mapnavigation');
   var $mapDiv = $('#mapdiv');
   var $tab1 = $('#tab-1');
+  var iteration = 0; // 0 is original search, 1 is using recreated room code, 2 adds 'N' for block
 
   // create the core map variables
   var map, mapMarker, mapBounds, infobox, $loadingIndicator, markersArray = [],
@@ -462,6 +463,7 @@ $(function() {
       // Add spinner to button
       $('#room-search-submit').html('<img src="'+loadingImg+'" alt="Loading..." style="vertical-align:middle;">');
       roomMessage(false);
+      iteration = 0;
       var roomValue = $('#room-search-value').val().replace(/\s/g, '');
       var matchedLocation = searchLocations(roomValue);
       // console.log(matchedLocation);
@@ -518,8 +520,10 @@ $(function() {
       }
     }).fail(function(jqxhr, textStatus, error) {
       // console.log('API call failed\n'+jqxhr.statusText+'\n'+textStatus+'\n'+error);
-      // Try again with slashes added
-      var newRoomCode = makeSensibleRoomCode(location, roomValue);
+      // Try again
+      iteration++;
+      var newRoomCode = makeSensibleRoomCode(location, iteration);
+      console.log(newRoomCode, roomValue);
       if (newRoomCode !== roomValue) {
         callRoomAPI(newRoomCode, location);
       } else {
@@ -593,7 +597,7 @@ $(function() {
       r.building = building;
       return r;
     }
-    // Block is (usually!) last digit (excpetions EXT, CSTS)
+    // Block is (usually!) last digit (exceptions EXT, CSTS)
     var isExt = building.match(/^([A-Z]*)(EXT|CSTS|AM)([A-Z]*)$/);
     if (isExt) {
       r.building = isExt[1];
@@ -621,13 +625,16 @@ $(function() {
     return r;
   }
 
-  function makeSensibleRoomCode(location, currentValue) {
+  function makeSensibleRoomCode(location, iteration) {
+    iteration = (typeof iteration === 'undefined') ? 0 : iteration;
     var l = location.col6;
     if (!l) return false;
+    if (!l.block && iteration === 2) {
+      // If it's already been through this process, add an 'N' block
+      l.block = 'N';
+    }
     var r = l.building;
     if (l.block) r+= '/'+l.block;
-    // If it's already been through this process, add an 'N' block
-    if (!l.block && currentValue.indexOf('/') > -1) r+= '/N';
     if (l.floor || l.number) r+= '/';
     // Remove slash for:
     // King's Manor (e.g. K/G07)
