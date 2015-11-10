@@ -466,7 +466,6 @@ $(function() {
       iteration = 0;
       var roomValue = $('#room-search-value').val().replace(/\s/g, '');
       var matchedLocation = searchLocations(roomValue);
-      // console.log(matchedLocation);
       if(matchedLocation === false) {
         roomMessage('<strong>Sorry, no results found.</strong> Make sure you have entered a room number (eg \"H/G/21\") rather than the name of a room or building.');
         if (isLive === true) {
@@ -523,7 +522,6 @@ $(function() {
       // Try again
       iteration++;
       var newRoomCode = makeSensibleRoomCode(location, iteration);
-      console.log(newRoomCode, roomValue);
       if (newRoomCode !== roomValue) {
         callRoomAPI(newRoomCode, location);
       } else {
@@ -545,39 +543,14 @@ $(function() {
     var room = {};
     var roomDetails;
     var buildingDetails;
-    var roomParts = roomValue.toUpperCase().split('/');
-
-    // With slashes: format BBBB/LLLL where B is Building and L is block
-    if (roomParts.length > 1) {
-      room.building = roomParts[0];
-      if (roomParts.length > 2) {
-        // there's a slash between block and room!
-        room.block = roomParts[1];
-        roomDetails = getRoom(roomParts[2]);
-      } else {
-        var roomPartsParts = roomParts[1].trim().match(/^([A-Za-z]{0,4})([0-9\&]*[A-Za-z-]{0,8})$/);
-        // If only one number, it's part of block e.g.GSH/B1 (Goodricke Oliver Sheldon Court Block B1)
-        if(!roomPartsParts) return false;
-        if (roomPartsParts[2].length === 1) {
-          room.block = roomParts[1];
-          roomDetails = { floor: false, number: false };
-        } else {
-          room.block = roomPartsParts[1] == "" ? false : roomPartsParts[1] ;
-          // Otherwise it's a room number
-          roomDetails = getRoom(roomPartsParts[2]);
-        }
-      }
-    } else {
-      // If no slashes, match Building code+room code
-      roomParts = roomValue.match(/^([A-Za-z]*)([0-9\&]*[A-Za-z-]{0,8})$/);
-      if(!roomParts) return false;
-      buildingDetails = getBuilding(roomParts[1]);
-      roomDetails = getRoom(roomParts[2]);
-      room.building = buildingDetails.building;
-      room.block = buildingDetails.block;
-      if (buildingDetails.extra !== false) {
-        roomDetails.floor = buildingDetails.extra;
-      }
+    var roomParts = roomValue.replace(/\//g, '').match(/^([A-Za-z]*)([0-9\&]*[A-Za-z-]{0,8})$/);
+    if(!roomParts) return false;
+    buildingDetails = getBuilding(roomParts[1]);
+    roomDetails = getRoom(roomParts[2]);
+    room.building = buildingDetails.building;
+    room.block = buildingDetails.block;
+    if (buildingDetails.extra !== false) {
+      roomDetails.floor = buildingDetails.extra;
     }
     room.floor = roomDetails.floor;
     room.number = roomDetails.number;
