@@ -240,6 +240,7 @@ $(function() {
       minZoom: 13,
       zoom: zoomLevel,
       center: new google.maps.LatLng(location.col2, location.col3),
+      scaleControl: true,
       mapTypeControlOptions: {
         mapTypeIds: ['cloudMade', google.maps.MapTypeId.SATELLITE]
       },
@@ -522,7 +523,7 @@ $(function() {
       // Try again
       iteration++;
       var newRoomCode = makeSensibleRoomCode(location, iteration);
-      if (newRoomCode !== roomValue) {
+      if (newRoomCode !== roomValue || iteration < 3) {
         callRoomAPI(newRoomCode, location);
       } else {
         // console.log(location);
