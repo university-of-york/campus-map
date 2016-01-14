@@ -7,6 +7,7 @@ $(function() {
   var $body = $('body');
   var $mapNavigation = $('#mapnavigation');
   var $mapDiv = $('#mapdiv');
+  var $mapBoxes = $('#mapnavigation, #maptabs');
   var $tab1 = $('#tab-1');
   var iteration = 0; // 0 is original search, 1 is using recreated room code, 2 adds 'N' for block
 
@@ -57,6 +58,10 @@ $(function() {
   var isLive = (window.location.hostname === "www.york.ac.uk") || (window.location.hostname === "cms.york.ac.uk");
   var protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
   var loadingImg = protocol + "www.york.ac.uk/about/maps/campus/data/loading.gif";
+  var exceptions = {
+    'FHALL':  'F/100',
+    'FCENHL': 'F/100'
+  };
 
   // set the map type to use cloudmade tiles, have name 'Campus map' and not allow zoom beyond level 18
   var cloudMadeMapType = new google.maps.ImageMapType({
@@ -87,9 +92,12 @@ $(function() {
     $window.resize(function() {
       if (isFullScreen === true) {
         windowWidth = parseInt($window.width());
-        height = parseInt($window.height());
-        mapWidth = windowWidth - ($mapNavigation.width());
-        $mapDiv.width(mapWidth).height(height);
+        windowHeight = parseInt($window.height());
+        mapheight = windowHeight - ($('#mapcentre').outerHeight()) - ($('#mapfooter').outerHeight());
+        mapwidth = windowWidth - ($mapNavigation.width());
+        $mapDiv.width(mapwidth).height(mapheight);
+        $mapBoxes.height(mapheight);
+        $tab1.height(mapheight - 10).css('max-height', 'none');
         google.maps.event.trigger(map, 'resize');
       };
     });
@@ -120,7 +128,6 @@ $(function() {
     var $html = $('html');
     var $contentContainer = $('#content-container');
     var $mapContainer = $('#mapcontainer');
-    var $mapBoxes = $('#mapnavigation, #maptabs');
 
     $fullscreenLink = $('<a>').attr({
       'id': 'fullscreen_link',
@@ -130,11 +137,6 @@ $(function() {
       //Bind function to clicks on full screen link
       e.preventDefault();
       if (isFullScreen === false) {
-        windowHeight = parseInt($window.height());
-        windowWidth = parseInt($window.width());
-        mapheight = windowHeight - ($('#mapcentre').outerHeight()) - ($('#mapfooter').outerHeight());
-        mapwidth = windowWidth - ($mapNavigation.width());
-        $mapDiv.width(mapwidth).height(mapheight);
         $html.css({
           position: 'relative',
           overflow: 'hidden'
@@ -146,13 +148,11 @@ $(function() {
           backgroundPosition: '0 -14px'
         }).attr('title', 'Exit full screen').text('Exit full screen');
         $mapContainer.css({
-          position: 'absolute',
+          position: 'fixed',
           top: '0',
           left: '0',
           margin: '0'
         });
-        $mapBoxes.height(mapheight);
-        $tab1.height(mapheight - 10).css('max-height', 'none');
         google.maps.event.trigger(map, 'resize');
         isFullScreen = true;
         $window.resize(); //Fake a resize so that missing scrollbar space accounted for
@@ -490,7 +490,7 @@ $(function() {
         if (isLive === true) {
           pageTracker._trackEvent('Map', 'Room Code Search', roomValue+' failed (no matching building)');
         }
-        // console.log('There was no match for the building code so there is no pin to drop :(')
+        //console.log('There was no match for the building code so there is no pin to drop :(')
       }
     })
   }
@@ -541,6 +541,10 @@ $(function() {
   // Returns room object with building, block, floor and number keys
   function searchLocations(roomValue) {
 
+    // Intercept any exceptions
+    var ucRoom = roomValue.toUpperCase().replace(/\//g, '');
+    if (!!exceptions[ucRoom]) roomValue = exceptions[ucRoom];
+
     var room = {};
     var roomDetails;
     var buildingDetails;
@@ -571,11 +575,11 @@ $(function() {
       r.building = building;
       return r;
     }
-    // Block is (usually!) last digit (exceptions EXT, CSTS)
-    var isExt = building.match(/^([A-Z]*)(EXT|CSTS|AM)([A-Z]*)$/);
+    // Block is (usually!) last digit (exceptions EXT, CSTS, HALL)
+    var isExt = building.match(/^([A-Z]*)(EXT|CSTS|AM|HALL)([A-Z]*)$/);
     if (isExt) {
       r.building = isExt[1];
-      r.block = isExt[2]; // This will be 'EXT' or 'CSTS'
+      r.block = isExt[2]; // This will be 'EXT', 'CSTS' etc.
       r.extra = isExt[3] || false; // If set, this should be added to the room
       return r;
     }
@@ -652,7 +656,7 @@ $(function() {
           // Go to next page
           getRoomData(++page, addItemsToList);
         } else {
-          console.log(roomsList);
+          //console.log(roomsList);
         }
       });
     };
@@ -682,11 +686,11 @@ $(function() {
               //console.info((i+1)+': '+r.fixedCode+' matches original code '+r.roomCode+' (success #'+successCount+')');
             } else {
               errorCount++;
-              // console.warn((i+1)+': '+r.fixedCode+' does not match original code '+r.roomCode+' (error #'+errorCount+')');
+              //console.warn((i+1)+': '+r.fixedCode+' does not match original code '+r.roomCode+' (error #'+errorCount+')');
             }
             if (i === l-1) {
-              // console.info('There were '+successCount+' correct room guesses');
-              // console.warn('There were '+errorCount+' incorrect room guesses');
+              //console.info('There were '+successCount+' correct room guesses');
+              //console.warn('There were '+errorCount+' incorrect room guesses');
             }
           }
         });
