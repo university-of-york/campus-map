@@ -51,6 +51,9 @@ $(function() {
       col5: null
     }
   }
+
+  window.locations = locations;
+
   // Buildings we don't have on the map yet
   // Can't include BK as it conflicts with B/K
   // Cant' include GN as it conflicts with G/N
@@ -307,12 +310,10 @@ $(function() {
         $tab1.append(clonedFAQ);
       }
       // get the location name
-      var locationName = location.col0;
+      var locationName = location.col0+'-'+location.col1;
       // get the list matching the current element and append a list item
       var currentList = $('#' + categoryID + '-links ul');
       currentList.append(createMapLink(location));
-      // add to locations object
-      locations[makeID(locationName)] = location;
       // get the 'show all' link and add an event handler to drop a pin
       var showAllLink = $('#' + categoryID + '-show-all');
       showAllLink.click(function() {
@@ -344,6 +345,11 @@ $(function() {
         location.col5 = l;
         buildingsArray = buildingsArray.concat(l)
       }
+      // add to locations object
+      if (location.col0 === 'Halifax College') {
+        console.log(location);
+      }
+      locations[makeID(locationName)] = location;
       if(key === locationRows.length-1) {
         initialiseMap();
         initialiseSearch();
@@ -656,7 +662,7 @@ $(function() {
           // Go to next page
           getRoomData(++page, addItemsToList);
         } else {
-          //console.log(roomsList);
+          console.log(JSON.stringify(roomsList, null, 2));
         }
       });
     };
