@@ -52,8 +52,6 @@ $(function() {
     }
   }
 
-  window.locations = locations;
-
   // Buildings we don't have on the map yet
   // Can't include BK as it conflicts with B/K
   // Cant' include GN as it conflicts with G/N
@@ -226,6 +224,7 @@ $(function() {
 
     // If the hash exists as a key in the locations object, return it
     var hash = window.location.hash.substring(1);
+
     return (typeof locations[hash] === 'object') ? locations[hash] : locations['default'];
 
   }
@@ -310,7 +309,7 @@ $(function() {
         $tab1.append(clonedFAQ);
       }
       // get the location name
-      var locationName = location.col0+'-'+location.col1;
+      var locationName = location.col0;
       // get the list matching the current element and append a list item
       var currentList = $('#' + categoryID + '-links ul');
       currentList.append(createMapLink(location));
@@ -346,10 +345,10 @@ $(function() {
         buildingsArray = buildingsArray.concat(l)
       }
       // add to locations object
-      if (location.col0 === 'Halifax College') {
-        console.log(location);
-      }
-      locations[makeID(locationName)] = location;
+      // make sure location with same name isn't in locations list
+      var locationID = makeID(locationName);
+      if (locations[locationID]) locationID+= '-'+makeID(location.col1);
+      locations[locationID] = location;
       if(key === locationRows.length-1) {
         initialiseMap();
         initialiseSearch();
@@ -449,7 +448,7 @@ $(function() {
   }
   // make id-friendly-name (N.B. number can't be first character)
   function makeID(str) {
-    return str.replace(/[^A-Za-z]+/g, '-').toLowerCase();
+    return str.replace("'", "").replace(/[^A-Za-z]+/g, '-').toLowerCase();
   }
 
   function makeDataURL() {
