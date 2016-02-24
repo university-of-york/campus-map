@@ -7,7 +7,9 @@ $(function() {
   var $body = $('body');
   var $mapNavigation = $('#mapnavigation');
   var $mapDiv = $('#mapdiv');
+  var $mapBoxes = $('#mapnavigation, #maptabs');
   var $tab1 = $('#tab-1');
+  var iteration = 0; // 0 is original search, 1 is using recreated room code, 2 adds 'N' for block
 
   // create the core map variables
   var map, mapMarker, mapBounds, infobox, $loadingIndicator, markersArray = [],
@@ -49,6 +51,7 @@ $(function() {
       col5: null
     }
   }
+
   // Buildings we don't have on the map yet
   // Can't include BK as it conflicts with B/K
   // Cant' include GN as it conflicts with G/N
@@ -56,6 +59,10 @@ $(function() {
   var isLive = (window.location.hostname === "www.york.ac.uk") || (window.location.hostname === "cms.york.ac.uk");
   var protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
   var loadingImg = protocol + "www.york.ac.uk/about/maps/campus/data/loading.gif";
+  var exceptions = {
+    'FHALL':  'F/100',
+    'FCENHL': 'F/100'
+  };
 
   // set the map type to use cloudmade tiles, have name 'Campus map' and not allow zoom beyond level 18
   var cloudMadeMapType = new google.maps.ImageMapType({
@@ -86,9 +93,12 @@ $(function() {
     $window.resize(function() {
       if (isFullScreen === true) {
         windowWidth = parseInt($window.width());
-        height = parseInt($window.height());
-        mapWidth = windowWidth - ($mapNavigation.width());
-        $mapDiv.width(mapWidth).height(height);
+        windowHeight = parseInt($window.height());
+        mapheight = windowHeight - ($('#mapcentre').outerHeight()) - ($('#mapfooter').outerHeight());
+        mapwidth = windowWidth - ($mapNavigation.width());
+        $mapDiv.width(mapwidth).height(mapheight);
+        $mapBoxes.height(mapheight);
+        $tab1.height(mapheight - 10).css('max-height', 'none');
         google.maps.event.trigger(map, 'resize');
       };
     });
@@ -119,7 +129,6 @@ $(function() {
     var $html = $('html');
     var $contentContainer = $('#content-container');
     var $mapContainer = $('#mapcontainer');
-    var $mapBoxes = $('#mapnavigation, #maptabs');
 
     $fullscreenLink = $('<a>').attr({
       'id': 'fullscreen_link',
@@ -129,11 +138,6 @@ $(function() {
       //Bind function to clicks on full screen link
       e.preventDefault();
       if (isFullScreen === false) {
-        windowHeight = parseInt($window.height());
-        windowWidth = parseInt($window.width());
-        mapheight = windowHeight - ($('#mapcentre').outerHeight()) - ($('#mapfooter').outerHeight());
-        mapwidth = windowWidth - ($mapNavigation.width());
-        $mapDiv.width(mapwidth).height(mapheight);
         $html.css({
           position: 'relative',
           overflow: 'hidden'
@@ -145,13 +149,11 @@ $(function() {
           backgroundPosition: '0 -14px'
         }).attr('title', 'Exit full screen').text('Exit full screen');
         $mapContainer.css({
-          position: 'absolute',
+          position: 'fixed',
           top: '0',
           left: '0',
           margin: '0'
         });
-        $mapBoxes.height(mapheight);
-        $tab1.height(mapheight - 10).css('max-height', 'none');
         google.maps.event.trigger(map, 'resize');
         isFullScreen = true;
         $window.resize(); //Fake a resize so that missing scrollbar space accounted for
@@ -222,6 +224,7 @@ $(function() {
 
     // If the hash exists as a key in the locations object, return it
     var hash = window.location.hash.substring(1);
+
     return (typeof locations[hash] === 'object') ? locations[hash] : locations['default'];
 
   }
@@ -239,6 +242,7 @@ $(function() {
       minZoom: 13,
       zoom: zoomLevel,
       center: new google.maps.LatLng(location.col2, location.col3),
+      scaleControl: true,
       mapTypeControlOptions: {
         mapTypeIds: ['cloudMade', google.maps.MapTypeId.SATELLITE]
       },
@@ -309,8 +313,6 @@ $(function() {
       // get the list matching the current element and append a list item
       var currentList = $('#' + categoryID + '-links ul');
       currentList.append(createMapLink(location));
-      // add to locations object
-      locations[makeID(locationName)] = location;
       // get the 'show all' link and add an event handler to drop a pin
       var showAllLink = $('#' + categoryID + '-show-all');
       showAllLink.click(function() {
@@ -342,6 +344,11 @@ $(function() {
         location.col5 = l;
         buildingsArray = buildingsArray.concat(l)
       }
+      // add to locations object
+      // make sure location with same name isn't in locations list
+      var locationID = makeID(locationName);
+      if (locations[locationID]) locationID+= '-'+makeID(location.col1);
+      locations[locationID] = location;
       if(key === locationRows.length-1) {
         initialiseMap();
         initialiseSearch();
@@ -441,7 +448,7 @@ $(function() {
   }
   // make id-friendly-name (N.B. number can't be first character)
   function makeID(str) {
-    return str.replace(/[^A-Za-z]+/g, '-').toLowerCase();
+    return str.replace("'", "").replace(/[^A-Za-z]+/g, '-').toLowerCase();
   }
 
   function makeDataURL() {
@@ -462,9 +469,9 @@ $(function() {
       // Add spinner to button
       $('#room-search-submit').html('<img src="'+loadingImg+'" alt="Loading..." style="vertical-align:middle;">');
       roomMessage(false);
+      iteration = 0;
       var roomValue = $('#room-search-value').val().replace(/\s/g, '');
       var matchedLocation = searchLocations(roomValue);
-      // console.log(matchedLocation);
       if(matchedLocation === false) {
         roomMessage('<strong>Sorry, no results found.</strong> Make sure you have entered a room number (eg \"H/G/21\") rather than the name of a room or building.');
         if (isLive === true) {
@@ -488,7 +495,7 @@ $(function() {
         if (isLive === true) {
           pageTracker._trackEvent('Map', 'Room Code Search', roomValue+' failed (no matching building)');
         }
-        // console.log('There was no match for the building code so there is no pin to drop :(')
+        //console.log('There was no match for the building code so there is no pin to drop :(')
       }
     })
   }
@@ -518,9 +525,10 @@ $(function() {
       }
     }).fail(function(jqxhr, textStatus, error) {
       // console.log('API call failed\n'+jqxhr.statusText+'\n'+textStatus+'\n'+error);
-      // Try again with slashes added
-      var newRoomCode = makeSensibleRoomCode(location, roomValue);
-      if (newRoomCode !== roomValue) {
+      // Try again
+      iteration++;
+      var newRoomCode = makeSensibleRoomCode(location, iteration);
+      if (newRoomCode !== roomValue || iteration < 3) {
         callRoomAPI(newRoomCode, location);
       } else {
         // console.log(location);
@@ -538,42 +546,21 @@ $(function() {
   // Returns room object with building, block, floor and number keys
   function searchLocations(roomValue) {
 
+    // Intercept any exceptions
+    var ucRoom = roomValue.toUpperCase().replace(/\//g, '');
+    if (!!exceptions[ucRoom]) roomValue = exceptions[ucRoom];
+
     var room = {};
     var roomDetails;
     var buildingDetails;
-    var roomParts = roomValue.toUpperCase().split('/');
-
-    // With slashes: format BBBB/LLLL where B is Building and L is block
-    if (roomParts.length > 1) {
-      room.building = roomParts[0];
-      if (roomParts.length > 2) {
-        // there's a slash between block and room!
-        room.block = roomParts[1];
-        roomDetails = getRoom(roomParts[2]);
-      } else {
-        var roomPartsParts = roomParts[1].trim().match(/^([A-Za-z]{0,4})([0-9\&]*[A-Za-z-]{0,8})$/);
-        // If only one number, it's part of block e.g.GSH/B1 (Goodricke Oliver Sheldon Court Block B1)
-        if(!roomPartsParts) return false;
-        if (roomPartsParts[2].length === 1) {
-          room.block = roomParts[1];
-          roomDetails = { floor: false, number: false };
-        } else {
-          room.block = roomPartsParts[1] == "" ? false : roomPartsParts[1] ;
-          // Otherwise it's a room number
-          roomDetails = getRoom(roomPartsParts[2]);
-        }
-      }
-    } else {
-      // If no slashes, match Building code+room code
-      roomParts = roomValue.match(/^([A-Za-z]*)([0-9\&]*[A-Za-z-]{0,8})$/);
-      if(!roomParts) return false;
-      buildingDetails = getBuilding(roomParts[1]);
-      roomDetails = getRoom(roomParts[2]);
-      room.building = buildingDetails.building;
-      room.block = buildingDetails.block;
-      if (buildingDetails.extra !== false) {
-        roomDetails.floor = buildingDetails.extra;
-      }
+    var roomParts = roomValue.replace(/\//g, '').match(/^([A-Za-z]*)([0-9\&]*[A-Za-z-]{0,8})$/);
+    if(!roomParts) return false;
+    buildingDetails = getBuilding(roomParts[1]);
+    roomDetails = getRoom(roomParts[2]);
+    room.building = buildingDetails.building;
+    room.block = buildingDetails.block;
+    if (buildingDetails.extra !== false) {
+      roomDetails.floor = buildingDetails.extra;
     }
     room.floor = roomDetails.floor;
     room.number = roomDetails.number;
@@ -593,11 +580,11 @@ $(function() {
       r.building = building;
       return r;
     }
-    // Block is (usually!) last digit (excpetions EXT, CSTS)
-    var isExt = building.match(/^([A-Z]*)(EXT|CSTS|AM)([A-Z]*)$/);
+    // Block is (usually!) last digit (exceptions EXT, CSTS, HALL)
+    var isExt = building.match(/^([A-Z]*)(EXT|CSTS|AM|HALL)([A-Z]*)$/);
     if (isExt) {
       r.building = isExt[1];
-      r.block = isExt[2]; // This will be 'EXT' or 'CSTS'
+      r.block = isExt[2]; // This will be 'EXT', 'CSTS' etc.
       r.extra = isExt[3] || false; // If set, this should be added to the room
       return r;
     }
@@ -621,13 +608,16 @@ $(function() {
     return r;
   }
 
-  function makeSensibleRoomCode(location, currentValue) {
+  function makeSensibleRoomCode(location, iteration) {
+    iteration = (typeof iteration === 'undefined') ? 0 : iteration;
     var l = location.col6;
     if (!l) return false;
+    if (!l.block && iteration === 2) {
+      // If it's already been through this process, add an 'N' block
+      l.block = 'N';
+    }
     var r = l.building;
     if (l.block) r+= '/'+l.block;
-    // If it's already been through this process, add an 'N' block
-    if (!l.block && currentValue.indexOf('/') > -1) r+= '/N';
     if (l.floor || l.number) r+= '/';
     // Remove slash for:
     // King's Manor (e.g. K/G07)
@@ -671,7 +661,7 @@ $(function() {
           // Go to next page
           getRoomData(++page, addItemsToList);
         } else {
-          console.log(roomsList);
+          console.log(JSON.stringify(roomsList, null, 2));
         }
       });
     };
@@ -701,11 +691,11 @@ $(function() {
               //console.info((i+1)+': '+r.fixedCode+' matches original code '+r.roomCode+' (success #'+successCount+')');
             } else {
               errorCount++;
-              // console.warn((i+1)+': '+r.fixedCode+' does not match original code '+r.roomCode+' (error #'+errorCount+')');
+              //console.warn((i+1)+': '+r.fixedCode+' does not match original code '+r.roomCode+' (error #'+errorCount+')');
             }
             if (i === l-1) {
-              // console.info('There were '+successCount+' correct room guesses');
-              // console.warn('There were '+errorCount+' incorrect room guesses');
+              //console.info('There were '+successCount+' correct room guesses');
+              //console.warn('There were '+errorCount+' incorrect room guesses');
             }
           }
         });
