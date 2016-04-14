@@ -152,7 +152,8 @@ $(function() {
           position: 'fixed',
           top: '0',
           left: '0',
-          margin: '0'
+          margin: '0',
+          zIndex: '99'
         });
         google.maps.event.trigger(map, 'resize');
         isFullScreen = true;
@@ -528,7 +529,7 @@ $(function() {
       // Try again
       iteration++;
       var newRoomCode = makeSensibleRoomCode(location, iteration);
-      if (newRoomCode !== roomValue || iteration < 3) {
+      if (newRoomCode !== roomValue || iteration < 4) {
         callRoomAPI(newRoomCode, location);
       } else {
         // console.log(location);
@@ -600,10 +601,10 @@ $(function() {
     var roomDetails = room.match(/^([0-9]{1})([0-9\&-]*[A-Za-z]{0,4})$/);
     if (roomDetails === null) return r;
     if (roomDetails[2] === '') {
-      r.number = roomDetails[1];
+      r.number = roomDetails[1].toUpperCase();
     } else {
       r.floor = roomDetails[1];
-      r.number = roomDetails[2];
+      r.number = roomDetails[2].toUpperCase();
     }
     return r;
   }
@@ -630,6 +631,10 @@ $(function() {
     if (l.building === 'GNU' && l.block === 'X') r = r.slice(0,-1);
     // MSD/B06
     if (l.building === 'MSD' && l.block === 'B') r = r.slice(0,-1);
+    // YH/001b, RCH/003b, RCH/102e
+    if (l.building === 'YH' && l.floor === '0' && l.number === '01B') l.number = '01b';
+    if (l.building === 'RCH' && l.floor === '0' && l.number === '03B') l.number = '03b';
+    if (l.building === 'RCH' && l.floor === '1' && l.number === '02E') l.number = '02e';
     if (l.floor) r+= l.floor;
     if (l.number) r+= l.number;
     return r;

@@ -1600,8 +1600,8 @@
     "hreflang": "en"
   },
   {
-    "name": "D/L/134",
-    "href": "https://www.york.ac.uk/api/campus/rooms/D/L/134",
+    "name": "D/L/137",
+    "href": "https://www.york.ac.uk/api/campus/rooms/D/L/137",
     "hreflang": "en"
   },
   {
@@ -1997,6 +1997,11 @@
   {
     "name": "LFA/103",
     "href": "https://www.york.ac.uk/api/campus/rooms/LFA/103",
+    "hreflang": "en"
+  },
+  {
+    "name": "LFA/106",
+    "href": "https://www.york.ac.uk/api/campus/rooms/LFA/106",
     "hreflang": "en"
   },
   {
