@@ -23,6 +23,9 @@
   float: left;
   width: 220px;
 }
+#mapdiv {
+  float:left;
+}
 #mapdiv .infobox {
   width: 250px;
   padding: 12px;
@@ -135,6 +138,7 @@ div#mdcolumn ul.tabNavigation li a.selected, div#mdcolumn ul.tabNavigation li a.
   font-size: 85%;
   padding: 15px 10px;
   text-align: right;
+  clear:both;
 }
 #templateFAQ {
   display: none;
