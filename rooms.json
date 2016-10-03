@@ -705,6 +705,16 @@
     "hreflang": "en"
   },
   {
+    "name": "VX/230",
+    "href": "https://www.york.ac.uk/api/campus/rooms/VX/230",
+    "hreflang": "en"
+  },
+  {
+    "name": "VX/231",
+    "href": "https://www.york.ac.uk/api/campus/rooms/VX/231",
+    "hreflang": "en"
+  },
+  {
     "name": "VX/330",
     "href": "https://www.york.ac.uk/api/campus/rooms/VX/330",
     "hreflang": "en"
@@ -750,6 +760,11 @@
     "hreflang": "en"
   },
   {
+    "name": "YH/104",
+    "href": "https://www.york.ac.uk/api/campus/rooms/YH/104",
+    "hreflang": "en"
+  },
+  {
     "name": "YH/107",
     "href": "https://www.york.ac.uk/api/campus/rooms/YH/107",
     "hreflang": "en"
@@ -757,6 +772,11 @@
   {
     "name": "YH/108",
     "href": "https://www.york.ac.uk/api/campus/rooms/YH/108",
+    "hreflang": "en"
+  },
+  {
+    "name": "YH/109",
+    "href": "https://www.york.ac.uk/api/campus/rooms/YH/109",
     "hreflang": "en"
   },
   {
@@ -1290,6 +1310,16 @@
     "hreflang": "en"
   },
   {
+    "name": "B/T/005",
+    "href": "https://www.york.ac.uk/api/campus/rooms/B/T/005",
+    "hreflang": "en"
+  },
+  {
+    "name": "B/T/019",
+    "href": "https://www.york.ac.uk/api/campus/rooms/B/T/019",
+    "hreflang": "en"
+  },
+  {
     "name": "BH/002B",
     "href": "https://www.york.ac.uk/api/campus/rooms/BH/002B",
     "hreflang": "en"
@@ -1362,6 +1392,11 @@
   {
     "name": "C/B/102",
     "href": "https://www.york.ac.uk/api/campus/rooms/C/B/102",
+    "hreflang": "en"
+  },
+  {
+    "name": "C/B/104",
+    "href": "https://www.york.ac.uk/api/campus/rooms/C/B/104",
     "hreflang": "en"
   },
   {
@@ -1577,6 +1612,11 @@
   {
     "name": "D/L/104",
     "href": "https://www.york.ac.uk/api/campus/rooms/D/L/104",
+    "hreflang": "en"
+  },
+  {
+    "name": "D/L/105",
+    "href": "https://www.york.ac.uk/api/campus/rooms/D/L/105",
     "hreflang": "en"
   },
   {
@@ -2032,6 +2072,11 @@
   {
     "name": "LFA/205",
     "href": "https://www.york.ac.uk/api/campus/rooms/LFA/205",
+    "hreflang": "en"
+  },
+  {
+    "name": "LFA/226",
+    "href": "https://www.york.ac.uk/api/campus/rooms/LFA/226",
     "hreflang": "en"
   },
   {
@@ -2520,6 +2565,151 @@
     "hreflang": "en"
   },
   {
+    "name": "SLB/001",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/001",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/002",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/002",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/003",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/003",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/004",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/004",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/005",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/005",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/006",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/006",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/007",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/007",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/018",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/018",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/019",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/019",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/101",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/101",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/102",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/102",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/103",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/103",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/104",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/104",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/105",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/105",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/106",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/106",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/107",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/107",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/108",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/108",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/118",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/118",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/201",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/201",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/202",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/202",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/203",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/203",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/204",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/204",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/205",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/205",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/206",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/206",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/207",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/207",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/208",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/208",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/209",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/209",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/210",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/210",
+    "hreflang": "en"
+  },
+  {
+    "name": "SLB/211",
+    "href": "https://www.york.ac.uk/api/campus/rooms/SLB/211",
+    "hreflang": "en"
+  },
+  {
     "name": "V/B/023",
     "href": "https://www.york.ac.uk/api/campus/rooms/V/B/023",
     "hreflang": "en"
@@ -2807,6 +2997,16 @@
   {
     "name": "B/R/015B",
     "href": "https://www.york.ac.uk/api/campus/rooms/B/R/015B",
+    "hreflang": "en"
+  },
+  {
+    "name": "B/R/112A",
+    "href": "https://www.york.ac.uk/api/campus/rooms/B/R/112A",
+    "hreflang": "en"
+  },
+  {
+    "name": "B/R/112B",
+    "href": "https://www.york.ac.uk/api/campus/rooms/B/R/112B",
     "hreflang": "en"
   },
   {
@@ -3235,6 +3435,11 @@
     "hreflang": "en"
   },
   {
+    "name": "TFTV/107",
+    "href": "https://www.york.ac.uk/api/campus/rooms/TFTV/107",
+    "hreflang": "en"
+  },
+  {
     "name": "TFTV/109",
     "href": "https://www.york.ac.uk/api/campus/rooms/TFTV/109",
     "hreflang": "en"
@@ -3412,6 +3617,11 @@
   {
     "name": "TFTV/050 ",
     "href": "https://www.york.ac.uk/api/campus/rooms/TFTV/050%20",
+    "hreflang": "en"
+  },
+  {
+    "name": "TFTV/108A",
+    "href": "https://www.york.ac.uk/api/campus/rooms/TFTV/108A",
     "hreflang": "en"
   },
   {

@@ -9,7 +9,9 @@ $(function() {
   var $mapDiv = $('#mapdiv');
   var $mapBoxes = $('#mapnavigation, #maptabs');
   var $tab1 = $('#tab-1');
-  var iteration = 0; // 0 is original search, 1 is using recreated room code, 2 adds 'N' for block
+  // Number of times we've searched the API
+  // 0 is original search value, 1 is using recreated room code, 2 adds 'N' for block
+  var iteration = 0;
 
   // create the core map variables
   var map, mapMarker, mapBounds, infobox, $loadingIndicator, markersArray = [],
@@ -50,7 +52,7 @@ $(function() {
       col4: 16,
       col5: null
     }
-  }
+  };
 
   // Buildings we don't have on the map yet
   // Can't include BK as it conflicts with B/K
@@ -59,9 +61,14 @@ $(function() {
   var isLive = (window.location.hostname === "www.york.ac.uk") || (window.location.hostname === "cms.york.ac.uk");
   var protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
   var loadingImg = protocol + "www.york.ac.uk/about/maps/campus/data/loading.gif";
+  // Any common searches in Analytics can be added to exceptions.
+  // Add search terms as an UPPERCASE key, with the room you want to show as the value
   var exceptions = {
     'FHALL':  'F/100',
-    'FCENHL': 'F/100'
+    'FCENHL': 'F/100',
+    'CENTRALHALL': 'F/100',
+    'HENDRIXHALL': 'D/L/028',
+    'HENDRIX': 'D/L/028'
   };
 
   // set the map type to use cloudmade tiles, have name 'Campus map' and not allow zoom beyond level 18
@@ -100,7 +107,7 @@ $(function() {
         $mapBoxes.height(mapheight);
         $tab1.height(mapheight - 10).css('max-height', 'none');
         google.maps.event.trigger(map, 'resize');
-      };
+      }
     });
 
     // call the map initialisation function on page load
@@ -266,6 +273,15 @@ $(function() {
         pageTracker._trackEvent('Map', 'Show StreetView');
       }
     });
+
+    // temporary Spring Lane overlay
+    var springLaneBuildingImage = 'https://www.york.ac.uk/about/maps/campus/data/spring-lane-building-overlay.png';
+    var springLaneBuildingBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(53.947329, -1.051576),
+      new google.maps.LatLng(53.947802, -1.050981)
+    );
+    var springLaneBuildingOverlay = new google.maps.GroundOverlay(springLaneBuildingImage, springLaneBuildingBounds,{clickable:false,map:map});
+
   }
 
   // create the locations list
@@ -343,7 +359,7 @@ $(function() {
       if (location.col5) {
         var l = location.col5.split(';');
         location.col5 = l;
-        buildingsArray = buildingsArray.concat(l)
+        buildingsArray = buildingsArray.concat(l);
       }
       // add to locations object
       // make sure location with same name isn't in locations list
@@ -498,7 +514,7 @@ $(function() {
         }
         //console.log('There was no match for the building code so there is no pin to drop :(')
       }
-    })
+    });
   }
 
   // Calls the room API and displays markers/error messages as appropriate
@@ -546,6 +562,8 @@ $(function() {
 
   // Returns room object with building, block, floor and number keys
   function searchLocations(roomValue) {
+
+    console.log(roomValue);
 
     // Intercept any exceptions
     var ucRoom = roomValue.toUpperCase().replace(/\//g, '');
@@ -660,7 +678,7 @@ $(function() {
     var getRoomData = function(page, onComplete) {
       var that = this;
       $.getJSON('https://www.york.ac.uk/api/campus/rooms?page='+page, function(data) {
-        var links = data['_links'];
+        var links = data._links;
         onComplete(links.item);
         if (links.next) {
           // Go to next page
@@ -683,14 +701,14 @@ $(function() {
           roomCode: roomCode,
           noSlashCode: noSlashCode,
           fixedCode: fixedCode
-        }
+        };
       },
       allRooms: function() {
         var that = this;
         $.getJSON('rooms.json', function(data) {
           var l = data.length, i = 0, errorCount = 0, successCount = 0;
           for (;i < l; i++) {
-            var r = that.singleRoom(data[i].name)
+            var r = that.singleRoom(data[i].name);
             if (r.success === true) {
               successCount++;
               //console.info((i+1)+': '+r.fixedCode+' matches original code '+r.roomCode+' (success #'+successCount+')');
@@ -710,7 +728,7 @@ $(function() {
         getRoomData(1, addItemsToList);
         return 'Getting room data...';
       }
-    }
+    };
   }
 
 });
