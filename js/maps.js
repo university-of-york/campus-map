@@ -563,8 +563,6 @@ $(function() {
   // Returns room object with building, block, floor and number keys
   function searchLocations(roomValue) {
 
-    console.log(roomValue);
-
     // Intercept any exceptions
     var ucRoom = roomValue.toUpperCase().replace(/\//g, '');
     if (!!exceptions[ucRoom]) roomValue = exceptions[ucRoom];
