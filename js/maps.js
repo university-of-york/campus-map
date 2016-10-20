@@ -127,7 +127,7 @@ $(function() {
       clonedFAQ.attr('id', 'room-search-links');
       clonedFAQ.find('h3').html('Room code search <sup>beta</sup>');
       clonedFAQ.find('ul').remove();
-      clonedFAQ.find('.a').append($('<form id="room-search-form"><input type="text" id="room-search-value" name="room-search-value" placeholder="e.g. P/X/001"><button type="submit" id="room-search-submit">Go</button></form>\n<div id="room-search-message" class="active"><strong>Note:</strong> Room search covers most teaching rooms but not residences or staff offices.</div>'));
+      clonedFAQ.find('.a').append($('<form id="room-search-form"><input type="text" id="room-search-value" name="room-search-value" placeholder="e.g. P/X/001"><button type="submit" id="room-search-submit">Go</button></form>\n<div id="room-search-message" class="active">Works with <strong>room codes only</strong>, eg \'P/X/001\'. Searching for locations by name - eg \'James Hall\' - is not yet supported.</div>'));
       $tab1.append(clonedFAQ);
   };
 
