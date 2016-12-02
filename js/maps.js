@@ -274,14 +274,6 @@ $(function() {
       }
     });
 
-    // temporary Spring Lane overlay
-    var springLaneBuildingImage = 'https://www.york.ac.uk/about/maps/campus/data/spring-lane-building-overlay.png';
-    var springLaneBuildingBounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(53.947329, -1.051576),
-      new google.maps.LatLng(53.947802, -1.050981)
-    );
-    var springLaneBuildingOverlay = new google.maps.GroundOverlay(springLaneBuildingImage, springLaneBuildingBounds,{clickable:false,map:map});
-
   }
 
   // create the locations list
