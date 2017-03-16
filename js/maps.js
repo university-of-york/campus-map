@@ -511,7 +511,7 @@ $(function() {
 
   // Calls the room API and displays markers/error messages as appropriate
   function callRoomAPI(roomValue, location) {
-    //console.log(location);
+    //console.log(roomValue, location);
     // Make call to room API
     var roomAPIRoot = 'https://www.york.ac.uk/api/campus/rooms/';
     $.getJSON(roomAPIRoot+roomValue, function(data) {
