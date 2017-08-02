@@ -306,6 +306,32 @@ height: 90px !important;
             padding-left: .75em;
         }
 
+}
 
 
+.c-btn-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.c-btn--selectable__label {
+    border-radius: 0;
+    flex: 1 1 25%;
+}
+
+.c-btn--selectable__label:first-of-type,
+.c-btn--selectable__label:last-of-type {
+    border-radius: 0;
+}
+
+@media (min-width: 768px) {
+    .c-btn--selectable__label {
+        flex: 1 1 auto;
+    }
+}
+
+@media (min-width: 1200px) {
+    .c-btn--selectable__label {
+        flex: 1 1 12.5%;
+    }
 }
