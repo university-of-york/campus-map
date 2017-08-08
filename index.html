@@ -27,7 +27,7 @@
     <link rel="shortcut icon" href="https://www.york.ac.uk/static/1.5/img/favicon.ico">
     <link rel="icon" type="image/x-icon" href="https://www.york.ac.uk/static/1.5/img/favicon.ico">
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" /> -->
     <link rel="stylesheet" href="css/styles.min.css">
     <link rel="stylesheet" href="css/map.css">
 
@@ -37,8 +37,9 @@
     <!-- <script src="js/app.min.js"></script> -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.0.4/fuse.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script> -->
 
 
 
@@ -68,17 +69,33 @@
     <div class="o-grid__row">
         <div class="o-grid__box o-grid__box--full">
             <div class="c-search--bar">
-                  <form action="#" method="get" class="c-form c-form--joined" id="funnelback-search">
-                        <fieldset>
-                         <div class="c-form__element c-form__element--select">
-                            <div class="c-form__input c-form__input--select">
-                              <select id="search-query" name="search-query" class="c-form__select">
-                                  <option></option>
-                              </select>
-                            </div>
+                <form action="#" method="get" class="c-form c-form--joined" id="map-search-form">
+                    <fieldset>
+                      <div class="c-form__element">
+                        <input class="c-form__input c-form__input--text" type="search" id="map-search-query" name="search-query" placeholder="Enter your search" /><a class="c-btn c-btn--medium js-form-submit" href="#" role="button">Search<i class="c-icon c-icon--search c-icon--after"></i></a>
+                        <div class="c-autocomplete">
+                          <ul class="c-autocomplete__list">
+                          </ul>
                         </div>
-                        </fieldset>
-                    </form>
+                        <!--
+                  			<div class="c-autocomplete">
+                          <ul class="c-autocomplete__list">
+                  				  <li class="c-autocomplete__item"><a class="c-autocomplete__link" href="#Greg's Place">Greg'<strong>s</strong> Place <small class="c-autocomplete__subtitle">Subtitle goes in here</small></a></li>
+                  				  <li class="c-autocomplete__item"><a class="c-autocomplete__link" href="#King's Manor">King'<strong>s</strong> Manor <small class="c-autocomplete__subtitle">Subtitle goes in here</small></a></li>
+                  				  <li class="c-autocomplete__item"><a class="c-autocomplete__link" href="#Eden's Court">Eden'<strong>s</strong> Court <small class="c-autocomplete__subtitle">Subtitle goes in here</small></a></li>
+                  				  <li class="c-autocomplete__item"><a class="c-autocomplete__link" href="#B/S/001 Seminar Room">B/S/001 Seminar Room <small class="c-autocomplete__subtitle">Subtitle goes in here</small></a></li>
+                  				  <li class="c-autocomplete__item"><a class="c-autocomplete__link" href="#V/GPLACE Greg's Place">V/GPLACE Greg'<strong>s</strong> Place <small class="c-autocomplete__subtitle">Subtitle goes in here</small></a></li>
+                  				  <li class="c-autocomplete__item"><a class="c-autocomplete__link" href="#K/104 King's Manor Library">K/104 King'<strong>s</strong> Manor Library <small class="c-autocomplete__subtitle">Subtitle goes in here</small></a></li>
+                  				  <li class="c-autocomplete__item"><a class="c-autocomplete__link" href="#HX/JJ JJ 's Common Room">HX/JJ JJ '<strong>s</strong> Common Room <small class="c-autocomplete__subtitle">Subtitle goes in here</small></a></li>
+                  				  <li class="c-autocomplete__item"><a class="c-autocomplete__link" href="#Eden's Court (20)">Eden'<strong>s</strong> Court (20) <small class="c-autocomplete__subtitle">Subtitle goes in here</small></a></li>
+                  				  <li class="c-autocomplete__item"><a class="c-autocomplete__link" href="#Eden's Court (ub1)">Eden'<strong>s</strong> Court (ub1) <small class="c-autocomplete__subtitle">Subtitle goes in here</small></a></li>
+                  				  <li class="c-autocomplete__item"><a class="c-autocomplete__link" href="#A/EXT/GABH BHenry's Lawn">A/EXT/GABH BHenry'<strong>s</strong> Lawn <small class="c-autocomplete__subtitle">Subtitle goes in here</small></a></li>
+                  			  </ul>
+                        </div>
+                      </div>
+                    -->
+                    </fieldset>
+                </form>
             </div>
 
             <div id="mapContainer" class="c-map-container">

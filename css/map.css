@@ -34,47 +34,65 @@
     width: 100%;
 }
 
+/* == ADD TO BASE.SCSS ====================================================== */
+
 input[type=search] {
-      box-sizing: border-box;
-    }
-    .c-autocomplete {
-      position:absolute;
-      left:0;
-      top:100%;
-      z-index:99;
-      width:100%;
-    }
-    .c-autocomplete__list {
-      list-style:none;
-      margin:0;
-      padding:0;
+  box-sizing: border-box;
+}
 
-    }
-    .c-autocomplete__item {
-      margin:0;
-    }
-    .c-autocomplete__item.is-selected .c-autocomplete__link {
-      background-color:#333;
-      color:#f9f9f9
-    }
-    .c-autocomplete__item a {
-         color: #333;
-    }
-    .c-autocomplete__link {
-      display:block;
-      padding:0 20px;
-      line-height:2.4em;
-      border-left:1px solid #ccc;
-      border-right:1px solid #ccc;
-      border-bottom:1px solid #ccc;
-      background-color:#fff;
+/* ========================================================================== */
 
-    }
-    .c-autocomplete__link:hover {
-      background-color:#eee;
-    }
+/* == ADD TO AUTOCOMPLETE.SCSS ============================================== */
 
+.c-autocomplete {
+  position:absolute;
+  left:0;
+  top:100%;
+  z-index:99;
+  width:100%;
+}
+.c-autocomplete__list {
+  list-style:none;
+  margin:0;
+  padding:0;
+}
+.c-autocomplete__item {
+  margin:0;
+}
+.c-autocomplete__item:nth-of-type(even) .c-autocomplete__link{
+  background:#eee;
+}
+.c-autocomplete__link {
+  display:block;
+  line-height: 1.1;
+  padding: 0.5em 20px 0.3em;
+  border-left:1px solid #ccc;
+  border-right:1px solid #ccc;
+  border-bottom:1px solid #ccc;
+  background-color:#fff;
+text-decoration:none;
+}
+.c-autocomplete__item .c-autocomplete__link:hover {
+  background-color:#ccc;
+}
+.c-autocomplete__item.is-selected .c-autocomplete__link {
+  background-color:#333;
+  color:#f9f9f9
+}
+.c-autocomplete__item.is-selected .c-autocomplete__link:hover {
+  background-color:#444;
+}
+.c-autocomplete__subtitle {
+  color:#999;
+  display:block;
+}
+.c-autocomplete__item.is-selected .c-autocomplete__subtitle {
+  color:#ddd;
+}
 
+/* ========================================================================== */
+
+/*
 .c-form__select {
     padding: 0 .5em;
     margin: 0;
@@ -98,7 +116,7 @@ input[type=search] {
 .select2-results__option li {
     margin:0;
 }
-
+*/
 
 .infoPanel {
     background-color: rgba(15,61,76,0.9);
