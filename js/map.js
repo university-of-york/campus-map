@@ -248,14 +248,11 @@ $(function() {
 
 	// == Search functionality =================================================
 
-	function initSearch() {		
+	function initSearch() {
 
 		var $searchForm = $('#map-search-form');
 		var $searchQuery = $('#map-search-query');
 		var $autocompleteList = $('.c-autocomplete__list', $searchForm);
-	
-		console.log(cachedGeoJson);
-	
 		var fuseOptions = {
 			keys: [{
 				name: 'properties.title',
@@ -304,66 +301,93 @@ $(function() {
 			$($autocompleteItems.get(selectedIndex)).addClass('is-selected');
 		};
 
+		// make a URL hash-friendly value from str
+		var makeHash = function(str) {
+			// Lower case
+			// Replace all spaces with '-'
+			// Remove all non-word or non-- chars ([^a-zA-Z0-9_-])
+			// Encode as URI, just in case
+			return encodeURI(str.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9_-]/g, ""));
+		}
+
+		// Submit the form using the is-selected item
+		var submitForm = function() {
+			var $autocompleteItems = $('.c-autocomplete__item', $autocompleteList);
+			var selectedItem = $autocompleteItems.filter('.is-selected');
+			if (selectedItem.length === 0) return false;
+
+			// Add is-selected value to search query
+			var selectedValue = selectedItem.find('.c-autocomplete__title').text();
+			$searchQuery.val(selectedValue);
+
+			// Update hash
+			var selectedHash = selectedItem.children('.c-autocomplete__link').attr("href");
+			if (history.pushState) {
+    		history.pushState(null, null, selectedHash);
+			} else {
+			  location.hash = selectedHash;
+			}
+
+			// Drop pin on map
+			// TODO
+
+			$autocompleteList.empty();
+
+		}
+
 		// Update autosuggest on keyup
 		$searchQuery.on('keyup', function(e) {
-			var $autocompleteItems = $('.c-autocomplete__item', $autocompleteList);
+			e.preventDefault();
 			// Check if it's up, down, left, right, enter or tab
 			var keyCode = e.keyCode;
-			var rStop = false;
+			var stopReturn = false;
 			// console.log(keyCode);
 			switch (keyCode) {
 				// Return
-				// This never gets fired - the submit seems to occur first
 				case 13:
 					// If there's a selected option, update value
-					var selectedItem = $autocompleteItems.filter('.is-selected');
-					if (selectedItem.length > 0) {
-						var selectedValue = selectedItem.text();
-						console.log('Selected value is '+selectedValue);
-						$searchQuery.value(selectedValue);
-					}
-					rStop = true;
-					$searchForm.submit();
+					submitForm();
+					stopReturn = true;
+					//$searchForm.submit();
 					break;
 				case 38:
 					selectItem('up');
-					rStop = true;
+					stopReturn = true;
 					break;
 				case 40:
 					selectItem('down');
-					rStop = true;
+					stopReturn = true;
 					break;
 			}
-			if (rStop === true) return false;
+			if (stopReturn === true) return false;
 
 			$autocompleteList.empty();
 			var searchTerm = $searchQuery.val();
-	
 			var fuseResult = fuse.search(searchTerm);
-	
+
 			if (fuseResult.length === 0) return false;
 
 			$.each(fuseResult, function(i, feature) {
 				if (i > 9) return false;
-				console.log(feature);
 				var featureTitle = feature.item.properties.title;
 				var featureSubtitle = feature.item.properties.subtitle;
 				var featureItem = $('<li>').addClass("c-autocomplete__item");
 				var featureLink = $('<a>').addClass("c-autocomplete__link")
-					.attr("href", '#'+featureTitle)
-					.appendTo(featureItem);
-				var featureSpan = $('<span>')
-					.text(featureTitle)
-					.appendTo(featureLink);
+																	.attr({
+																		"href": "#"+makeHash(featureTitle),
+																		"data-position": feature.item.geometry.coordinates[0]+","+feature.item.geometry.coordinates[1]
+																	})
+																	.appendTo(featureItem);
+				var featureSpan = $('<span>').addClass("c-autocomplete__title")
+																		 .text(featureTitle)
+																		 .appendTo(featureLink);
 				if (featureSubtitle !== 'null') {
 					var featureSmall = $('<small>').addClass("c-autocomplete__subtitle")
-						.text(featureSubtitle)
-						.appendTo(featureLink);
+																				 .text(featureSubtitle)
+																				 .appendTo(featureLink);
 				}
 				$.each(feature.matches, function(j, match) {
 					var newText = pathIndex(feature.item, match.key);
-					console.log("=========================================")
-					console.log(newText)
 					var l = match.indices.length-1;
 					// Start from the end so you don't disrupt indices
 					for (;l > -1; l--) {
@@ -371,7 +395,6 @@ $(function() {
 						var midText = newText.slice(match.indices[l][0], match.indices[l][1]+1);
 						var endText = newText.slice(match.indices[l][1]+1);
 						newText = startText+'<b>'+midText+'</b>'+endText;
-						console.log(startText, midText, endText, newText);
 					}
 					if (match.key === "properties.title") {
 						featureSpan.html(newText);
@@ -379,63 +402,29 @@ $(function() {
 						featureSmall.html(newText);
 					}
 				});
-				
-				
+
 				$autocompleteList.append(featureItem);
-				featureLink.on('hover', function(e) {
-					console.log(e.target);
-					// Mark hovered item as is-selected
-					var $thisItem = $(this);
+				featureLink.click(function(e) {
+					e.preventDefault();
+					// Mark clicked item as is-selected and submit
+					var $thisItem = $(this).parent('.c-autocomplete__item');
 					$thisItem.siblings().removeClass('is-selected');
 					$thisItem.addClass('is-selected');
+					submitForm();
 				});
-			
+
 			});
 
 		});
 
-		// Form submit
+		// Prevent form submit
 		$searchForm.on('submit', function(e) {
 			e.preventDefault();
-			// Add selected item to value
-			var $autocompleteItems = $('.c-autocomplete__item', $autocompleteList);
-			var selectedItem = $autocompleteItems.filter('.is-selected');
-			if (selectedItem.length > 0) {
-				var selectedValue = selectedItem.text();
-				console.log('Selected value is '+selectedValue);
-				$searchQuery.val(selectedValue);
-			}
-			var searchTerm = $searchQuery.val();
-			// Clean up search
-			searchTerm = searchTerm.trim();
-			if (searchTerm === '') return false;
-			encodedSearchTerm = encodeURIComponent(searchTerm).replace(/%20/g, '+');
-			var searchURL = 'https://york.funnelback.co.uk/s/search.html?collection=york-uni-campusmap&form=geojson&query=';
-			$.getJSON(searchURL+encodedSearchTerm+'&callback=?', function(data) {
-				console.log(data);
-				if (typeof data.error !== 'undefined') {
-					console.log('Error!');
-					return false;
-				}
-				var $searchResults = $('#search-results');
-				var resultCount = data.features.length;
-				$searchResults.empty().append($('<h3>').html('Your search for <em>'+searchTerm+'</em> returned '+resultCount+' result(s).'));
-				if (resultCount > 0) {
-					var $ul = $('<ul>');
-					$.each(data.features, function(i, result) {
-						console.log(result);
-						var resultText = result.properties.title+' ('+result.geometry.coordinates[0]+', '+result.geometry.coordinates[1]+')';
-						$ul.append($('<li>').text(resultText));
-					});
-					$searchResults.append($ul);
-					$autocompleteList.empty();
-				}
-			});
-	
+			return false;
 		});
 
 	}
-	
+
 	// Function to get property from dot notation
 	// e.g. foo["bar.baz"] -> foo.bar.baz
 	// Because of the way fuse.js returns matches
