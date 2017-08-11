@@ -2,6 +2,7 @@ $(function() {
 	// defaults
 	var GeoJSONFile = "https://york.funnelback.co.uk//s/search.html?collection=york-uni-campusmap&form=geojson&query=!padrenullquery&num_ranks=5000";
 	var cachedGeoJson;
+	var map;
 	var maxZoom = 18,
 			minZoom = 8,
 			defaultZoom = 14;
@@ -152,94 +153,75 @@ $(function() {
 	}
 
 	function searchCampus(map) {
-			var $search = $('#search-query');
-			$($search).change(function() {
-					for (var i = 0; i < markers.length; i++)
-							markers[i].setMap(null);
-					markers = [];
-					//Reading the value in text boxes on HTML form
-					var sourceLocation = ($($search).val());
-					//Remove any spaces from between coordinates
-					var parts = sourceLocation.split(",");
-					var newLocation = new google.maps.LatLng(parseFloat(parts[1]), parseFloat(parts[0]));
-					var title = parts[2];
-					var subCategory = parts[3];
-					var category = parts[4];
-					var marker = new google.maps.Marker({
-							position: newLocation,
-							map: map,
-							title: title,
-							subCategory: subCategory,
-							category: category
-					});
-					map.setZoom(16);
-					map.panTo(marker.position);
-					google.maps.event.addListener(marker, 'click', function(event) {
-							var mapContainer = document.getElementById('mapContainer');
-							var infoPanel = document.getElementById('infoPanel');
-							var html = '<h4>' + title + '</h4><p>' + subCategory + '</p><p>' + category + '</p>';
-							document.getElementById('infoPanel__content').innerHTML = html;
-							infoPanel.style.display = 'block';
-							infoPanel.style.width = '20%';
+		var $search = $('#search-query');
+		$($search).change(function() {
+			for (var i = 0; i < markers.length; i++) {
+				markers[i].setMap(null);
+				markers = [];
+				//Reading the value in text boxes on HTML form
+				var sourceLocation = ($($search).val());
+				//Remove any spaces from between coordinates
+				var parts = sourceLocation.split(",");
+				var newLocation = new google.maps.LatLng(parseFloat(parts[1]), parseFloat(parts[0]));
+				var title = parts[2];
+				var subCategory = parts[3];
+				var category = parts[4];
+				var marker = new google.maps.Marker({
+						position: newLocation,
+						map: map,
+						title: title,
+						subCategory: subCategory,
+						category: category
+				});
+				map.setZoom(16);
+				map.panTo(marker.position);
+				google.maps.event.addListener(marker, 'click', function(event) {
+					var mapContainer = document.getElementById('mapContainer');
+					var infoPanel = document.getElementById('infoPanel');
+					var html = '<h4>' + title + '</h4><p>' + subCategory + '</p><p>' + category + '</p>';
+					document.getElementById('infoPanel__content').innerHTML = html;
+					infoPanel.style.display = 'block';
+					infoPanel.style.width = '20%';
 
-							$(".closeInfoPanel").click(function() {
-									infoPanel.style.display = 'none';
-									infoPanel.style.width = '0%';
-							});
+					$(".closeInfoPanel").click(function() {
+							infoPanel.style.display = 'none';
+							infoPanel.style.width = '0%';
 					});
-					markers.push(marker);
-			});
+				});
+				markers.push(marker);
+			}
+		});
 	}
-
-	//populate search / dropdown
-	// $.getJSON(GeoJSONFile, function(data) {
-	//		 var $search = $('#search-query');
-	//		 var groupedData = _.groupBy(data.features, function(d) {
-	//				 return d.properties.category
-	//		 });
-	//		 $.each(groupedData, function(index, item) {
-	//				 var group = $('<optgroup label="' + index + '" />');
-	//				 $.each(item, function() {
-	//						 $("<option></option>").text(this.properties.title).val(this.geometry.coordinates + ',' + this.properties.title + ',' + this.properties.subCategory + ',' + this.properties.category).appendTo(group);
-	//				 });
-	//				 group.appendTo($search);
-	//		 });
-	//		 $($search).select2({
-	//				 placeholder: 'Search the campus'
-	//		 });
-	// });
 
 	// initialise the map
 	function initMap() {
-			// load the map
-			var map = loadMap();
-			// load the tiles
-			var yorkTiles = loadYorkTiles();
-			map.mapTypes.set('campus', yorkTiles);
-			map.setMapTypeId('campus');
-			// add custom controls
-			customControls(map);
-			// search the campus
-			searchCampus(map);
-			//close infoPanel by clicking anywhere
-			clickAnywherePanelClose(map);
-			// load the geojson
-			// map.data.loadGeoJson(GeoJSONFile);
-			// setTimeout(function() {
-			//		 toggleMarkers(map);
-			// }, 500);
+		// load the map
+		map = loadMap();
+		// load the tiles
+		var yorkTiles = loadYorkTiles();
+		map.mapTypes.set('campus', yorkTiles);
+		map.setMapTypeId('campus');
+		// add custom controls
+		customControls(map);
+		// search the campus
+		searchCampus(map);
+		//close infoPanel by clicking anywhere
+		clickAnywherePanelClose(map);
+		// load the geojson
+		// map.data.loadGeoJson(GeoJSONFile);
+		// setTimeout(function() {
+		//		 toggleMarkers(map);
+		// }, 500);
 
-			// Load GeoJSON.
-		var promise = $.getJSON(GeoJSONFile); //same as map.data.loadGeoJson();
-		promise.then(function(data){
+		// Load GeoJSON.
+		$.getJSON(GeoJSONFile).then(function(data){
 			cachedGeoJson = data; //save the geojson in case we want to update its values
 			map.data.addGeoJson(cachedGeoJson,{idPropertyName:"id"});
-							setTimeout(function() {
-									toggleMarkers(map);
-							}, 500);
+				setTimeout(function() {
+					toggleMarkers(map);
+				}, 500);
 			initSearch();
 		});
-
 
 	} // end initialise
 
@@ -250,6 +232,8 @@ $(function() {
 
 	function initSearch() {
 
+		// console.log(cachedGeoJson);
+
 		var $searchForm = $('#map-search-form');
 		var $searchQuery = $('#map-search-query');
 		var $autocompleteList = $('.c-autocomplete__list', $searchForm);
@@ -257,13 +241,13 @@ $(function() {
 			keys: [{
 				name: 'properties.title',
 				weight: 0.6
-			  }, {
+			}, {
 				name: 'properties.subtitle',
 				weight: 0.3
-			  }, {
+			}, {
 				name: 'properties.codes',
 				weight: 0.1
-			  }],
+			}],
 			includeScore: true,
 			includeMatches: true,
 			minMatchCharLength: 3
@@ -314,23 +298,50 @@ $(function() {
 		var submitForm = function() {
 			var $autocompleteItems = $('.c-autocomplete__item', $autocompleteList);
 			var selectedItem = $autocompleteItems.filter('.is-selected');
+			var selectedLink = selectedItem.children('.c-autocomplete__link');
+			var selectedTitle = selectedLink.children('.c-autocomplete__title').text();
+			var selectedSubtitle = selectedLink.children('.c-autocomplete__subtitle').text();
+			var selectedHash = selectedLink.attr("href");
+
 			if (selectedItem.length === 0) return false;
 
 			// Add is-selected value to search query
-			var selectedValue = selectedItem.find('.c-autocomplete__title').text();
-			$searchQuery.val(selectedValue);
+			$searchQuery.val(selectedTitle);
 
 			// Update hash
-			var selectedHash = selectedItem.children('.c-autocomplete__link').attr("href");
 			if (history.pushState) {
     		history.pushState(null, null, selectedHash);
 			} else {
 			  location.hash = selectedHash;
 			}
 
-			// Drop pin on map
-			// TODO
+			// Get rest of details from cachedGeoJson
+			var selectedFeature = $.grep(cachedGeoJson.features, function(feature) {
+			  return feature.properties.title === selectedTitle;
+			});
 
+			// Is there more than one with this title? Check against subtitle
+			// Should really use a unique ID
+			if (selectedFeature.length > 1) {
+				selectedFeature = $.grep(selectedFeature, function(feature) {
+			  	return feature.properties.subtitle === selectedSubtitle;
+				});
+			}
+
+			var selectedLatLng = new google.maps.LatLng(parseFloat(selectedFeature[0].geometry.coordinates[1]), parseFloat(selectedFeature[0].geometry.coordinates[0]));
+			var selectedCategory = selectedFeature[0].properties.category || false;
+			var selectedSubcategory = selectedFeature[0].properties.subcategory || false;
+
+			// Drop pin on map
+			var marker = new google.maps.Marker({
+				map: map,
+				position: selectedLatLng,
+				title: selectedTitle,
+				subCategory: selectedSubcategory,
+				category: selectedCategory
+			});
+			map.setZoom(16);
+			map.panTo(marker.position);
 			$autocompleteList.empty();
 
 		}
@@ -375,7 +386,7 @@ $(function() {
 				var featureLink = $('<a>').addClass("c-autocomplete__link")
 																	.attr({
 																		"href": "#"+makeHash(featureTitle),
-																		"data-position": feature.item.geometry.coordinates[0]+","+feature.item.geometry.coordinates[1]
+																		"data-category": feature.item.properties.category
 																	})
 																	.appendTo(featureItem);
 				var featureSpan = $('<span>').addClass("c-autocomplete__title")
