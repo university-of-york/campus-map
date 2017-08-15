@@ -91,7 +91,7 @@ $(function() {
 								});
 								map.data.setStyle(function(feature) {
 									return {
-										icon: 'images/markers/'+feature.getProperty("category")+'.png'
+										icon: 'img/markers/'+feature.getProperty("category")+'.png'
 									};
 								});
 							}
