@@ -67,50 +67,48 @@ $(function() {
 
 	// enable toggling of markers
 	function toggleMarkers(map) {
+		map.data.forEach(function(feature) {
+		map.data.remove(feature);
+				var category = feature.getProperty('category');
+				$(".c-btn--selectable").each(function() {
+					//map.data.remove(feature)
+					var GeoJSONCategory = $(this).attr("id");
+					document.getElementById(GeoJSONCategory).addEventListener("click", function() {
+						if ($(this).is(':checked')) {
+							if (category === GeoJSONCategory) {
+								map.data.add(feature);
+								map.data.addListener('click', function(event) {
+									var title = event.feature.getProperty("title");
+									var category = event.feature.getProperty("category");
+									var subCategory = event.feature.getProperty("subcategory");
+									var mapContainer = document.getElementById('mapContainer');
+									var infoPanel = document.getElementById('infoPanel');
+									var html = '<h4>' + title + '</h4><p>' + subCategory + '</p><p>' + category + '</p>';
+									document.getElementById('infoPanel__content').innerHTML = html;
+									infoPanel.style.display = 'block';
+									infoPanel.style.width = '20%';
 
-			map.data.forEach(function(feature) {
-			map.data.remove(feature);
-					var category = feature.getProperty('category');
-					$(".c-btn--selectable").each(function() {
-							//map.data.remove(feature)
-							var GeoJSONCategory = $(this).attr("id");
-
-							document.getElementById(GeoJSONCategory).addEventListener("click", function() {
-									if ($(this).is(':checked')) {
-											if (category === GeoJSONCategory) {
-													map.data.add(feature);
-													map.data.addListener('click', function(event) {
-															var title = event.feature.getProperty("title");
-															var category = event.feature.getProperty("category");
-															var subCategory = event.feature.getProperty("subcategory");
-															var mapContainer = document.getElementById('mapContainer');
-															var infoPanel = document.getElementById('infoPanel');
-															var html = '<h4>' + title + '</h4><p>' + subCategory + '</p><p>' + category + '</p>';
-															document.getElementById('infoPanel__content').innerHTML = html;
-															infoPanel.style.display = 'block';
-															infoPanel.style.width = '20%';
-
-															$(".closeInfoPanel").click(function() {
-																	infoPanel.style.display = 'none';
-																	infoPanel.style.width = '0%';
-															});
-													});
-													map.data.setStyle(function(feature) {
-															return {
-																	icon: 'images/markers/' + feature.getProperty("category") + '.png'
-															};
-													});
-											}
-									} else {
-											if (category === GeoJSONCategory) {
-													map.data.remove(feature);
-											}
-									}
-							});
-
-
+									$(".closeInfoPanel").click(function() {
+											infoPanel.style.display = 'none';
+											infoPanel.style.width = '0%';
+									});
+								});
+								map.data.setStyle(function(feature) {
+										return {
+												icon: 'images/markers/' + feature.getProperty("category") + '.png'
+										};
+								});
+							}
+						} else {
+								if (category === GeoJSONCategory) {
+										map.data.remove(feature);
+								}
+						}
 					});
+
+
 			});
+		});
 
 	}
 
@@ -192,6 +190,8 @@ $(function() {
 	}
 
 	function createInfoWindow(location) {
+			infoPanel.style.display = 'none';
+			infoPanel.style.width = '0%';
 			var title = location.title;
 			var subTitle = location.subtitle;
 			var subCategory = location.subcategory;
@@ -222,7 +222,20 @@ $(function() {
 			var snazzy = new SnazzyInfoWindow(thisOptions);
 			snazzy.open(map, marker);
 			markers.push(marker);
-		}
+	}
+
+	function createInfoPanel(location) {
+		var mapContainer = document.getElementById('mapContainer');
+		var infoPanel = document.getElementById('infoPanel');
+		var html = '<h3>' + location.title + '</h3><h4>' + location.subtitle + '</h4><p>' + location.subcategory + '</p><p>' + location.category + '</p>';
+		document.getElementById('infoPanel__content').innerHTML = html;
+		infoPanel.style.display = 'block';
+		infoPanel.style.width = '20%';
+		$(".closeInfoPanel").click(function() {
+			infoPanel.style.display = 'none';
+			infoPanel.style.width = '0%';
+		});
+	}
 
 	// initialise the map
 	function initMap() {
@@ -366,7 +379,11 @@ $(function() {
 				subcategory: selectedFeature[0].properties.subcategory || false
 			}
 			// Drop pin and inforWindow on map
-			createInfoWindow(location);
+			if (location.category === "Room") {
+				createInfoPanel(location);
+			} else {
+				createInfoWindow(location);
+			}
 
 			$autocompleteList.empty();
 
