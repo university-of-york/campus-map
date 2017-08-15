@@ -1,7 +1,7 @@
 $(function() {
 	// defaults
 	var GeoJSONFile = "https://york.funnelback.co.uk//s/search.html?collection=york-uni-campusmap&form=geojson&query=!padrenullquery&num_ranks=5000";
-	var cachedGeoJson;
+	var cachedGeoJson = {};
 	var map;
 	var maxZoom = 18,
 			minZoom = 8,
@@ -66,46 +66,49 @@ $(function() {
 	}
 
 
-	// enable toggling of markers
-	function toggleMarkers(map) {
-		map.data.forEach(function(feature) {
-		map.data.remove(feature);
-				var category = feature.getProperty('category');
-				$(".c-btn--selectable").each(function() {
-					//map.data.remove(feature)
-					var GeoJSONCategory = $(this).attr("id");
-					document.getElementById(GeoJSONCategory).addEventListener("click", function() {
-						if ($(this).is(':checked')) {
-							if (category === GeoJSONCategory) {
-								map.data.add(feature);
-								map.data.addListener('click', function(event) {
-									var title = event.feature.getProperty("title");
-									var category = event.feature.getProperty("category");
-									var subCategory = event.feature.getProperty("subcategory");
-									var mapContainer = document.getElementById('mapContainer');
-									var $infoPanel = $('.infoPanel');
-									var html = '<h4>'+title+'</h4><p>'+subCategory+'</p><p>'+category+'</p>';
-									$('.infoPanel__content').html(html);
-									openInfoPanel();
-									$(".closeInfoPanel").click(closeInfoPanel);
-								});
-								map.data.setStyle(function(feature) {
-									return {
-										icon: 'img/markers/'+feature.getProperty("category")+'.png'
-									};
-								});
-							}
-						} else {
-							if (category === GeoJSONCategory) {
-								map.data.remove(feature);
-							}
-						}
-					});
+	// add groups of markers based on selectable categories
+	function addMarkers() {
+		// Make arrays of markers for each category
+		var markerGroups = {};
 
-
+		$(".c-btn--selectable").each(function(i, selectable) {
+			var $selectable = $(this);
+			var selectableCategory = $selectable.attr("id");
+			markerGroups[selectableCategory] = $.grep(cachedGeoJson.features, function(feature) {
+				var featureCategory = feature.properties.category.toLowerCase().replace(/\s/, '-');
+				return featureCategory === selectableCategory;
 			});
 		});
-
+		console.log(markerGroups);
+		$(".c-btn--selectable").click(function(e) {
+			var $selectable = $(this);
+			var selectableCategory = $selectable.attr("id");
+			var thisGroup = markerGroups[selectableCategory];
+			$.each(thisGroup, function(j, feature) {
+				var dataFeature = new google.maps.Data(feature);
+				console.log(feature, dataFeature);
+				if ($selectable.is(':checked')) {
+					// map.data.add(dataFeature);
+					// map.data.addListener('click', function(event) {
+					// 	var title = event.feature.getProperty("title");
+					// 	var category = event.feature.getProperty("category");
+					// 	var subCategory = event.feature.getProperty("subcategory");
+					// 	var $infoPanel = $('.infoPanel');
+					// 	var html = '<h4>'+title+'</h4><p>'+subCategory+'</p><p>'+category+'</p>';
+					// 	$('.infoPanel__content').html(html);
+					// 	openInfoPanel();
+					// 	$(".closeInfoPanel").click(closeInfoPanel);
+					// });
+					// map.data.setStyle(function(feature) {
+					// 	return {
+					// 		icon: 'img/markers/'+selectableCategory+'.png'
+					// 	};
+					// });
+				} else {
+					// map.data.remove(dataFeature);
+				}
+			})
+		});
 	}
 
 	function DeleteMarkers() {
@@ -139,7 +142,6 @@ $(function() {
 	}
 
 	function closeInfoPanel() {
-		console.log("clicked!", this)
 		var $infoPanel = $('.infoPanel.is-open');
 		if ($infoPanel.length > 0) {
 			$infoPanel.removeClass('is-open');
@@ -178,9 +180,12 @@ $(function() {
 			callbacks: {
 				afterOpen: function(){
 					$("#more").click(function(event) {
-						var mapContainer = document.getElementById('mapContainer');
+						//var mapContainer = document.getElementById('mapContainer');
 						var $infoPanel = $('.infoPanel');
-						var html = '<h4>'+opts.title+'</h4><p>'+opts.subCategory+'</p><p>'+opts.category+'</p>';
+						var html = '<h4>'+opts.title+'</h4>';
+						if (opts.subCategory) html+= '<p>'+opts.subCategory+'</p>';
+						if (opts.category) html+= '<p>'+opts.category+'</p>';
+						if (opts.longdesc) html+= '<p>'+opts.longdesc+'</p>';
 						$('.infoPanel__content').html(html);
 						openInfoPanel();
 						$(".closeInfoPanel").click(closeInfoPanel);
@@ -197,13 +202,16 @@ $(function() {
 			if (location.category != "Room") {
 				closeInfoPanel();
 			}
+			// Everything must have a title!
+			if (!location.title) return false;
 			var title = location.title;
-			var subTitle = location.subtitle;
-			var subCategory = location.subcategory;
-			var category = location.category;
+			var subTitle = location.subtitle || false;
+			var subCategory = location.subcategory || false;
+			var category = location.category || false;
+			var longdesc = location.longdesc || false;
 			if (category === "Room") {
-				var  content = '<h4>'+title+'</h4>' +
-				'<p>Approximate location only</p>'+'<p>Please allow yourself time to locate the room</p>';
+				var content = '<h4>'+title+'</h4>';
+				content+= '<p>Approximate location only</p>'+'<p>Please allow yourself time to locate the room</p>';
 			} else {
 				var content = location.content;
 			}
@@ -224,6 +232,7 @@ $(function() {
 				subCategory: subCategory,
 				category: category,
 				marker: marker,
+				longdesc: longdesc,
 				content: content
 			});
 			var snazzy = new SnazzyInfoWindow(thisOptions);
@@ -283,7 +292,7 @@ $(function() {
 		// Remove all non-word or non-- chars ([^a-zA-Z0-9_-])
 		// Encode as URI, just in case
 		return encodeURI(str.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9_-]/g, ""));
-	}
+	};
 
 	// initialise the map
 	function initMap() {
@@ -305,10 +314,32 @@ $(function() {
 		// Load GeoJSON.
 		$.getJSON(GeoJSONFile).then(function(data){
 			cachedGeoJson = data; //save the geojson in case we want to update its values
-			map.data.addGeoJson(cachedGeoJson,{idPropertyName:"id"});
-				setTimeout(function() {
-					toggleMarkers(map);
-				}, 500);
+			// Filter features that have contain certain terms
+			cachedGeoJson.features = $.grep(data.features, function(feature) {
+				var title = feature.properties.title;
+				var filterPhrases = [
+					'DELETE',
+					'REMOVE',
+					'DOES NOT EXIST',
+					'no longer bookable',
+					'NO LONGER BOOKABLE',
+					'NOW A KITCHEN'
+			  ];
+			  var r = -1;
+			  $.each(filterPhrases, function(i, phrase) {
+					var phraseIndex = title.indexOf(phrase);
+					if (phraseIndex > -1) {
+			   		r = phraseIndex;
+			   		return false;
+			   	}
+			   	// if (i === filterPhrases.length - 1) return true;
+			  });
+		   	return r > -1;
+			}, true); // Change to false to invert the filter i.e. show 'bad' results
+			//console.log(cachedGeoJson);
+			map.data.setStyle({'visible': false});
+			var features = map.data.addGeoJson(cachedGeoJson, {idPropertyName:"id"});
+			addMarkers();
 			initSearch();
 			checkHash();
 		});
