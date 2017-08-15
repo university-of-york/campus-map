@@ -118,6 +118,7 @@ $(function() {
 			for (var i = 0; i < markers.length; i++) {
 					markers[i].setMap(null);
 			}
+
 			markers = [];
 	};
 
@@ -191,34 +192,38 @@ $(function() {
 	}
 
 	function createInfoWindow(location) {
-			infoPanel.style.display = 'none';
-			infoPanel.style.width = '0%';
+			if (location.category != "Room") {
+				infoPanel.style.display = 'none';
+				infoPanel.style.width = '0%';
+			}
 			var title = location.title;
 			var subTitle = location.subtitle;
 			var subCategory = location.subcategory;
 			var category = location.category;
-			for (var i = 0; i < markers.length; i++)
-				markers[i].setMap(null);
-				markers = [];
-				var marker = new google.maps.Marker({
-						position: location.latlng,
-						map: map,
-						title: title,
-						subtitle: subTitle,
-						subCategory: subCategory,
-						category: category
-				});
+			if (category === "Room") {
+				var  content = '<h4>' + title + '</h4>' +
+				'<p>Approximate location only</p>' + '<p>Please allow yourself time to locate the room</p>';
+			} else {
+				var content = location.content;
+			}
+
+			DeleteMarkers();
+			var marker = new google.maps.Marker({
+					position: location.latlng,
+					map: map,
+					title: title,
+					subtitle: subTitle,
+					subCategory: subCategory,
+					category: category
+			});
 			map.setZoom(16);
 			map.panTo(marker.position);
-			// move content string?
-			var  contentString = '<h4>' + title + '</h4>' +
-			'<p><a id="more">More Information</a></p>';
 			var thisOptions = snazzyOptions({
 				title: title,
 				subCategory: subCategory,
 				category: category,
 				marker: marker,
-				content: contentString
+				content: content
 			});
 			var snazzy = new SnazzyInfoWindow(thisOptions);
 			snazzy.open(map, marker);
@@ -228,13 +233,16 @@ $(function() {
 	function createInfoPanel(location) {
 		var mapContainer = document.getElementById('mapContainer');
 		var infoPanel = document.getElementById('infoPanel');
-		var html = '<h3>' + location.title + '</h3><h4>' + location.subtitle + '</h4><p>' + location.subcategory + '</p><p>' + location.category + '</p>';
+		var html = '<h3>' + location.title + '</h3><h4>' + location.subtitle + '</h4><p>' + location.subcategory + '</p><p>' + location.category + '</p><p><a class="locationMarker">Show building on map</a></p>';
 		document.getElementById('infoPanel__content').innerHTML = html;
 		infoPanel.style.display = 'block';
 		infoPanel.style.width = '20%';
 		$(".closeInfoPanel").click(function() {
 			infoPanel.style.display = 'none';
 			infoPanel.style.width = '0%';
+		});
+		$(".locationMarker").click(function() {
+			 createInfoWindow(location);
 		});
 	}
 
@@ -386,7 +394,8 @@ $(function() {
 				subtitle: selectedSubtitle,
 				latlng: new google.maps.LatLng(parseFloat(selectedFeature[0].geometry.coordinates[1]), parseFloat(selectedFeature[0].geometry.coordinates[0])),
 				category: selectedFeature[0].properties.category || false,
-				subcategory: selectedFeature[0].properties.subcategory || false
+				subcategory: selectedFeature[0].properties.subcategory || false,
+				content: '<h4>' + selectedTitle + '</h4>' + '<p><a id="more">More Information</a></p>'
 			}
 			// Drop pin and inforWindow on map
 			if (location.category === "Room") {
