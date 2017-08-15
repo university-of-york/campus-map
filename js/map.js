@@ -117,6 +117,7 @@ $(function() {
 			for (var i = 0; i < markers.length; i++) {
 					markers[i].setMap(null);
 			}
+
 			markers = [];
 	};
 
@@ -200,25 +201,22 @@ $(function() {
 			var category = location.category;
 			if (category === "Room") {
 				var  content = '<h4>' + title + '</h4>' +
-				'Approximate Location';
+				'<p>Approximate location only</p>' + '<p>Please allow yourself time to locate the room</p>';
 			} else {
 				var content = location.content;
 			}
 
 			DeleteMarkers();
-				var marker = new google.maps.Marker({
-						position: location.latlng,
-						map: map,
-						title: title,
-						subtitle: subTitle,
-						subCategory: subCategory,
-						category: category
-				});
+			var marker = new google.maps.Marker({
+					position: location.latlng,
+					map: map,
+					title: title,
+					subtitle: subTitle,
+					subCategory: subCategory,
+					category: category
+			});
 			map.setZoom(16);
 			map.panTo(marker.position);
-			// move content string?
-			// var  contentString = '<h4>' + title + '</h4>' +
-			// '<p><a id="more">More Information</a></p>';
 			var thisOptions = snazzyOptions({
 				title: title,
 				subCategory: subCategory,
@@ -243,23 +241,10 @@ $(function() {
 			infoPanel.style.width = '0%';
 		});
 		$(".locationMarker").click(function() {
-			 infoPanelMarker(location);
 			 createInfoWindow(location);
 		});
 	}
 
-	function infoPanelMarker(location) {
-			var marker = new google.maps.Marker({
-				position: location.latlng,
-				map: map,
-				title: location.title,
-				subtitle: location.subTitle,
-				subCategory: location.subCategory,
-				category: location.category
-			});
-			map.setZoom(16);
-			map.panTo(marker.position);
-	}
 
 	// initialise the map
 	function initMap() {
