@@ -44,7 +44,8 @@ $(function() {
 							position: google.maps.ControlPosition.LEFT_TOP
 					},
 					fullscreenControl: false,
-					disableDefaultUI: true
+					disableDefaultUI: true,
+					gestureHandling: "greedy"
 			});
 	}
 
@@ -151,7 +152,7 @@ $(function() {
 	}
 
 
-	var snazzyOptions = function(opts) {
+	function snazzyOptions(opts) {
 		return {
 			marker: opts.marker,
 			content: opts.content,
@@ -237,25 +238,43 @@ $(function() {
 		});
 	}
 
+	// Check whether there is a location hash,
+	// and drop pin/open info panel for relevant location
+	function checkHash() {
+		var thisHash = document.location.hash.substr(1);
+		if (thisHash === '') return false;
+		// Search GeoJSON for matching location
+		var selectedFeature = $.grep(cachedGeoJson.features, function(feature) {
+			return makeHash(feature.properties.title) === thisHash;
+		});
+		console.log(thisHash, selectedFeature);
+	}
+
+	// make a URL hash-friendly value from str
+	function makeHash(str) {
+		// Lower case
+		// Replace all spaces with '-'
+		// Remove all non-word or non-- chars ([^a-zA-Z0-9_-])
+		// Encode as URI, just in case
+		return encodeURI(str.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9_-]/g, ""));
+	}
+
 	// initialise the map
 	function initMap() {
+
 		// load the map
 		map = loadMap();
+
 		// load the tiles
 		var yorkTiles = loadYorkTiles();
 		map.mapTypes.set('campus', yorkTiles);
 		map.setMapTypeId('campus');
+
 		// add custom controls
 		customControls(map);
-		// search the campus
-		//searchCampus(map);
+
 		//close infoPanel by clicking anywhere
 		clickAnywherePanelClose(map);
-		// load the geojson
-		// map.data.loadGeoJson(GeoJSONFile);
-		// setTimeout(function() {
-		//		 toggleMarkers(map);
-		// }, 500);
 
 		// Load GeoJSON.
 		$.getJSON(GeoJSONFile).then(function(data){
@@ -265,9 +284,11 @@ $(function() {
 					toggleMarkers(map);
 				}, 500);
 			initSearch();
+			checkHash();
 		});
 
-	} // end initialise
+
+	} // end initMap
 
 	//load
 	google.maps.event.addDomListener(window, 'load', initMap);
@@ -275,8 +296,6 @@ $(function() {
 	// == Search functionality =================================================
 
 	function initSearch() {
-
-		// console.log(cachedGeoJson);
 
 		var $searchForm = $('#map-search-form');
 		var $searchQuery = $('#map-search-query');
@@ -328,15 +347,6 @@ $(function() {
 			$autocompleteItems.removeClass('is-selected');
 			$($autocompleteItems.get(selectedIndex)).addClass('is-selected');
 		};
-
-		// make a URL hash-friendly value from str
-		var makeHash = function(str) {
-			// Lower case
-			// Replace all spaces with '-'
-			// Remove all non-word or non-- chars ([^a-zA-Z0-9_-])
-			// Encode as URI, just in case
-			return encodeURI(str.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9_-]/g, ""));
-		}
 
 		// Submit the form using the is-selected item
 		var submitForm = function() {
@@ -477,7 +487,7 @@ $(function() {
 			return false;
 		});
 
-	}
+	} // end initSearch
 
 	// Function to get property from dot notation
 	// e.g. foo["bar.baz"] -> foo.bar.baz
