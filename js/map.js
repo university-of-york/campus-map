@@ -54,7 +54,7 @@ $(function() {
 			return new google.maps.ImageMapType({
 					getTileUrl: function(coord, zoom) {
 							return "https://www.york.ac.uk/static/data/maps/tiles/" +
-									zoom + "/" + coord.x + "/" + coord.y + ".png";
+									zoom+"/"+coord.x+"/"+coord.y+".png";
 					},
 					tileSize: new google.maps.Size(256, 256),
 					isPng: true,
@@ -83,27 +83,22 @@ $(function() {
 									var category = event.feature.getProperty("category");
 									var subCategory = event.feature.getProperty("subcategory");
 									var mapContainer = document.getElementById('mapContainer');
-									var infoPanel = document.getElementById('infoPanel');
-									var html = '<h4>' + title + '</h4><p>' + subCategory + '</p><p>' + category + '</p>';
-									document.getElementById('infoPanel__content').innerHTML = html;
-									infoPanel.style.display = 'block';
-									infoPanel.style.width = '20%';
-
-									$(".closeInfoPanel").click(function() {
-											infoPanel.style.display = 'none';
-											infoPanel.style.width = '0%';
-									});
+									var $infoPanel = $('.infoPanel');
+									var html = '<h4>'+title+'</h4><p>'+subCategory+'</p><p>'+category+'</p>';
+									$('.infoPanel__content').html(html);
+									openInfoPanel();
+									$(".closeInfoPanel").click(closeInfoPanel);
 								});
 								map.data.setStyle(function(feature) {
-										return {
-												icon: 'images/markers/' + feature.getProperty("category") + '.png'
-										};
+									return {
+										icon: 'images/markers/'+feature.getProperty("category")+'.png'
+									};
 								});
 							}
 						} else {
-								if (category === GeoJSONCategory) {
-										map.data.remove(feature);
-								}
+							if (category === GeoJSONCategory) {
+								map.data.remove(feature);
+							}
 						}
 					});
 
@@ -137,13 +132,25 @@ $(function() {
 	}
 
 	function clickAnywherePanelClose(map) {
-			// click anywhere to close an InfoWindow
-			return google.maps.event.addListener(map, 'click', function() {
-					if (infoPanel) {
-							infoPanel.style.display = 'none';
-							infoPanel.style.width = '0%';
-					}
-			});
+		// click anywhere to close an InfoWindow
+		return google.maps.event.addListener(map, 'click', function() {
+			closeInfoPanel();
+		});
+	}
+
+	function closeInfoPanel() {
+		console.log("clicked!", this)
+		var $infoPanel = $('.infoPanel.is-open');
+		if ($infoPanel.length > 0) {
+			$infoPanel.removeClass('is-open');
+		}
+	}
+
+	function openInfoPanel() {
+		var $infoPanel = $('.infoPanel').not('.is-open');
+		if ($infoPanel.length > 0) {
+			$infoPanel.addClass('is-open');
+		}
 	}
 
 	function showPosition(position) {
@@ -172,20 +179,15 @@ $(function() {
 				afterOpen: function(){
 					$("#more").click(function(event) {
 						var mapContainer = document.getElementById('mapContainer');
-						var infoPanel = document.getElementById('infoPanel');
-						var html = '<h4>' + opts.title + '</h4><p>' + opts.subCategory + '</p><p>' + opts.category + '</p>';
-						document.getElementById('infoPanel__content').innerHTML = html;
-						infoPanel.style.display = 'block';
-						infoPanel.style.width = '20%';
-						$(".closeInfoPanel").click(function() {
-							infoPanel.style.display = 'none';
-							infoPanel.style.width = '0%';
-						});
+						var $infoPanel = $('.infoPanel');
+						var html = '<h4>'+opts.title+'</h4><p>'+opts.subCategory+'</p><p>'+opts.category+'</p>';
+						$('.infoPanel__content').html(html);
+						openInfoPanel();
+						$(".closeInfoPanel").click(closeInfoPanel);
 					});
 				},
 				afterClose: function(){
-					infoPanel.style.display = 'none';
-					infoPanel.style.width = '0%';
+					closeInfoPanel();
 				}
 			}
 	   }
@@ -193,16 +195,15 @@ $(function() {
 
 	function createInfoWindow(location) {
 			if (location.category != "Room") {
-				infoPanel.style.display = 'none';
-				infoPanel.style.width = '0%';
+				closeInfoPanel();
 			}
 			var title = location.title;
 			var subTitle = location.subtitle;
 			var subCategory = location.subcategory;
 			var category = location.category;
 			if (category === "Room") {
-				var  content = '<h4>' + title + '</h4>' +
-				'<p>Approximate location only</p>' + '<p>Please allow yourself time to locate the room</p>';
+				var  content = '<h4>'+title+'</h4>' +
+				'<p>Approximate location only</p>'+'<p>Please allow yourself time to locate the room</p>';
 			} else {
 				var content = location.content;
 			}
@@ -232,15 +233,16 @@ $(function() {
 
 	function createInfoPanel(location) {
 		var mapContainer = document.getElementById('mapContainer');
-		var infoPanel = document.getElementById('infoPanel');
-		var html = '<h3>' + location.title + '</h3><h4>' + location.subtitle + '</h4><p>' + location.subcategory + '</p><p>' + location.category + '</p><p><a class="locationMarker">Show building on map</a></p>';
-		document.getElementById('infoPanel__content').innerHTML = html;
-		infoPanel.style.display = 'block';
-		infoPanel.style.width = '20%';
-		$(".closeInfoPanel").click(function() {
-			infoPanel.style.display = 'none';
-			infoPanel.style.width = '0%';
-		});
+		var $infoPanel = $('.infoPanel');
+		var html = '<h3>'+location.title+'</h3>';
+		if (location.subtitle !== false) html+= '<h4>'+location.subtitle+'</h4>';
+		if (location.subcategory !== false) html+= '<p>'+location.subcategory+'</p>';
+		//if (location.category !== false) html+= '<p>'+location.category+'</p>';
+		if (location.longdesc !== false) html+= '<p>'+location.longdesc+'</p>';
+		html+= '<p><a class="locationMarker">Show building on map</a></p>';
+		$('.infoPanel__content').html(html);
+		openInfoPanel();
+		$(".closeInfoPanel").click(closeInfoPanel);
 		$(".locationMarker").click(function() {
 			 createInfoWindow(location);
 		});
@@ -255,7 +257,23 @@ $(function() {
 		var selectedFeature = $.grep(cachedGeoJson.features, function(feature) {
 			return makeHash(feature.properties.title) === thisHash;
 		});
-		console.log(thisHash, selectedFeature);
+		if (selectedFeature.length === 0) return false;
+		//return selectedFeature;
+		var location = {
+			title: selectedFeature[0].properties.title,
+			subtitle: selectedFeature[0].properties.subtitle,
+			latlng: new google.maps.LatLng(parseFloat(selectedFeature[0].geometry.coordinates[1]), parseFloat(selectedFeature[0].geometry.coordinates[0])),
+			category: selectedFeature[0].properties.category || false,
+			subcategory: selectedFeature[0].properties.subcategory || false,
+			longdesc: selectedFeature[0].properties.longdesc || false,
+			content: '<h4>'+selectedFeature[0].properties.title+'</h4>'+'<p><a id="more">More Information</a></p>'
+		}
+		// Drop pin and inforWindow on map
+		if (location.category === "Room") {
+			createInfoPanel(location);
+		} else {
+			createInfoWindow(location);
+		}
 	}
 
 	// make a URL hash-friendly value from str
@@ -301,7 +319,7 @@ $(function() {
 	//load
 	google.maps.event.addDomListener(window, 'load', initMap);
 
-	// == Search functionality =================================================
+	// Initialise search functionality
 
 	function initSearch() {
 
@@ -395,7 +413,8 @@ $(function() {
 				latlng: new google.maps.LatLng(parseFloat(selectedFeature[0].geometry.coordinates[1]), parseFloat(selectedFeature[0].geometry.coordinates[0])),
 				category: selectedFeature[0].properties.category || false,
 				subcategory: selectedFeature[0].properties.subcategory || false,
-				content: '<h4>' + selectedTitle + '</h4>' + '<p><a id="more">More Information</a></p>'
+				longdesc: selectedFeature[0].properties.longdesc || false,
+				content: '<h4>'+selectedTitle+'</h4>'+'<p><a id="more">More Information</a></p>'
 			}
 			// Drop pin and inforWindow on map
 			if (location.category === "Room") {
@@ -508,20 +527,18 @@ $(function() {
 		return multiIndex(obj,is.split('.'))
 	}
 
-/* ========================================================================== */
-
-// button drawer
-$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
-$("#open").click(function() {
-	if ($('#panel').css('display') == 'block') {
-		var height = '-=' + $('#panel').height();
-$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
-	} else {
-		var height = '+=' + $('#panel').height();
-		$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i> Find Facilities');
-	}
-	$("#panel").slideToggle("slow");
-});
+	// button drawer
+	$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
+	$("#open").click(function() {
+		if ($('#panel').css('display') == 'block') {
+			var height = '-='+$('#panel').height();
+			$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
+		} else {
+			var height = '+='+$('#panel').height();
+			$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i> Find Facilities');
+		}
+		$("#panel").slideToggle("slow");
+	});
 
 
 });
