@@ -190,15 +190,22 @@ $(function() {
 	}
 
 	function createInfoWindow(location) {
-			infoPanel.style.display = 'none';
-			infoPanel.style.width = '0%';
+			if (location.category != "Room") {
+				infoPanel.style.display = 'none';
+				infoPanel.style.width = '0%';
+			}
 			var title = location.title;
 			var subTitle = location.subtitle;
 			var subCategory = location.subcategory;
 			var category = location.category;
-			for (var i = 0; i < markers.length; i++)
-				markers[i].setMap(null);
-				markers = [];
+			if (category === "Room") {
+				var  content = '<h4>' + title + '</h4>' +
+				'Approximate Location';
+			} else {
+				var content = location.content;
+			}
+
+			DeleteMarkers();
 				var marker = new google.maps.Marker({
 						position: location.latlng,
 						map: map,
@@ -210,14 +217,14 @@ $(function() {
 			map.setZoom(16);
 			map.panTo(marker.position);
 			// move content string?
-			var  contentString = '<h4>' + title + '</h4>' +
-			'<p><a id="more">More Information</a></p>';
+			// var  contentString = '<h4>' + title + '</h4>' +
+			// '<p><a id="more">More Information</a></p>';
 			var thisOptions = snazzyOptions({
 				title: title,
 				subCategory: subCategory,
 				category: category,
 				marker: marker,
-				content: contentString
+				content: content
 			});
 			var snazzy = new SnazzyInfoWindow(thisOptions);
 			snazzy.open(map, marker);
@@ -227,7 +234,7 @@ $(function() {
 	function createInfoPanel(location) {
 		var mapContainer = document.getElementById('mapContainer');
 		var infoPanel = document.getElementById('infoPanel');
-		var html = '<h3>' + location.title + '</h3><h4>' + location.subtitle + '</h4><p>' + location.subcategory + '</p><p>' + location.category + '</p>';
+		var html = '<h3>' + location.title + '</h3><h4>' + location.subtitle + '</h4><p>' + location.subcategory + '</p><p>' + location.category + '</p><p><a class="locationMarker">Show building on map</a></p>';
 		document.getElementById('infoPanel__content').innerHTML = html;
 		infoPanel.style.display = 'block';
 		infoPanel.style.width = '20%';
@@ -235,6 +242,23 @@ $(function() {
 			infoPanel.style.display = 'none';
 			infoPanel.style.width = '0%';
 		});
+		$(".locationMarker").click(function() {
+			 infoPanelMarker(location);
+			 createInfoWindow(location);
+		});
+	}
+
+	function infoPanelMarker(location) {
+			var marker = new google.maps.Marker({
+				position: location.latlng,
+				map: map,
+				title: location.title,
+				subtitle: location.subTitle,
+				subCategory: location.subCategory,
+				category: location.category
+			});
+			map.setZoom(16);
+			map.panTo(marker.position);
 	}
 
 	// initialise the map
@@ -376,7 +400,8 @@ $(function() {
 				subtitle: selectedSubtitle,
 				latlng: new google.maps.LatLng(parseFloat(selectedFeature[0].geometry.coordinates[1]), parseFloat(selectedFeature[0].geometry.coordinates[0])),
 				category: selectedFeature[0].properties.category || false,
-				subcategory: selectedFeature[0].properties.subcategory || false
+				subcategory: selectedFeature[0].properties.subcategory || false,
+				content: '<h4>' + selectedTitle + '</h4>' + '<p><a id="more">More Information</a></p>'
 			}
 			// Drop pin and inforWindow on map
 			if (location.category === "Room") {

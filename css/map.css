@@ -132,11 +132,15 @@ text-decoration:none;
 }
 
 .infoPanel__content a,
-.infoPanel__content a:visited {
+.infoPanel__content a:visited,
+#more,
+#more:visited {
     color: #e4b53c;
+    cursor: pointer;
     text-decoration: none;
 }
-.infoPanel__content a:hover {
+.infoPanel__content a:hover,
+#more:hover {
     text-decoration: underline;
 }
 
