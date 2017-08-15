@@ -152,73 +152,77 @@ $(function() {
 		return	new google.maps.LatLng(lat, lng);
 	}
 
-	function searchCampus(map) {
-		var $search = $('#search-query');
-		$($search).change(function() {
-			for (var i = 0; i < markers.length; i++) {
+
+	var snazzyOptions = function(opts) {
+		return {
+			marker: opts.marker,
+			content: opts.content,
+			placement: 'top',
+			showCloseButton: true,
+			closeOnMapClick: true,
+			padding: '28px',
+			backgroundColor: 'rgba(15, 61, 76, 0.9)',
+			border: false,
+			borderRadius: '12px',
+			shadow: false,
+			fontColor: '#fff',
+			maxWidth: 320,
+			closeWhenOthersOpen: true,
+			callbacks: {
+				afterOpen: function(){
+					$("#more").click(function(event) {
+						var mapContainer = document.getElementById('mapContainer');
+						var infoPanel = document.getElementById('infoPanel');
+						var html = '<h4>' + opts.title + '</h4><p>' + opts.subCategory + '</p><p>' + opts.category + '</p>';
+						document.getElementById('infoPanel__content').innerHTML = html;
+						infoPanel.style.display = 'block';
+						infoPanel.style.width = '20%';
+						$(".closeInfoPanel").click(function() {
+							infoPanel.style.display = 'none';
+							infoPanel.style.width = '0%';
+						});
+					});
+				},
+				afterClose: function(){
+					infoPanel.style.display = 'none';
+					infoPanel.style.width = '0%';
+				}
+			}
+	   }
+	}
+
+	function createInfoWindow(location) {
+			var title = location.title;
+			var subTitle = location.subtitle;
+			var subCategory = location.subcategory;
+			var category = location.category;
+			for (var i = 0; i < markers.length; i++)
 				markers[i].setMap(null);
 				markers = [];
-				//Reading the value in text boxes on HTML form
-				var sourceLocation = ($($search).val());
-				//Remove any spaces from between coordinates
-				var parts = sourceLocation.split(",");
-				var newLocation = new google.maps.LatLng(parseFloat(parts[1]), parseFloat(parts[0]));
-				var title = parts[2];
-				var subCategory = parts[3];
-				var category = parts[4];
 				var marker = new google.maps.Marker({
-						position: newLocation,
+						position: location.latlng,
 						map: map,
 						title: title,
+						subtitle: subTitle,
 						subCategory: subCategory,
 						category: category
 				});
-				map.setZoom(16);
-				map.panTo(marker.position);
-				var  contentString = '<h4>' + title + '</h4>' +
-	            '<p><a id="more">More Information</a></p>';
-
-	            var info = new SnazzyInfoWindow({
-	                marker: marker,
-	                placement: 'top',
-	                content: contentString,
-	                showCloseButton: true,
-	                closeOnMapClick: true,
-	                padding: '28px',
-	                backgroundColor: 'rgba(15, 61, 76, 0.9)',
-	                border: false,
-	                borderRadius: '12px',
-	                shadow: false,
-	                fontColor: '#fff',
-	                maxWidth: 320,
-	                closeWhenOthersOpen: true,
-	                callbacks: {
-	                    afterOpen: function(){
-	                        $("#more").click(function(event) {
-	                            var mapContainer = document.getElementById('mapContainer');
-	                            var infoPanel = document.getElementById('infoPanel');
-	                            var html = '<h4>' + title + '</h4><p>' + subCategory + '</p><p>' + category + '</p>';
-	                            document.getElementById('infoPanel__content').innerHTML = html;
-	                            infoPanel.style.display = 'block';
-	                            infoPanel.style.width = '20%';
-
-	                            $(".closeInfoPanel").click(function() {
-	                                infoPanel.style.display = 'none';
-	                                infoPanel.style.width = '0%';
-	                            });
-	                        });
-	                    },
-	                    afterClose: function(){
-	                        infoPanel.style.display = 'none';
-	                        infoPanel.style.width = '0%';
-	                    }
-	                }
-	            });
-	            info.open(map, marker);
-				markers.push(marker);
-			}
-		});
-	}
+			map.setZoom(16);
+			map.panTo(marker.position);
+			// move content string?
+			var  contentString = '<h4>' + title + '</h4>' +
+			'<p><a id="more">More Information</a></p>';
+			var thisOptions = snazzyOptions({
+				title: title,
+				subCategory: subCategory,
+				category: category,
+				marker: marker,
+				content: contentString
+			});
+			var snazzy = new SnazzyInfoWindow(thisOptions);
+			snazzy.open(map, marker);
+			markers.push(marker);
+		}
 
 	// initialise the map
 	function initMap() {
@@ -231,7 +235,7 @@ $(function() {
 		// add custom controls
 		customControls(map);
 		// search the campus
-		searchCampus(map);
+		//searchCampus(map);
 		//close infoPanel by clicking anywhere
 		clickAnywherePanelClose(map);
 		// load the geojson
@@ -354,21 +358,16 @@ $(function() {
 			  	return feature.properties.subtitle === selectedSubtitle;
 				});
 			}
-
-			var selectedLatLng = new google.maps.LatLng(parseFloat(selectedFeature[0].geometry.coordinates[1]), parseFloat(selectedFeature[0].geometry.coordinates[0]));
-			var selectedCategory = selectedFeature[0].properties.category || false;
-			var selectedSubcategory = selectedFeature[0].properties.subcategory || false;
-
-			// Drop pin on map
-			var marker = new google.maps.Marker({
-				map: map,
-				position: selectedLatLng,
+			var location = {
 				title: selectedTitle,
-				subCategory: selectedSubcategory,
-				category: selectedCategory
-			});
-			map.setZoom(16);
-			map.panTo(marker.position);
+				subtitle: selectedSubtitle,
+				latlng: new google.maps.LatLng(parseFloat(selectedFeature[0].geometry.coordinates[1]), parseFloat(selectedFeature[0].geometry.coordinates[0])),
+				category: selectedFeature[0].properties.category || false,
+				subcategory: selectedFeature[0].properties.subcategory || false
+			}
+			// Drop pin and inforWindow on map
+			createInfoWindow(location);
+
 			$autocompleteList.empty();
 
 		}
