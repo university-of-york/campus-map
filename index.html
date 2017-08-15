@@ -30,7 +30,7 @@
     <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" /> -->
     <link rel="stylesheet" href="css/styles.min.css">
     <link rel="stylesheet" href="css/map.css">
-
+    <link rel="stylesheet" href="css/snazzy-info-window.css">
 
 
     <script src="https://www.york.ac.uk/static/1.5/js/modernizr.min.js"></script>
@@ -41,7 +41,9 @@
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script> -->
 
-
+    <script src="js/map.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBRU46Whb7IqeK2RW6SP4u69vDpCbTct8&libraries=places" ></script>
+    <script src="js/snazzy-info-window.js"></script>
 
     <!-- Typekit script -->
     <script src="//use.typekit.net/dvj8rpp.js"></script>
@@ -50,8 +52,9 @@
             Typekit.load();
         } catch (e) {}
     </script>
-
 </head>
+<body>
+
 
 <a href="#Main-Content" class="o-skip-link">Skip to content</a>
 
@@ -111,21 +114,22 @@
 </div>
 <div class="o-wrapper o-wrapper--wide o-grid" id="panel">
   <div class="o-grid__row">
-    <div class="o-grid__box o-grid__box--map o-grid__box--half o-grid__box--full@medium-">
+      <div class="o-grid__box o-grid__box--full">
+    <!-- <div class="o-grid__box o-grid__box--map o-grid__box--half o-grid__box--full@medium-"> -->
         <div class="c-btn-group c-btn-group--block o-map__nav">
             <input type="checkbox" id="Car parks" name="mapButton" class="c-btn--selectable" value="Car Parks">
             <label for="Car parks" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--car"></i>Car Parks</label>
             <input type="checkbox" id="Food and drink" name="mapButton" class="c-btn--selectable" value="Food">
-            <label for="Food and drink" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--coffee"></i>Cafes &amp Bars</label>
+            <label for="Food and drink" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--coffee"></i>Cafes and Bars</label>
             <input type="checkbox" id="Bus stops" name="mapButton" class="c-btn--selectable" value="Bus Stops">
             <label for="Bus stops" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--bus"></i>Bus Stops</label>
             <input type="checkbox" id="Cash machines" name="mapButton" class="c-btn--selectable" value="Cash Points">
             <label for="Cash machines" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--money"></i>Cash Points</label>
-        </div>
-    </div>
+    <!--    </div>
+     </div>
 
     <div class="o-grid__box o-grid__box--map o-grid__box--half o-grid__box--full@medium-">
-        <div class="c-btn-group c-btn-group--block o-map__nav ">
+        <div class="c-btn-group c-btn-group--block o-map__nav "> -->
             <input type="checkbox" id="Services and facilities" name="mapButton" class="c-btn--selectable" value="Services">
             <label for="Services and facilities" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--info-circle"></i>Services</label>
             <input type="checkbox" id="Shops" name="mapButton" class="c-btn--selectable" value="Shops">
@@ -140,23 +144,9 @@
 </div>
 
 </div>
+</div>
 
-<script src="js/map.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBRU46Whb7IqeK2RW6SP4u69vDpCbTct8&libraries=places" ></script>
 
-<script>
-    $('.open').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
-    $("#open").click(function() {
-        if ($('#panel').css('display') == 'block') {
-            var height = '-=' + $('#panel').height();
-$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
-        } else {
-            var height = '+=' + $('#panel').height();
-            $('.open').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i> Find Facilities');
-        }
-        $("#panel").slideToggle("slow");
-    });
-</script>
 
 </body>
 </html>

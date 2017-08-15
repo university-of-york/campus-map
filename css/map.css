@@ -353,3 +353,142 @@ height: 90px !important;
         flex: 1 1 12.5%;
     }
 }
+
+
+/*FROM INDEX - Sort out*/
+html, body, #Main-Content {
+    height: 100%;
+    margin:0;
+    padding:0;
+    width: 100%;
+}
+#Main-Content {
+    position: relative
+}
+.map {
+    height: calc(100% - 6rem);
+}
+.c-map-header {
+
+    height: 4rem;
+}
+.footer {
+    border-top: 2px solid #f9f9f9;
+    background-color: #fff;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+.panel {
+    display: none;
+}
+
+.bar {
+    background-color: #0f3d4c;
+    line-height: 1.5;
+    padding: .25em;
+    text-align: center;
+}
+
+.bar a {
+    display: block;
+    height: 100%;
+    color: #fff;
+    text-decoration: none;
+}
+
+
+.c-btn-drawer {
+    border-top: 1px solid #26505d;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+}
+
+.c-btn-drawer--selectable {
+    display: none;
+}
+
+.c-btn-drawer--selectable__label {
+    background-color: #0f3d4c;
+    border-bottom: 1px solid #26505d;
+    border-right: 1px solid #26505d;
+    color: #fff;
+    cursor: pointer;
+    flex: 1 1 25%;
+    line-height: 1.5;
+    margin: 0;
+    padding: .5em 0;
+    text-align: center;
+    transition: 0s;
+    user-select: none;
+}
+
+
+.c-btn-drawer--selectable__label:last-of-type {
+    border-right: 0;
+}
+
+@media (max-width:320px) {
+    .c-btn-drawer--selectable__label {
+        flex: 1 1 50%;
+    }
+    .map {
+        height: calc(100% - 7.5rem);
+    }
+}
+
+
+@media (min-width:768px) {
+    .c-btn-drawer--selectable__label {
+        flex: 1 1 auto;
+    }
+    .panel {
+        display: block;
+    }
+    .bar {
+        display: none;
+    }
+}
+
+@media (min-width: 1200px) {
+    .c-btn-drawer--selectable__label {
+        border-bottom: 0;
+        flex: 1 1 12.5%;
+    }
+    .panel {
+        display: block;
+    }
+    .bar {
+        display: none;
+    }
+}
+
+
+    .c-btn-group {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .c-btn--selectable__label {
+        border-radius: 0;
+        flex: 1 1 25%;
+    }
+
+    .c-btn--selectable__label:first-of-type,
+    .c-btn--selectable__label:last-of-type {
+        border-radius: 0;
+    }
+
+    @media (min-width: 768px) {
+        .c-btn--selectable__label {
+            flex: 1 1 auto;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .c-btn--selectable__label {
+            flex: 1 1 12.5%;
+        }
+    }

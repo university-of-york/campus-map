@@ -25,7 +25,7 @@ $(function() {
 	var markers = [];
 
 	// initialise InfoWindow
-	var infowindow = new google.maps.InfoWindow();
+	//var infowindow = new google.maps.InfoWindow();
 
 	// load the map
 	function loadMap() {
@@ -52,7 +52,7 @@ $(function() {
 	function loadYorkTiles() {
 			return new google.maps.ImageMapType({
 					getTileUrl: function(coord, zoom) {
-							return "https://www.york.ac.uk/about/maps/campus/data/tiles/" +
+							return "https://www.york.ac.uk/static/data/maps/tiles/" +
 									zoom + "/" + coord.x + "/" + coord.y + ".png";
 					},
 					tileSize: new google.maps.Size(256, 256),
@@ -175,19 +175,46 @@ $(function() {
 				});
 				map.setZoom(16);
 				map.panTo(marker.position);
-				google.maps.event.addListener(marker, 'click', function(event) {
-					var mapContainer = document.getElementById('mapContainer');
-					var infoPanel = document.getElementById('infoPanel');
-					var html = '<h4>' + title + '</h4><p>' + subCategory + '</p><p>' + category + '</p>';
-					document.getElementById('infoPanel__content').innerHTML = html;
-					infoPanel.style.display = 'block';
-					infoPanel.style.width = '20%';
+				var  contentString = '<h4>' + title + '</h4>' +
+	            '<p><a id="more">More Information</a></p>';
 
-					$(".closeInfoPanel").click(function() {
-							infoPanel.style.display = 'none';
-							infoPanel.style.width = '0%';
-					});
-				});
+	            var info = new SnazzyInfoWindow({
+	                marker: marker,
+	                placement: 'top',
+	                content: contentString,
+	                showCloseButton: true,
+	                closeOnMapClick: true,
+	                padding: '28px',
+	                backgroundColor: 'rgba(15, 61, 76, 0.9)',
+	                border: false,
+	                borderRadius: '12px',
+	                shadow: false,
+	                fontColor: '#fff',
+	                maxWidth: 320,
+	                closeWhenOthersOpen: true,
+	                callbacks: {
+	                    afterOpen: function(){
+	                        $("#more").click(function(event) {
+	                            var mapContainer = document.getElementById('mapContainer');
+	                            var infoPanel = document.getElementById('infoPanel');
+	                            var html = '<h4>' + title + '</h4><p>' + subCategory + '</p><p>' + category + '</p>';
+	                            document.getElementById('infoPanel__content').innerHTML = html;
+	                            infoPanel.style.display = 'block';
+	                            infoPanel.style.width = '20%';
+
+	                            $(".closeInfoPanel").click(function() {
+	                                infoPanel.style.display = 'none';
+	                                infoPanel.style.width = '0%';
+	                            });
+	                        });
+	                    },
+	                    afterClose: function(){
+	                        infoPanel.style.display = 'none';
+	                        infoPanel.style.width = '0%';
+	                    }
+	                }
+	            });
+	            info.open(map, marker);
 				markers.push(marker);
 			}
 		});
@@ -447,5 +474,19 @@ $(function() {
 	}
 
 /* ========================================================================== */
+
+// button drawer
+$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
+$("#open").click(function() {
+	if ($('#panel').css('display') == 'block') {
+		var height = '-=' + $('#panel').height();
+$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
+	} else {
+		var height = '+=' + $('#panel').height();
+		$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i> Find Facilities');
+	}
+	$("#panel").slideToggle("slow");
+});
+
 
 });
