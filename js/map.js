@@ -88,10 +88,10 @@ $(function() {
 					markerFeatures[selectableCategory] = map.data.addGeoJson(thisGroup);
 					map.data.addListener('click', function(event) {
 						var title = event.feature.getProperty("title");
-						var category = event.feature.getProperty("category");
-						var subCategory = event.feature.getProperty("subcategory");
+						var longdesc = event.feature.getProperty("longdesc") || false;
 						var $infoPanel = $('.infoPanel');
-						var html = '<h4>'+title+'</h4><p>'+subCategory+'</p><p>'+category+'</p>';
+						var html = '<h4>'+title+'</h4>';
+						if (longdesc !== false) html+='<div>'+longdesc+'</div>';
 						$('.infoPanel__content').html(html);
 						openInfoPanel();
 						$(".closeInfoPanel").click(closeInfoPanel);
@@ -112,12 +112,15 @@ $(function() {
 	}
 
 	function DeleteMarkers() {
-			//Loop through all the markers and remove
-			for (var i = 0; i < markers.length; i++) {
-					markers[i].setMap(null);
+		//Loop through all the markers and remove
+		for (var i = 0; i < markers.length; i++) {
+			markers[i].setMap(null);
+			// Remove snazzy window
+			if (markers[i].snazzy) {
+				markers[i].snazzy.destroy();
 			}
-
-			markers = [];
+		}
+		markers = [];
 	};
 
 	function customControls(map) {
@@ -135,7 +138,7 @@ $(function() {
 	}
 
 	function clickAnywherePanelClose(map) {
-		// click anywhere to close an InfoWindow
+		// click anywhere to close an InfoPanel
 		return google.maps.event.addListener(map, 'click', function() {
 			closeInfoPanel();
 		});
@@ -161,7 +164,6 @@ $(function() {
 		return	new google.maps.LatLng(lat, lng);
 	}
 
-
 	function snazzyOptions(opts) {
 		return {
 			marker: opts.marker,
@@ -180,11 +182,8 @@ $(function() {
 			callbacks: {
 				afterOpen: function(){
 					$("#more").click(function(event) {
-						//var mapContainer = document.getElementById('mapContainer');
 						var $infoPanel = $('.infoPanel');
 						var html = '<h4>'+opts.title+'</h4>';
-						if (opts.subCategory) html+= '<p>'+opts.subCategory+'</p>';
-						if (opts.category) html+= '<p>'+opts.category+'</p>';
 						if (opts.longdesc) html+= '<p>'+opts.longdesc+'</p>';
 						$('.infoPanel__content').html(html);
 						openInfoPanel();
@@ -211,11 +210,11 @@ $(function() {
 			var longdesc = location.longdesc || false;
 			if (category === "Room") {
 				var content = '<h4>'+title+'</h4>';
-				content+= '<p>Approximate location only</p>'+'<p>Please allow yourself time to locate the room</p>';
+				content+= '<p>Approximate location only</p>';
+				content+= '<p>Please allow yourself time to locate the room</p>';
 			} else {
 				var content = location.content;
 			}
-
 			DeleteMarkers();
 			var marker = new google.maps.Marker({
 					position: location.latlng,
@@ -237,6 +236,8 @@ $(function() {
 			});
 			var snazzy = new SnazzyInfoWindow(thisOptions);
 			snazzy.open(map, marker);
+			// Add the snazzy window to the marker (so can be removed)
+			marker.snazzy = snazzy;
 			markers.push(marker);
 	}
 
@@ -447,6 +448,9 @@ $(function() {
 				longdesc: selectedFeature[0].properties.longdesc || false,
 				content: '<h4>'+selectedTitle+'</h4>'+'<p><a id="more">More Information</a></p>'
 			}
+
+			DeleteMarkers();
+
 			// Drop pin and inforWindow on map
 			if (location.category === "Room") {
 				createInfoPanel(location);
@@ -538,6 +542,12 @@ $(function() {
 
 			});
 
+		});
+
+		// Select all text when you click the input
+		// (much easier than deleting existing value)
+		$searchQuery.on('focus', function(e) {
+			$(this).select();
 		});
 
 		// Prevent form submit
