@@ -58,17 +58,8 @@
 <header class="c-map-header" role="banner">
     <div class="o-wrapper o-wrapper--wide o-grid">
         <div class="o-grid__row">
-            <div class="o-grid__box o-grid__box--full">
-                <!-- <a href="https://www.york.ac.uk/"><img class="c-main-header__logo" src="https://www.york.ac.uk/static/1.4/img/logo.svg" alt="University of York"></a> -->
-                <a href="https://www.york.ac.uk/"><img class="c-main-header__logo--mobile" src="https://jobs.york.ac.uk/incl/img/york_logo.gif" alt="University of York"></a>
-            </div>
-        </div>
-    </div>
-</header>
-<div class="o-wrapper o-wrapper--wide o-grid" id="Main-Content">
-    <div class="o-grid__row">
-        <div class="o-grid__box o-grid__box--full">
-            <div class="c-search--bar">
+
+            <div class="o-grid__box o-grid__box--twothirds">
                 <form action="#" method="get" class="c-form c-form--joined" id="map-search-form">
                     <fieldset>
                       <div class="c-form__element">
@@ -80,36 +71,37 @@
                     </fieldset>
                 </form>
             </div>
+            <div class="o-grid__box o-grid__box--third">
+                 <a href="https://www.york.ac.uk/"><img class="c-main-header__logo" src="https://www.york.ac.uk/static/1.4/img/logo-white.svg" alt="University of York"></a>
 
-            <div id="mapContainer" class="c-map-container">
-                <div id="map" class="map"></div>
-
-                    <div id="control-div" class="control-div">
-                     <div id= "control-ui" class="control-ui" title = "Click to reset the map">
-                       <div id="control-text" class="control-text">
-                         <p> <span class="is-hidden@small-">Reset Map </span> <i class="c-icon c-icon--lg c-icon--refresh"></i> </p>
-                       </div>
-                     </div>
-                </div>
             </div>
-            <div class="infoPanel">
-                <a href="#" style="float:right;" class="closeInfoPanel"><i class="c-icon c-icon--close"></i></a>
-                <h3>Information</h3>
-                <div class="infoPanel__content">
-
-                </div>
-            </div>
-
         </div>
     </div>
+</header>
+
+<div id="mapContainer" class="c-map-container">
+    <div id="map" class="map"></div>
+    <div id="control-div" class="control-div">
+         <div id= "control-ui" class="control-ui" title = "Click to reset the map">
+           <div id="control-text" class="control-text">
+             <p> <span class="is-hidden@small-">Reset Map </span> <i class="c-icon c-icon--lg c-icon--refresh"></i> </p>
+           </div>
+         </div>
+    </div>
+</div>
+<div class="infoPanel">
+    <a href="#" style="float:right;" class="closeInfoPanel"><i class="c-icon c-icon--close"></i></a>
+    <div class="infoPanel__content"></div>
 </div>
 
 
-<div id="lower">
-<div id="bar">
-    <a href="#" id="open" class="open"><i class="c-icon c-icon--before c-icon--chevron-up"></i></a>
+
+
+<footer class="footer">
+<div class="bar">
+    <a href="#" id="drawerStatusButton" ><i class="c-icon c-icon--above c-icon--chevron-up"></i>open</a>
 </div>
-<div class="o-wrapper o-wrapper--wide o-grid" id="panel">
+<div class="o-wrapper o-wrapper--wide o-grid panel">
   <div class="o-grid__row">
       <div class="o-grid__box o-grid__box--full">
 
@@ -135,7 +127,9 @@
   </div>
 </div>
 
-</div>
+</footer>
+
+
 </div>
 
 

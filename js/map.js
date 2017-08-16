@@ -643,17 +643,25 @@ $(function() {
 		return multiIndex(obj,is.split('.'))
 	}
 
-	// button drawer
-	$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
-	$("#open").click(function() {
-		if ($('#panel').css('display') == 'block') {
-			var height = '-='+$('#panel').height();
-			$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
+
+// button drawer
+	function drawerStatus(mode) {
+		if (mode ===  "open") {
+			$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i>open');
 		} else {
-			var height = '+='+$('#panel').height();
-			$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i> Find Facilities');
+			$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i>close');
 		}
-		$("#panel").slideToggle("slow");
+	}
+
+	$("#drawerStatusButton").click(function() {
+		if ($('.panel').css('display') == 'block') {
+			var height = '-=' + $('.panel').height();
+			drawerStatus('open');
+		} else {
+			var height = '+=' + $('.panel').height();
+			drawerStatus('close');
+		}
+		$(".panel").slideToggle("slow");
 	});
 
 
