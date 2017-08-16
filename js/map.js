@@ -145,7 +145,7 @@ $(function() {
 							category: category,
 							subcategory: subCategory,
 							longdesc: longdesc,
-							content: '<h4>'+title+'</h4>'+'<p><a id="more">More Information</a></p>'
+							content: '<h4>'+title+'</h4>'+'<p><a class="si-content-more-link">More Information</a></p>'
 						}
 						createInfoWindow(location);
 
@@ -249,7 +249,8 @@ $(function() {
 			},
 			callbacks: {
 				afterOpen: function(){
-					$("#more").click(function(event) {
+					$(".si-content-more-link").click(function(event) {
+						console.log(event);
 						//var mapContainer = document.getElementById('mapContainer');
 						var $infoPanel = $('.infoPanel');
 						var html = '<h4>'+opts.title+'</h4>';
@@ -348,7 +349,7 @@ $(function() {
 			category: selectedFeature[0].properties.category || false,
 			subcategory: selectedFeature[0].properties.subcategory || false,
 			longdesc: selectedFeature[0].properties.longdesc || false,
-			content: '<h4>'+selectedFeature[0].properties.title+'</h4>'+'<p><a id="more">More Information</a></p>'
+			content: '<h4>'+selectedFeature[0].properties.title+'</h4>'+'<p><a class="si-content-more-link">More Information</a></p>'
 		}
 		// Drop pin and inforWindow on map
 		if (location.category === "Room") {

@@ -108,14 +108,14 @@ input[type=search] {
 
 .infoPanel__content a,
 .infoPanel__content a:visited,
-#more,
-#more:visited {
+.si-content-more-link,
+.si-content-more-link:visited {
   color: #e4b53c;
   cursor: pointer;
   text-decoration: none;
 }
 .infoPanel__content a:hover,
-#more:hover {
+.si-content-more-link:hover {
   text-decoration: underline;
 }
 
@@ -135,8 +135,6 @@ input[type=search] {
     min-width: 100%;
   }
 }
-
-
 
 
 .c-map-container {
