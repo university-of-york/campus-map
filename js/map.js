@@ -1,4 +1,5 @@
 $(function() {
+
 	// defaults
 	var GeoJSONFile = "https://york.funnelback.co.uk//s/search.html?collection=york-uni-campusmap&form=geojson&query=!padrenullquery&num_ranks=5000";
 	var cachedGeoJson = {};
@@ -412,12 +413,11 @@ $(function() {
 			  });
 		   	return r > -1;
 			}, true); // Change to false to invert the filter i.e. show 'bad' results
-			//console.log(cachedGeoJson);
-			//map.data.setStyle({'visible': false});
-			//var features = map.data.addGeoJson(cachedGeoJson, {idPropertyName:"id"});
 			addMarkers();
 			initSearch();
 			checkHash();
+			// For teesting purposes
+			// window.cachedGeoJson = cachedGeoJson;
 		});
 
 
@@ -448,7 +448,18 @@ $(function() {
 			includeMatches: true,
 			minMatchCharLength: 3
 		}
-		var fuse = new Fuse(cachedGeoJson.features, fuseOptions);
+		var noSearchCategories = [
+			'Post boxes',
+			'Printers',
+			'Bus stops',
+			'Study spaces'
+		];
+		var searchGeoJson = JSON.parse(JSON.stringify(cachedGeoJson));
+		searchGeoJson.features = $.grep(cachedGeoJson.features, function(feature) {
+			  return $.inArray(feature.properties.category, noSearchCategories) === -1;
+		});
+		console.log(searchGeoJson, cachedGeoJson);
+		var fuse = new Fuse(searchGeoJson.features, fuseOptions);
 
 		// Move selected item to next
 		var selectItem = function(dir) {
