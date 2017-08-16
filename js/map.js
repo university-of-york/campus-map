@@ -24,9 +24,6 @@ $(function() {
 	};
 	var markers = [];
 
-	// initialise InfoWindow
-	//var infowindow = new google.maps.InfoWindow();
-
 	// load the map
 	function loadMap() {
 			return new google.maps.Map(document.getElementById('map'), {
@@ -51,18 +48,17 @@ $(function() {
 
 	// load UoY tiles
 	function loadYorkTiles() {
-			return new google.maps.ImageMapType({
-					getTileUrl: function(coord, zoom) {
-							return "https://www.york.ac.uk/static/data/maps/tiles/" +
-									zoom+"/"+coord.x+"/"+coord.y+".png";
-					},
-					tileSize: new google.maps.Size(256, 256),
-					isPng: true,
-					zoom: defaultZoom,
-					maxZoom: maxZoom,
-					minZoom: minZoom,
-					name: 'Map'
-			});
+		return new google.maps.ImageMapType({
+			getTileUrl: function(coord, zoom) {
+				return "https://www.york.ac.uk/static/data/maps/tiles/"+zoom+"/"+coord.x+"/"+coord.y+".png";
+			},
+			tileSize: new google.maps.Size(256, 256),
+			isPng: true,
+			zoom: defaultZoom,
+			maxZoom: maxZoom,
+			minZoom: minZoom,
+			name: 'Map'
+		});
 	}
 
 
@@ -70,44 +66,48 @@ $(function() {
 	function addMarkers() {
 		// Make arrays of markers for each category
 		var markerGroups = {};
+		var markerFeatures = {};
 
 		$(".c-btn--selectable").each(function(i, selectable) {
 			var $selectable = $(this);
 			var selectableCategory = $selectable.attr("id");
-			markerGroups[selectableCategory] = $.grep(cachedGeoJson.features, function(feature) {
-				var featureCategory = feature.properties.category.toLowerCase().replace(/\s/, '-');
+			// 'Clone' new GeoJSON file for each category
+			markerGroups[selectableCategory] = JSON.parse(JSON.stringify(cachedGeoJson));
+			markerGroups[selectableCategory].features = $.grep(cachedGeoJson.features, function(feature) {
+				var featureCategory = feature.properties.category.toLowerCase().replace(/\s+/g, '-');
 				return featureCategory === selectableCategory;
 			});
 		});
-		console.log(markerGroups);
 		$(".c-btn--selectable").click(function(e) {
 			var $selectable = $(this);
 			var selectableCategory = $selectable.attr("id");
 			var thisGroup = markerGroups[selectableCategory];
-			$.each(thisGroup, function(j, feature) {
-				var dataFeature = new google.maps.Data(feature);
-				console.log(feature, dataFeature);
+			// $.each(thisGroup, function(j, feature) {
+				// var dataFeature = new google.maps.Data(feature);
 				if ($selectable.is(':checked')) {
-					// map.data.add(dataFeature);
-					// map.data.addListener('click', function(event) {
-					// 	var title = event.feature.getProperty("title");
-					// 	var category = event.feature.getProperty("category");
-					// 	var subCategory = event.feature.getProperty("subcategory");
-					// 	var $infoPanel = $('.infoPanel');
-					// 	var html = '<h4>'+title+'</h4><p>'+subCategory+'</p><p>'+category+'</p>';
-					// 	$('.infoPanel__content').html(html);
-					// 	openInfoPanel();
-					// 	$(".closeInfoPanel").click(closeInfoPanel);
-					// });
-					// map.data.setStyle(function(feature) {
-					// 	return {
-					// 		icon: 'img/markers/'+selectableCategory+'.png'
-					// 	};
-					// });
+					markerFeatures[selectableCategory] = map.data.addGeoJson(thisGroup);
+					map.data.addListener('click', function(event) {
+						var title = event.feature.getProperty("title");
+						var category = event.feature.getProperty("category");
+						var subCategory = event.feature.getProperty("subcategory");
+						var $infoPanel = $('.infoPanel');
+						var html = '<h4>'+title+'</h4><p>'+subCategory+'</p><p>'+category+'</p>';
+						$('.infoPanel__content').html(html);
+						openInfoPanel();
+						$(".closeInfoPanel").click(closeInfoPanel);
+					});
+					map.data.setStyle(function(feature) {
+						var featureCategory = feature.getProperty('category').toLowerCase().replace(/\s+/g, '-');
+						return {
+							icon: 'img/markers/'+featureCategory+'.png'
+						};
+					});
 				} else {
-					// map.data.remove(dataFeature);
+    			$.each(markerFeatures[selectableCategory], function(i, feature) {
+    				map.data.remove(feature);
+				  });
 				}
-			})
+			// })
 		});
 	}
 
@@ -337,8 +337,8 @@ $(function() {
 		   	return r > -1;
 			}, true); // Change to false to invert the filter i.e. show 'bad' results
 			//console.log(cachedGeoJson);
-			map.data.setStyle({'visible': false});
-			var features = map.data.addGeoJson(cachedGeoJson, {idPropertyName:"id"});
+			//map.data.setStyle({'visible': false});
+			//var features = map.data.addGeoJson(cachedGeoJson, {idPropertyName:"id"});
 			addMarkers();
 			initSearch();
 			checkHash();
