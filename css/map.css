@@ -266,11 +266,17 @@ input[type=search] {
   }
   .c-map-header {
       height: 6rem;
-      padding: .5rem;
   }
 
   .map {
       height: calc(100vh - 9.5rem);
+  }
+  .c-map-header {
+      padding: .5rem 1rem;
+  }
+
+  .c-form {
+      margin: .25rem;
   }
 
  }
@@ -307,7 +313,6 @@ input[type=search] {
   }
   .c-map-header {
       height: 4rem;
-      padding: .5rem;
   }
 .map {
     height: calc(100vh - 7.5rem);
@@ -319,6 +324,10 @@ input[type=search] {
   }
   .c-main-header__logo {
       margin-top: .2rem;
+  }
+
+  .c-map-header {
+      padding: .5rem 1rem;
   }
 
 }
@@ -338,7 +347,7 @@ input[type=search] {
   }
 
   .c-main-header__logo {
-      margin-top: .25rem;
+      margin-top: .45rem;
   }
 
   .c-form__input, input[type=text] {
