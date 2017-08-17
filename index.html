@@ -6,31 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="author" content="University of York">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>Campus map, University of York</title>
-    <meta name="description" content="Outstanding teaching and research in a beautiful and historic European city. York is a member of the prestigious Russell Group of research-intensive UK Universities." />
-    <meta name="keywords" content="student life, city, campus, York, city of York, York campus" />
-    <meta property="og:title" content="University of York" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.york.ac.uk/" />
-    <meta property="og:image" content="https://www.york.ac.uk/static/data/homepage/images/campus-city/city-600px.jpg" />
-    <meta property="og:description" content="Outstanding teaching and research in a beautiful and historic European city. York is a member of the prestigious Russell Group of research-intensive UK Universities." />
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@uniofyork">
-    <meta name="twitter:title" content="University of York">
-    <meta name="twitter:description" content="Outstanding teaching and research in a beautiful and historic European city. York is a member of the prestigious Russell Group of research-intensive UK Universities.">
-    <meta name="twitter:creator" content="@uniofyork">
-    <meta name="twitter:image" content="https://www.york.ac.uk/static/data/homepage/images/campus-city/city-600px.jpg">
-    <link rel=”openorg” href="https://www.york.ac.uk/.well-known/profile.rdf" />
-    <link rel="search" type="application/opensearchdescription+xml" title="University of York" href="https://www.york.ac.uk/static/1.5/opensearch.xml">
 
     <link rel="shortcut icon" href="https://www.york.ac.uk/static/1.5/img/favicon.ico">
     <link rel="icon" type="image/x-icon" href="https://www.york.ac.uk/static/1.5/img/favicon.ico">
 
     <link rel="stylesheet" href="css/styles.min.css">
-    <link rel="stylesheet" href="css/map.css">
     <link rel="stylesheet" href="css/snazzy-info-window.css">
-
+    <link rel="stylesheet" href="css/map.css">
 
     <script src="https://www.york.ac.uk/static/1.5/js/modernizr.min.js"></script>
     <!-- <script src="js/app.min.js"></script> -->
@@ -58,26 +41,25 @@
 <header class="c-map-header" role="banner">
     <div class="o-wrapper o-wrapper--wide o-grid">
         <div class="o-grid__row">
-            <div class="o-grid__box o-grid__box--quarter is-hidden@tiny">
-                <h1 class="c-map-header__title">Campus map</h1>
-            </div>
-            <div class="o-grid__box o-grid__box--half ">
-                <form action="#" method="get" class="c-form c-form--joined" id="map-search-form">
-                    <fieldset>
-                      <div class="c-form__element">
-                        <input class="c-form__input c-form__input--text" type="search" id="map-search-query" name="search-query" placeholder="Enter your search" autocomplete="off" /></a>
-                        <div class="c-autocomplete">
-                          <ul class="c-autocomplete__list">
-                          </ul>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
-            <div class="o-grid__box o-grid__box--quarter is-hidden@tiny">
+                <div class="o-grid__box o-grid__box--quarter o-grid__box--third@medium is-hidden@tiny">
+                    <h1 class="c-map-header__title">Campus map</h1>
+                </div>
+                <div class="o-grid__box  o-grid__box--half o-grid__box--third@medium o-grid__box--twothirds@tiny">
+                    <form action="#" method="get" class="c-form" id="map-search-form">
+                        <fieldset>
+                          <div class="c-form__element">
+                            <input class="c-form__input c-form__input--text" type="search" id="map-search-query" name="search-query" placeholder="Enter your search" autocomplete="off" /></a>
+                            <div class="c-autocomplete">
+                              <ul class="c-autocomplete__list">
+                              </ul>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            <div class="o-grid__box o-grid__box--quarter o-grid__box--third@medium o-grid__box--third@tiny">
                  <a href="https://www.york.ac.uk/"><img class="c-main-header__logo" src="https://www.york.ac.uk/static/1.4/img/logo-white.svg" alt="University of York"></a>
             </div>
         </div>
-    </div>
     </div>
 </header>
 
@@ -96,44 +78,35 @@
     <div class="infoPanel__content"></div>
 </div>
 
-
-
-
 <footer class="footer">
-<div class="bar">
-    <a href="#" id="drawerStatusButton" ><i class="c-icon c-icon--above c-icon--chevron-up"></i>open</a>
-</div>
-<div class="o-wrapper o-wrapper--wide o-grid panel">
-  <div class="o-grid__row">
-      <div class="o-grid__box o-grid__box--full">
-
-        <div class="c-btn-group c-btn-group--block">
-            <input type="checkbox" id="food-and-drink" name="mapButton" class="c-btn--selectable" value="Food and drink">
-            <label for="food-and-drink" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--coffee"></i>Food and drink</label>
-            <input type="checkbox" id="study-spaces" name="mapButton" class="c-btn--selectable" value="Study spaces">
-            <label for="study-spaces" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--book"></i>Study spaces</label>
-            <input type="checkbox" id="printers" name="mapButton" class="c-btn--selectable" value="Printers">
-            <label for="printers" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--print"></i>Printers</label>
-            <input type="checkbox" id="shops" name="mapButton" class="c-btn--selectable" value="Shops">
-            <label for="shops" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--shopping-basket"></i>Shops</label>
-            <input type="checkbox" id="car-parks" name="mapButton" class="c-btn--selectable" value="Car parks">
-            <label for="car-parks" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--car"></i>Car parks</label>
-            <input type="checkbox" id="bus-stops" name="mapButton" class="c-btn--selectable" value="Bus stops">
-            <label for="bus-stops" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--bus"></i>Bus stops</label>
-            <input type="checkbox" id="cash-points" name="mapButton" class="c-btn--selectable" value="Cash points">
-            <label for="cash-points" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--money"></i>Cash points</label>
-            <input type="checkbox" id="post-boxes" name="mapButton" class="c-btn--selectable" value="Post boxes">
-            <label for="post-boxes" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--envelope"></i>Post boxes</label>
-        </div>
+    <div class="bar">
+        <a href="#" id="drawerStatusButton" ><i class="c-icon c-icon--above c-icon--chevron-up"></i>open</a>
     </div>
-  </div>
-</div>
-
+    <div class="o-wrapper o-wrapper--wide o-grid panel">
+      <div class="o-grid__row">
+          <div class="o-grid__box o-grid__box--full">
+            <div class="c-btn-group c-btn-group--block">
+                <input type="checkbox" id="food-and-drink" name="mapButton" class="c-btn--selectable" value="Food and drink">
+                <label for="food-and-drink" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--coffee"></i>Food and drink</label>
+                <input type="checkbox" id="study-spaces" name="mapButton" class="c-btn--selectable" value="Study spaces">
+                <label for="study-spaces" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--book"></i>Study spaces</label>
+                <input type="checkbox" id="printers" name="mapButton" class="c-btn--selectable" value="Printers">
+                <label for="printers" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--print"></i>Printers</label>
+                <input type="checkbox" id="shops" name="mapButton" class="c-btn--selectable" value="Shops">
+                <label for="shops" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--shopping-basket"></i>Shops</label>
+                <input type="checkbox" id="car-parks" name="mapButton" class="c-btn--selectable" value="Car parks">
+                <label for="car-parks" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--car"></i>Car parks</label>
+                <input type="checkbox" id="bus-stops" name="mapButton" class="c-btn--selectable" value="Bus stops">
+                <label for="bus-stops" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--bus"></i>Bus stops</label>
+                <input type="checkbox" id="cash-points" name="mapButton" class="c-btn--selectable" value="Cash points">
+                <label for="cash-points" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--money"></i>Cash points</label>
+                <input type="checkbox" id="post-boxes" name="mapButton" class="c-btn--selectable" value="Post boxes">
+                <label for="post-boxes" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--envelope"></i>Post boxes</label>
+            </div>
+        </div>
+      </div>
+    </div>
 </footer>
-
-
-
-
 
 
 </body>
