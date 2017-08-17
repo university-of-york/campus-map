@@ -352,7 +352,8 @@ input[type=search] {
 
   .c-form__input, input[type=text] {
     border: 0;
-    border-radius: 0px;
+    -webkit-appearance: none !important;
+    border-radius: 0 !important;
   }
   .c-form {
       border-top: 1px solid #eee;
