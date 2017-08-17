@@ -521,7 +521,7 @@ $(function() {
 				category: selectedFeature[0].properties.category || false,
 				subcategory: selectedFeature[0].properties.subcategory || false,
 				longdesc: selectedFeature[0].properties.longdesc || false,
-				content: '<h4>'+selectedTitle+'</h4>'+'<p><a id="more">More Information</a></p>'
+				content: '<h4>'+selectedTitle+'</h4>'+'<p><a class="si-content-more-link">More Information</a></p>' //fix in summer-2017 main
 			}
 
 			DeleteMarkers();
