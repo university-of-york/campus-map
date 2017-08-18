@@ -1,6 +1,7 @@
 $(function() {
 	// defaults
 	var GeoJSONFile = "https://york.funnelback.co.uk//s/search.html?collection=york-uni-campusmap&form=geojson&query=!padrenullquery&num_ranks=5000";
+	var mobileCentre = {lat: 53.9467, lng: -1.0543};
 	var cachedGeoJson = {};
 	var map;
 	var maxZoom = 18,
@@ -420,6 +421,11 @@ $(function() {
 			checkHash();
 		});
 
+		//centre map for mobile
+		google.maps.event.trigger(map, "resize");
+		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+			map.setCenter(mobileCentre);
+		}
 
 	} // end initMap
 
