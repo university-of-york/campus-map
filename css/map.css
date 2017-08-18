@@ -290,6 +290,8 @@ input[type=search] {
 
  }
 
+
+
 @media (min-width: 768px) and (orientation: portrait) {
     .map {
         height: calc(100vh - 11rem);
@@ -327,6 +329,23 @@ input[type=search] {
       height: calc(100vh - 8.5rem);
       top: 5rem;
    }
+}
+
+@media (min-width: 568px) and (orientation: landscape) {
+    .c-main-header__logo {
+        margin-top: 0;
+        width: 120px;
+        float: right;
+    }
+
+    .c-map-header {
+        padding: .5rem 1rem;
+    }
+
+    .c-map-header__title {
+       font-size: 1.5rem;
+       margin: .5rem 0;
+    }
 }
 
 @media (max-width: 767px) {
