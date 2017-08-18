@@ -359,11 +359,17 @@ input[type=search] {
       margin-top: .5rem;
   }
   .c-main-header__logo {
-      margin-top: .2rem;
+      margin-top: 0;
+      width: 120px;
+      float: right;
   }
 
   .c-map-header {
       padding: .5rem 1rem;
+  }
+  .c-map-header__title {
+     font-size: 1.5rem;
+     margin: .5rem 0;
   }
 
 }
