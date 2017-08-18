@@ -331,7 +331,7 @@ input[type=search] {
    }
 }
 
-@media (min-width: 568px) and (orientation: landscape) {
+@media (min-width: 568px) and (max-width: 1023px) and (orientation: landscape) {
     .c-main-header__logo {
         margin-top: 0;
         width: 120px;
