@@ -2,6 +2,7 @@ $(function() {
 
 	// defaults
 	var GeoJSONFile = "https://york.funnelback.co.uk//s/search.html?collection=york-uni-campusmap&form=geojson&query=!padrenullquery&num_ranks=5000";
+	var mobileCentre = {lat: 53.9467, lng: -1.0543};
 	var cachedGeoJson = {};
 	var map;
 	var maxZoom = 18,
@@ -420,6 +421,11 @@ $(function() {
 			// window.cachedGeoJson = cachedGeoJson;
 		});
 
+		//centre map for mobile
+		google.maps.event.trigger(map, "resize");
+		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+			map.setCenter(mobileCentre);
+		}
 
 	} // end initMap
 
@@ -532,7 +538,7 @@ $(function() {
 				category: selectedFeature[0].properties.category || false,
 				subcategory: selectedFeature[0].properties.subcategory || false,
 				longdesc: selectedFeature[0].properties.longdesc || false,
-				content: '<h4>'+selectedTitle+'</h4>'+'<p><a class="si-content-more-link">More Information</a></p>'
+				content: '<h4>'+selectedTitle+'</h4>'+'<p><a class="si-content-more-link">More Information</a></p>' //fix in summer-2017 main
 			}
 
 			DeleteMarkers();
@@ -654,17 +660,25 @@ $(function() {
 		return multiIndex(obj,is.split('.'))
 	}
 
-	// button drawer
-	$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
-	$("#open").click(function() {
-		if ($('#panel').css('display') == 'block') {
-			var height = '-='+$('#panel').height();
-			$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
+
+// button drawer
+	function drawerStatus(mode) {
+		if (mode ===  "open") {
+			$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i>open');
 		} else {
-			var height = '+='+$('#panel').height();
-			$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i> Find Facilities');
+			$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i>close');
 		}
-		$("#panel").slideToggle("slow");
+	}
+
+	$("#drawerStatusButton").click(function() {
+		if ($('.panel').css('display') == 'block') {
+			var height = '-=' + $('.panel').height();
+			drawerStatus('open');
+		} else {
+			var height = '+=' + $('.panel').height();
+			drawerStatus('close');
+		}
+		$(".panel").slideToggle("slow");
 	});
 
 
