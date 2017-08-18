@@ -6,7 +6,11 @@ body {
   width: 100%;
 }
 
-
+/*prevent safari styling on text input*/
+.c-form__input, input[type=text] {
+  -webkit-appearance: none !important;
+  border-radius: 0 !important;
+}
 
 .c-map-header {
     border-bottom: 2px solid #f9f9f9;
@@ -384,8 +388,6 @@ input[type=search] {
 
   .c-form__input, input[type=text] {
     border: 0;
-    -webkit-appearance: none !important;
-    border-radius: 0 !important;
   }
   .c-form {
       border-top: 1px solid #eee;
