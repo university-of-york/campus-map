@@ -406,12 +406,10 @@ $(function() {
 			   		r = phraseIndex;
 			   		return false;
 			   	}
-			   	// if (i === filterPhrases.length - 1) return true;
 			  });
 			  if (r > -1) return true;
 			  // Check lat and long to see if it's 0,0 (fake data)
 			  if (feature.geometry.coordinates[0] === 0 || feature.geometry.coordinates[1] === 0) {
-			  	console.log('Skip this feature', feature);
 			  	return true;
 			  }
 			}, true); // Change to false to invert the filter i.e. show 'bad' results
