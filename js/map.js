@@ -247,8 +247,6 @@ $(function() {
 			callbacks: {
 				afterOpen: function(){
 					$(".si-content-more-link").click(function(event) {
-						console.log(event);
-						//var mapContainer = document.getElementById('mapContainer');
 						var $infoPanel = $('.infoPanel');
 						var html = '<h3>'+opts.title+'</h3>';
 						if (opts.subtitle) html+= '<h4>'+opts.subtitle+'</h4>';
@@ -656,16 +654,16 @@ $(function() {
 	}
 
 	// button drawer
-	$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
-	$("#open").click(function() {
-		if ($('#panel').css('display') == 'block') {
-			var height = '-='+$('#panel').height();
-			$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
+	$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
+	$("#drawerStatusButton").click(function() {
+		if ($('.panel').css('display') == 'block') {
+			var height = '-='+$('.panel').height();
+			$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
 		} else {
-			var height = '+='+$('#panel').height();
-			$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i> Find Facilities');
+			var height = '+='+$('.panel').height();
+			$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i> Find Facilities');
 		}
-		$("#panel").slideToggle("slow");
+		$(".panel").slideToggle("slow");
 	});
 
 
