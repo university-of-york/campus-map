@@ -408,7 +408,12 @@ $(function() {
 			   	}
 			   	// if (i === filterPhrases.length - 1) return true;
 			  });
-		   	return r > -1;
+			  if (r > -1) return true;
+			  // Check lat and long to see if it's 0,0 (fake data)
+			  if (feature.geometry.coordinates[0] === 0 || feature.geometry.coordinates[1] === 0) {
+			  	console.log('Skip this feature', feature);
+			  	return true;
+			  }
 			}, true); // Change to false to invert the filter i.e. show 'bad' results
 			addMarkers();
 			initSearch();
@@ -455,7 +460,6 @@ $(function() {
 		searchGeoJson.features = $.grep(cachedGeoJson.features, function(feature) {
 			  return $.inArray(feature.properties.category, noSearchCategories) === -1;
 		});
-		console.log(searchGeoJson, cachedGeoJson);
 		var fuse = new Fuse(searchGeoJson.features, fuseOptions);
 
 		// Move selected item to next
