@@ -561,14 +561,15 @@ $(function() {
 			// Check if it's up, down, left, right, enter or tab
 			var keyCode = e.keyCode;
 			var stopReturn = false;
-			// console.log(keyCode);
+			var searchTerm = $searchQuery.val();
 			switch (keyCode) {
 				// Return
 				case 13:
-					// If there's a selected option, update value
-					submitForm();
-					stopReturn = true;
-					//$searchForm.submit();
+					if ($autocompleteList.children().length > 0 && searchTerm != '') {
+						// If there's a selected option, update value
+						submitForm();
+						stopReturn = true;
+					}
 					break;
 				case 38:
 					selectItem('up');
@@ -582,7 +583,6 @@ $(function() {
 			if (stopReturn === true) return false;
 
 			$autocompleteList.empty();
-			var searchTerm = $searchQuery.val();
 			var fuseResult = fuse.search(searchTerm);
 
 			if (fuseResult.length === 0) return false;
@@ -639,8 +639,9 @@ $(function() {
 
 		// Select all text when you click the input
 		// (much easier than deleting existing value)
-		$searchQuery.on('focus', function(e) {
-			$(this).select();
+		$searchQuery.on('focus click', function(e) {
+			var $this = $(this);
+			$this.select();
 		});
 
 		// Prevent form submit
