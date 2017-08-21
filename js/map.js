@@ -157,10 +157,11 @@ $(function() {
 					map.data.setStyle(function(feature) {
 						var featureCategory = feature.getProperty('category').toLowerCase().replace(/\s+/g, '-');
 						var icon = {
-						   path: markerOpts[featureCategory].path,
+						   //path: markerOpts[featureCategory].path,
+						   url: 'img/markers/'+featureCategory+'.svg',
 						   anchor: new google.maps.Point(10,10),
-						   //scaledSize: new google.maps.Size(20,20),
-						   scale: 0.010,
+						   scaledSize: new google.maps.Size(22,22),
+						   //scale: 0.010,
 						   fillOpacity: 1,
 						   fillColor: markerOpts[featureCategory].fillColour,
 						   strokeWeight: 1,
