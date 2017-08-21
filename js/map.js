@@ -160,7 +160,7 @@ $(function() {
 						   //path: markerOpts[featureCategory].path,
 						   url: 'img/markers/'+featureCategory+'.svg',
 						   anchor: new google.maps.Point(10,10),
-						   scaledSize: new google.maps.Size(22,22),
+						   scaledSize: new google.maps.Size(24,24),
 						   //scale: 0.010,
 						   fillOpacity: 1,
 						   fillColor: markerOpts[featureCategory].fillColour,
