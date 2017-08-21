@@ -2,7 +2,6 @@ $(function() {
 
 	// defaults
 	var GeoJSONFile = "https://york.funnelback.co.uk//s/search.html?collection=york-uni-campusmap&form=geojson&query=!padrenullquery&num_ranks=5000";
-	var mobileCentre = {lat: 53.9467, lng: -1.0543};
 	var cachedGeoJson = {};
 	var map;
 	var maxZoom = 18,
@@ -319,12 +318,11 @@ $(function() {
 	}
 
 	function createInfoPanel(location) {
-
 		var mapContainer = document.getElementById('mapContainer');
 		var $infoPanel = $('.infoPanel');
 		var html = '<h3>'+location.title+'</h3>';
 		if (location.subtitle !== false) html+= '<h4>'+location.subtitle+'</h4>';
-		// if (location.subcategory !== false) html+= '<p>'+location.subcategory+'</p>';
+		if (location.subcategory !== false) html+= '<p>'+location.subcategory+'</p>';
 		//if (location.category !== false) html+= '<p>'+location.category+'</p>';
 		if (location.longdesc !== false) html+= '<p>'+location.longdesc+'</p>';
 		html+= '<p><a class="locationMarker">Show building on map</a></p>';
@@ -351,12 +349,11 @@ $(function() {
 			title: selectedFeature[0].properties.title,
 			subtitle: selectedFeature[0].properties.subtitle,
 			latlng: new google.maps.LatLng(parseFloat(selectedFeature[0].geometry.coordinates[1]), parseFloat(selectedFeature[0].geometry.coordinates[0])),
-			// category: selectedFeature[0].properties.category || false,
-			// subcategory: selectedFeature[0].properties.subcategory || false,
+			category: selectedFeature[0].properties.category || false,
+			subcategory: selectedFeature[0].properties.subcategory || false,
 			longdesc: selectedFeature[0].properties.longdesc || false,
 			content: '<h4>'+selectedFeature[0].properties.title+'</h4>'+'<p><a class="si-content-more-link">More Information</a></p>'
 		}
-
 		// Drop pin and inforWindow on map
 		if (location.category === "Room") {
 			createInfoPanel(location);
@@ -423,11 +420,6 @@ $(function() {
 			// window.cachedGeoJson = cachedGeoJson;
 		});
 
-		//centre map for mobile
-		google.maps.event.trigger(map, "resize");
-		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-			map.setCenter(mobileCentre);
-		}
 
 	} // end initMap
 
@@ -540,7 +532,7 @@ $(function() {
 				category: selectedFeature[0].properties.category || false,
 				subcategory: selectedFeature[0].properties.subcategory || false,
 				longdesc: selectedFeature[0].properties.longdesc || false,
-				content: '<h4>'+selectedTitle+'</h4>'+'<p><a class="si-content-more-link">More Information</a></p>' //fix in summer-2017 main
+				content: '<h4>'+selectedTitle+'</h4>'+'<p><a class="si-content-more-link">More Information</a></p>'
 			}
 
 			DeleteMarkers();
@@ -662,25 +654,17 @@ $(function() {
 		return multiIndex(obj,is.split('.'))
 	}
 
-
-// button drawer
-	function drawerStatus(mode) {
-		if (mode ===  "open") {
-			$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i>open');
+	// button drawer
+	$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
+	$("#open").click(function() {
+		if ($('#panel').css('display') == 'block') {
+			var height = '-='+$('#panel').height();
+			$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
 		} else {
-			$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i>close');
+			var height = '+='+$('#panel').height();
+			$('.open').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i> Find Facilities');
 		}
-	}
-
-	$("#drawerStatusButton").click(function() {
-		if ($('.panel').css('display') == 'block') {
-			var height = '-=' + $('.panel').height();
-			drawerStatus('open');
-		} else {
-			var height = '+=' + $('.panel').height();
-			drawerStatus('close');
-		}
-		$(".panel").slideToggle("slow");
+		$("#panel").slideToggle("slow");
 	});
 
 
