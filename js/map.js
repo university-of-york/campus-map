@@ -138,6 +138,7 @@ $(function() {
 						var subTitle = event.feature.getProperty("subtitle");
 						var category = event.feature.getProperty("category");
 						var subCategory = event.feature.getProperty("subcategory");
+						var shortdesc = event.feature.getProperty("shortdesc");
 						var longdesc = event.feature.getProperty("longdesc");
 						var location = {
 							title: title,
@@ -145,6 +146,7 @@ $(function() {
 							latlng: event.feature.getGeometry().get(),
 							category: category,
 							subcategory: subCategory,
+							shortdesc: shortdesc,
 							longdesc: longdesc,
 							content: '<h4>'+title+'</h4>'+'<p><a class="si-content-more-link">More Information</a></p>'
 						}
@@ -256,7 +258,9 @@ $(function() {
 						console.log(event);
 						//var mapContainer = document.getElementById('mapContainer');
 						var $infoPanel = $('.infoPanel');
-						var html = '<h4>'+opts.title+'</h4>';
+						var html = '<h3>'+opts.title+'</h3>';
+						if (opts.subtitle) html+= '<h4>'+opts.subtitle+'</h4>';
+						if (opts.shortdesc) html+= '<p>'+opts.shortdesc+'</p>';
 						if (opts.longdesc) html+= '<p>'+opts.longdesc+'</p>';
 						$('.infoPanel__content').html(html);
 						openInfoPanel();
@@ -280,6 +284,7 @@ $(function() {
 			var subTitle = location.subtitle || false;
 			var subCategory = location.subcategory || false;
 			var category = location.category || false;
+			var shortdesc = location.shortdesc || false;
 			var longdesc = location.longdesc || false;
 			if (category === "Room") {
 				var content = '<h4>'+title+'</h4>';
@@ -301,9 +306,11 @@ $(function() {
 			map.panTo(marker.position);
 			var thisOptions = snazzyOptions({
 				title: title,
+				subtitle: subTitle,
 				subCategory: subCategory,
 				category: category,
 				marker: marker,
+				shortdesc: shortdesc,
 				longdesc: longdesc,
 				content: content
 			});
@@ -322,8 +329,7 @@ $(function() {
 		var $infoPanel = $('.infoPanel');
 		var html = '<h3>'+location.title+'</h3>';
 		if (location.subtitle !== false) html+= '<h4>'+location.subtitle+'</h4>';
-		if (location.subcategory !== false) html+= '<p>'+location.subcategory+'</p>';
-		//if (location.category !== false) html+= '<p>'+location.category+'</p>';
+		if (location.shortdesc !== false) html+= '<p>'+location.shortdesc+'</p>';
 		if (location.longdesc !== false) html+= '<p>'+location.longdesc+'</p>';
 		html+= '<p><a class="locationMarker">Show building on map</a></p>';
 		$('.infoPanel__content').html(html);
@@ -349,8 +355,7 @@ $(function() {
 			title: selectedFeature[0].properties.title,
 			subtitle: selectedFeature[0].properties.subtitle,
 			latlng: new google.maps.LatLng(parseFloat(selectedFeature[0].geometry.coordinates[1]), parseFloat(selectedFeature[0].geometry.coordinates[0])),
-			category: selectedFeature[0].properties.category || false,
-			subcategory: selectedFeature[0].properties.subcategory || false,
+			shortdesc: selectedFeature[0].properties.shortdesc || false,
 			longdesc: selectedFeature[0].properties.longdesc || false,
 			content: '<h4>'+selectedFeature[0].properties.title+'</h4>'+'<p><a class="si-content-more-link">More Information</a></p>'
 		}
@@ -531,6 +536,7 @@ $(function() {
 				latlng: new google.maps.LatLng(parseFloat(selectedFeature[0].geometry.coordinates[1]), parseFloat(selectedFeature[0].geometry.coordinates[0])),
 				category: selectedFeature[0].properties.category || false,
 				subcategory: selectedFeature[0].properties.subcategory || false,
+				shortdesc: selectedFeature[0].properties.shortdesc || false,
 				longdesc: selectedFeature[0].properties.longdesc || false,
 				content: '<h4>'+selectedTitle+'</h4>'+'<p><a class="si-content-more-link">More Information</a></p>'
 			}
