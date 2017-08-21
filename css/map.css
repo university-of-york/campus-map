@@ -274,8 +274,7 @@ input[type=search] {
   position: absolute;
   left: 0;
   top: 5rem;
-  overflow-y: scroll;
-
+  overflow-y: auto;
 }
 .infoPanel.is-open {
   width:25%;
@@ -290,6 +289,11 @@ input[type=search] {
 }
 .infoPanel__content a:hover {
   text-decoration: underline;
+}
+.closeInfoPanel {
+  position:absolute;
+  top:10px;
+  right:13px;
 }
 
 @media (min-width: 768px) and (max-width: 1199px) {
