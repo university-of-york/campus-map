@@ -185,6 +185,9 @@ body {
 
 
 /* SNAZZY INFO BOX CHANGES */
+.si-content {
+  font-family: museo-sans,Helvetica,Arial,sans-serif;
+}
 .si-content :last-child {
   margin-bottom:0;
 }

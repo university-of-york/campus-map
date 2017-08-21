@@ -65,24 +65,24 @@ $(function() {
 
 	// load the map
 	function loadMap() {
-			return new google.maps.Map(document.getElementById('map'), {
-					zoom: defaultZoom,
-					maxZoom: maxZoom,
-					minZoom: minZoom,
-					center: heslington,
-					zoomControl: true,
-					zoomControlOptions: {
-							position: google.maps.ControlPosition.LEFT_TOP
-					},
-					scaleControl: true,
-					streetViewControl: true,
-					streetViewControlOptions: {
-							position: google.maps.ControlPosition.LEFT_TOP
-					},
-					fullscreenControl: false,
-					disableDefaultUI: true,
-					gestureHandling: "greedy"
-			});
+		return new google.maps.Map(document.getElementById('map'), {
+			zoom: defaultZoom,
+			maxZoom: maxZoom,
+			minZoom: minZoom,
+			center: heslington,
+			zoomControl: true,
+			zoomControlOptions: {
+				position: google.maps.ControlPosition.LEFT_TOP
+			},
+			scaleControl: true,
+			streetViewControl: true,
+			streetViewControlOptions: {
+				position: google.maps.ControlPosition.LEFT_TOP
+			},
+			fullscreenControl: false,
+			disableDefaultUI: true,
+			gestureHandling: "greedy"
+		});
 	}
 
 	// load UoY tiles
@@ -184,7 +184,7 @@ $(function() {
 		markers = [];
 	};
 
-	function customControls(map) {
+	function customControls() {
 			//custom control - reset button
 			var controlDiv = $("#control-div");
 			var controlUI = $("#control-ui");
@@ -198,7 +198,26 @@ $(function() {
 			map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv[0]);
 	}
 
-	function clickAnywherePanelClose(map) {
+	// zoom to CE & CW (mobile), CE, CW and KM (desktop)
+	function setZoomBounds() {
+		var bounds;
+		if ($(window).width() > 500) {
+			// CW south, KM west, CE east, KM north
+			bounds = new google.maps.LatLngBounds(
+				new google.maps.LatLng(53.943157, -1.086725),
+				new google.maps.LatLng(53.962789, -1.024085)
+			);
+		} else {
+			// CW south and west, CE north and east
+			bounds = new google.maps.LatLngBounds(
+				new google.maps.LatLng(53.943157, -1.058537),
+				new google.maps.LatLng(53.950877, -1.024085)
+			);
+		}
+		map.fitBounds(bounds);
+	}
+
+	function clickAnywherePanelClose() {
 		// click anywhere to close an InfoPanel
 		return google.maps.event.addListener(map, 'click', function() {
 			closeInfoPanel();
@@ -372,16 +391,19 @@ $(function() {
 		// load the map
 		map = loadMap();
 
+		// add custom controls
+		setZoomBounds();
+
 		// load the tiles
 		var yorkTiles = loadYorkTiles();
 		map.mapTypes.set('campus', yorkTiles);
 		map.setMapTypeId('campus');
 
 		// add custom controls
-		customControls(map);
+		customControls();
 
 		//close infoPanel by clicking anywhere
-		clickAnywherePanelClose(map);
+		clickAnywherePanelClose();
 
 		// Load GeoJSON.
 		$.getJSON(GeoJSONFile).then(function(data){
