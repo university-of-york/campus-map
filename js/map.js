@@ -319,11 +319,12 @@ $(function() {
 	}
 
 	function createInfoPanel(location) {
+
 		var mapContainer = document.getElementById('mapContainer');
 		var $infoPanel = $('.infoPanel');
 		var html = '<h3>'+location.title+'</h3>';
 		if (location.subtitle !== false) html+= '<h4>'+location.subtitle+'</h4>';
-		if (location.subcategory !== false) html+= '<p>'+location.subcategory+'</p>';
+		// if (location.subcategory !== false) html+= '<p>'+location.subcategory+'</p>';
 		//if (location.category !== false) html+= '<p>'+location.category+'</p>';
 		if (location.longdesc !== false) html+= '<p>'+location.longdesc+'</p>';
 		html+= '<p><a class="locationMarker">Show building on map</a></p>';
@@ -350,11 +351,12 @@ $(function() {
 			title: selectedFeature[0].properties.title,
 			subtitle: selectedFeature[0].properties.subtitle,
 			latlng: new google.maps.LatLng(parseFloat(selectedFeature[0].geometry.coordinates[1]), parseFloat(selectedFeature[0].geometry.coordinates[0])),
-			category: selectedFeature[0].properties.category || false,
-			subcategory: selectedFeature[0].properties.subcategory || false,
+			// category: selectedFeature[0].properties.category || false,
+			// subcategory: selectedFeature[0].properties.subcategory || false,
 			longdesc: selectedFeature[0].properties.longdesc || false,
 			content: '<h4>'+selectedFeature[0].properties.title+'</h4>'+'<p><a class="si-content-more-link">More Information</a></p>'
 		}
+
 		// Drop pin and inforWindow on map
 		if (location.category === "Room") {
 			createInfoPanel(location);

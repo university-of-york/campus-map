@@ -12,6 +12,12 @@ body {
   border-radius: 0 !important;
 }
 
+/*streetview info caption*/
+.gm-iv-address {
+    height: 56px !important;
+    min-width: 200px !important;
+}
+
 .c-map-header {
     border-bottom: 2px solid #f9f9f9;
     background-color: #0f3d4c;
