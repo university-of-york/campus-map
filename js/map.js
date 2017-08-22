@@ -184,19 +184,36 @@ $(function() {
 		markers = [];
 	};
 
-	function customControls() {
-			//custom control - reset button
-			var controlDiv = $("#control-div");
-			var controlUI = $("#control-ui");
-			var controlText = $("#control-text");
-			controlUI.click(function() {
-					map.setCenter(heslington);
-					map.setZoom(defaultZoom);
-					DeleteMarkers();
-			});
-			controlDiv.index = 1;
-			map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv[0]);
+	function customResetControl(map) {
+	        //custom control - reset button
+	        var controlDiv = $("#control-reset-div");
+	        var controlUI = $("#control-reset-ui");
+	        var controlText = $("#control-reset-text");
+	        controlUI.click(function() {
+	                map.setCenter(heslington);
+	                map.setZoom(defaultZoom);
+	                DeleteMarkers();
+	        });
+	        controlDiv.index = 1;
+	        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv[0]);
 	}
+
+	function customFeedbackControl(map) {
+	        //custom control - feedback button
+	        var controlFDiv = $("#control-feedback-div");
+	        var controlFUI = $("#control-feedback-ui");
+	        var controlFText = $("#control-feedback-text");
+	        controlFUI.click(function() {
+	            var mapContainer = document.getElementById('mapContainer');
+	            var $infoPanel = $('.infoPanel');
+	            $('.infoPanel__content').html('<iframe src="https://uni_york.formstack.com/forms/campus_map_feedback" title="Campus map feedback" width="100%" height="900"></iframe>');
+	            openInfoPanel();
+	            $(".closeInfoPanel").click(closeInfoPanel);
+	        });
+	        controlFDiv.index = 1;
+	        map.controls[google.maps.ControlPosition.TOP_LEFT].push(controlFDiv[0]);
+	}
+
 
 	// zoom to CE & CW (mobile), CE, CW and KM (desktop)
 	function setZoomBounds() {
@@ -400,7 +417,8 @@ $(function() {
 		map.setMapTypeId('campus');
 
 		// add custom controls
-		customControls();
+		customResetControl(map);
+		customFeedbackControl(map);
 
 		//close infoPanel by clicking anywhere
 		clickAnywherePanelClose();

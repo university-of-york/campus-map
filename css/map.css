@@ -112,18 +112,31 @@ body {
   background-color:#fff;
   cursor: pointer;
   height: 2.5em;
+  margin-bottom: .5em;
   margin-top: .5em;
   margin-right: .5em;
   text-align: center;
   user-select: none;
   width: 4em;
 }
+
+
 .control-text{
   font-size: 12px;
   padding: .5em 0 .5em 0;
   user-select: none;
 }
 
+.control-ui--feedback{
+  background-color:  #0f3d4c;
+  color: #f4f4f4;
+  font-weight: bold;
+  height: 3em;
+  margin-bottom: .5em;
+  margin-left: .5em;
+  padding: 0.25em;
+  width: 4.5em;
+}
 .c-btn--selectable__label {
   background-color: #0f3d4c;
   border-bottom: 1px solid #26505d;
@@ -272,7 +285,7 @@ input[type=search] {
   color: #fff;
   display: none;
   height: calc(100vh - 8.5rem);
-  padding: 2rem;
+  padding: 2rem 1rem;
   width: 0%;
   position: absolute;
   left: 0;
