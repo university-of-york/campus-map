@@ -199,7 +199,7 @@ $(function() {
 	}
 
 	// zoom to CE & CW (mobile), CE, CW and KM (desktop)
-	function setZoomBounds() {
+	function setBounds() {
 		var bounds;
 		if ($(window).width() > 500) {
 			// CW south, KM west, CE east, KM north
@@ -391,8 +391,8 @@ $(function() {
 		// load the map
 		map = loadMap();
 
-		// add custom controls
-		setZoomBounds();
+		// fit to campuses
+		setBounds();
 
 		// load the tiles
 		var yorkTiles = loadYorkTiles();
