@@ -37,7 +37,7 @@ body {
   text-align:left;
 }
 .c-map-header .c-utility-nav__item {
-  font-size:0.8rem;
+ font-size:0.8rem;   /*0.75rem improves iPad - maybe add to a media query*/
 }
 .c-map-header .c-utility-nav__link {
   color:#fff;
@@ -85,6 +85,11 @@ body {
 }
 
 
+.panel.is-open {
+  width:25%;
+  display:block;
+}
+
 
 .c-btn-group {
     margin: 0;
@@ -112,7 +117,8 @@ body {
 .control-ui{
   background-color:#fff;
   cursor: pointer;
-  height: 2.5em;
+  font-size: 12px;
+  height: 2em;
   margin-bottom: .5em;
   margin-top: .5em;
   margin-right: .5em;
@@ -123,21 +129,25 @@ body {
 
 
 .control-text{
-  font-size: 12px;
-  padding: .5em 0 .5em 0;
+  padding: .5em;
   user-select: none;
 }
 
 .control-ui--feedback{
-  background-color:  #0f3d4c;
-  color: #f4f4f4;
-  font-weight: bold;
-  height: 3em;
+  /*border: 1px solid #caccb8;*/
+  border-radius: 0.4em;
+  background-color: #00546e;
+  color: #fdfdfd;
+  font-family: museo-sans,Helvetica,Arial,sans-serif;
+  font-size: 0.75rem;
+  /*font-weight: 400;*/
+  height: 2.125em;
   margin-bottom: .5em;
-  margin-left: .5em;
-  padding: 0.25em;
-  width: 4.5em;
+  margin-left: 1em;
+  margin-top: .5em;
+  /*width: 4em;*/
 }
+
 .c-btn--selectable__label {
   background-color: #0f3d4c;
   border-bottom: 1px solid #26505d !important;
