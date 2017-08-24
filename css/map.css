@@ -150,6 +150,8 @@ body {
 
 }
 
+
+
 .c-btn--selectable__label {
   background-color: #0f3d4c;
   border-bottom: 1px solid #26505d !important;
@@ -325,6 +327,14 @@ input[type=search] {
   right:13px;
 }
 
+
+
+.infoPanel__content iframe {
+    border: 0;
+}
+
+
+
 @media (min-width: 768px) and (max-width: 1199px) {
   .infoPanel.is-open {
     width:40%;
@@ -376,7 +386,8 @@ input[type=search] {
    }
 }
 
-@media (min-width: 1366px) and (orientation: landscape) {
+/*@media (min-width: 1366px) and (orientation: landscape) {*/
+@media (min-width: 1200px) and (orientation: landscape) { /*fixes height issue at around 1200px*/
     .map {
         height: calc(100vh - 8.5rem);
     }
