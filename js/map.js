@@ -255,11 +255,33 @@ $(function() {
 		}
 	}
 
-	function showPosition(position) {
-		var lat = position.coords.latitude;
-		var lng = position.coords.longitude;
-		return	new google.maps.LatLng(lat, lng);
+	// function showPosition(position) {
+	// 	var lat = position.coords.latitude;
+	// 	var lng = position.coords.longitude;
+	// 	return	new google.maps.LatLng(lat, lng);
+	// }
+
+	function showPosition() {
+		//copy and paste this in your script section.
+		if (navigator.geolocation) {
+		    navigator.geolocation.getCurrentPosition(success, error);
+		} else {
+		    alert('location not supported');
+		}
+
+		//callbacks
+		function error(msg) {
+		    alert('error in geolocation');
+		}
+
+		function success(position) {
+		    var lats = position.coords.latitude;
+		    var lngs = position.coords.longitude;
+		    alert(lats);
+		    alert(lngs)
+		};
 	}
+
 
 	function snazzyOptions(opts) {
 		return {
@@ -267,7 +289,7 @@ $(function() {
 			content: opts.content,
 			placement: 'top',
 			showCloseButton: true,
-			closeOnMapClick: true,
+			closeOnMapClick: false,
 			padding: '28px',
 			backgroundColor: 'rgba(15, 61, 76, 0.9)',
 			border: false,
@@ -422,7 +444,7 @@ $(function() {
 		customFeedbackControl(map);
 
 		//close infoPanel by clicking anywhere
-		//clickAnywherePanelClose();
+		clickAnywherePanelClose();
 
 		// Load GeoJSON.
 		$.getJSON(GeoJSONFile).then(function(data){
@@ -695,35 +717,17 @@ $(function() {
 	}
 
 	// button drawer
-	// function drawerStatus(mode) {
-	// 	if (mode ===  "open") {
-	// 		$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i>open');
-	// 		var height = '-=' + $('.panel').height();
-	// 	} else {
-	// 		$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i>close');
-	// 		var height = '+=' + $('.panel').height();
-	// 	}
-	// }
-
-	function drawerOpen() {
-		$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i>Find Facilities');
-		var height = '-=' + $('.panel').height();
-	}
-	function drawerClose() {
-		$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i>close');
-		var height = '+=' + $('.panel').height();
-
-	}
-	$("#drawerStatusButton").click(function() {
-		if ($('.panel').css('display') == 'block') {
-			// drawerStatus('open');
-			drawerOpen();
-		} else {
-			// drawerStatus('close');
-			drawerClose();
-		}
-		$(".panel").slideToggle("slow");
-	});
+		$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
+		$("#drawerStatusButton").click(function() {
+			if ($('.panel').css('display') == 'block') {
+				var height = '-='+$('.panel').height();
+				$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
+			} else {
+				var height = '+='+$('.panel').height();
+				$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i> Find Facilities');
+			}
+			$(".panel").slideToggle("slow");
+		});
 
 
 
