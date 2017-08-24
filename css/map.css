@@ -131,6 +131,7 @@ body {
 .control-text{
   padding: .5em;
   user-select: none;
+  cursor: pointer;
 }
 
 .control-ui--feedback{
@@ -146,6 +147,7 @@ body {
   margin-left: 1em;
   margin-top: .5em;
   /*width: 4em;*/
+
 }
 
 .c-btn--selectable__label {
