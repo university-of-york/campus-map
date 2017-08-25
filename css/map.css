@@ -4,6 +4,7 @@ body {
   margin:0;
   padding:0;
   width: 100%;
+
 }
 
 /*prevent safari styling on text input*/
@@ -328,7 +329,7 @@ input[type=search] {
 }
 
 
-
+/*remove border from formstack iframe*/
 .infoPanel__content iframe {
     border: 0;
 }
