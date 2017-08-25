@@ -267,7 +267,7 @@ $(function() {
 			content: opts.content,
 			placement: 'top',
 			showCloseButton: true,
-			closeOnMapClick: true,
+			closeOnMapClick: false,
 			padding: '28px',
 			backgroundColor: 'rgba(15, 61, 76, 0.9)',
 			border: false,
