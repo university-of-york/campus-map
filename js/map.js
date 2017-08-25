@@ -255,33 +255,11 @@ $(function() {
 		}
 	}
 
-	// function showPosition(position) {
-	// 	var lat = position.coords.latitude;
-	// 	var lng = position.coords.longitude;
-	// 	return	new google.maps.LatLng(lat, lng);
-	// }
-
-	function showPosition() {
-		//copy and paste this in your script section.
-		if (navigator.geolocation) {
-		    navigator.geolocation.getCurrentPosition(success, error);
-		} else {
-		    alert('location not supported');
-		}
-
-		//callbacks
-		function error(msg) {
-		    alert('error in geolocation');
-		}
-
-		function success(position) {
-		    var lats = position.coords.latitude;
-		    var lngs = position.coords.longitude;
-		    alert(lats);
-		    alert(lngs)
-		};
+	function showPosition(position) {
+		var lat = position.coords.latitude;
+		var lng = position.coords.longitude;
+		return	new google.maps.LatLng(lat, lng);
 	}
-
 
 	function snazzyOptions(opts) {
 		return {
@@ -289,7 +267,7 @@ $(function() {
 			content: opts.content,
 			placement: 'top',
 			showCloseButton: true,
-			closeOnMapClick: false,
+			closeOnMapClick: true,
 			padding: '28px',
 			backgroundColor: 'rgba(15, 61, 76, 0.9)',
 			border: false,
