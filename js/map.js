@@ -190,8 +190,9 @@ $(function() {
 	        var controlUI = $("#control-reset-ui");
 	        var controlText = $("#control-reset-text");
 	        controlUI.click(function() {
-	                map.setCenter(heslington);
-	                map.setZoom(defaultZoom);
+	                // map.setCenter(heslington);
+	                // map.setZoom(defaultZoom);
+					setZoomBounds();
 	                DeleteMarkers();
 	        });
 	        controlDiv.index = 1;
