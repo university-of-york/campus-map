@@ -7,6 +7,30 @@ body {
 
 }
 
+.wrapper {
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: calc(100% - 3.5rem);
+    position: relative;
+}
+
+@media (min-width: 768px) {
+    .wrapper {
+        min-height: calc(100% - 5.5rem);
+    }
+}
+
+@media (min-width: 923px) {
+    .wrapper {
+        min-height: calc(100% - 4rem);
+    }
+}
+
+.map {
+    flex: 1 1 auto;
+}
+
 /*prevent safari styling on text input*/
 .c-form__input, input[type=text] {
   -webkit-appearance: none !important;
@@ -48,16 +72,6 @@ body {
 .c-map-header .c-utility-nav__item:first-of-type .c-utility-nav__link {
   padding-left:0;
 }
-
-.c-map-container {
-  position: relative;
-
-}
-
-.map {
-    height: calc(100vh - 8.5rem);
-}
-
 
 .footer {
   bottom: 0;
@@ -136,18 +150,15 @@ body {
 }
 
 .control-ui--feedback{
-  /*border: 1px solid #caccb8;*/
   border-radius: 0.4em;
   background-color: #00546e;
   color: #fdfdfd;
   font-family: museo-sans,Helvetica,Arial,sans-serif;
   font-size: 0.75rem;
-  /*font-weight: 400;*/
   height: 2.125em;
   margin-bottom: .5em;
   margin-left: 1em;
   margin-top: .5em;
-  /*width: 4em;*/
 
 }
 
@@ -287,13 +298,6 @@ input[type=search] {
   color:#ddd;
 }
 
-/*debatable?*/
-/*@media (max-width: 767px) and (orientation: portrait) {
-    .c-autocomplete {
-        width: 155%;
-    }
-}*/
-
 /* ========================================================================== */
 
 .infoPanel {
@@ -359,9 +363,6 @@ input[type=search] {
 
 
 @media (min-width: 768px) and (orientation: portrait) {
-    .map {
-        height: calc(100vh - 11rem);
-    }
     .infoPanel {
       height: calc(100vh - 10rem);
       top: 6rem;
@@ -369,29 +370,21 @@ input[type=search] {
 }
 
 @media (min-width: 1024px) and (orientation: portrait) {
-    .map {
-        height: calc(100vh - 9.5rem);
-    }
+
     .infoPanel {
       height: calc(100vh - 9.5rem);
   }
 }
 
 @media (min-width: 1024px) and (orientation: landscape) {
-    .map {
-        height: calc(100vh - 8.5rem);
-    }
     .infoPanel {
       height: calc(100vh - 8.5rem);
       top: 6rem;
    }
 }
 
-/*@media (min-width: 1366px) and (orientation: landscape) {*/
 @media (min-width: 1200px) and (orientation: landscape) { /*fixes height issue at around 1200px*/
-    .map {
-        height: calc(100vh - 8.5rem);
-    }
+
     .infoPanel {
       height: calc(100vh - 8.5rem);
       top: 5rem;
@@ -436,9 +429,7 @@ input[type=search] {
   .c-map-header {
       height: 4rem;
   }
-.map {
-    height: calc(100vh - 7.5rem);
-}
+
 
   .c-form {
       padding: 0;
@@ -462,9 +453,6 @@ input[type=search] {
 
 
 @media (max-width: 400px) {
-
-
-
   .c-form {
     padding: 0;
     margin-top: .5rem;

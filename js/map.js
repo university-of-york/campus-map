@@ -151,7 +151,7 @@ $(function() {
 						var icon = {
 						   url: 'img/markers/'+featureCategory+'.svg',
 						   anchor: new google.maps.Point(10,10),
-						   scaledSize: new google.maps.Size(24,24),
+						   scaledSize: new google.maps.Size(22,22),
 						   //scale: 0.010,
 						   fillOpacity: 1,
 						   fillColor: markerOpts[featureCategory].fillColour,
