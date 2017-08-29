@@ -204,7 +204,6 @@ $(function() {
 	        var controlFUI = $("#control-feedback-ui");
 	        var controlFText = $("#control-feedback-text");
 	        controlFUI.click(function() {
-	            var mapContainer = document.getElementById('mapContainer');
 	            var $infoPanel = $('.infoPanel');
 	            $('.infoPanel__content').html('<iframe src="https://uni_york.formstack.com/forms/campus_map_feedback" title="Campus map feedback" width="100%" height="900"></iframe>');
 	            openInfoPanel();
@@ -351,7 +350,6 @@ $(function() {
 	}
 
 	function createInfoPanel(location) {
-		var mapContainer = document.getElementById('mapContainer');
 		var $infoPanel = $('.infoPanel');
 		var html = '<h3>'+location.title+'</h3>';
 		if (location.subtitle !== false) html+= '<h4>'+location.subtitle+'</h4>';
