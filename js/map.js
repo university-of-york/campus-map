@@ -25,44 +25,6 @@ $(function() {
 	};
 	var markers = [];
 
-	// marker icon settings
-	var markerOpts = {
-		"food-and-drink": {
-			fillColour: "#f9f9f9",
-			strokeColour: "#000"
-		},
-		"study-spaces": {
-			fillColour: "#a23479",
-			strokeColour: "#000"
-		},
-		"printers": {
-			fillColour: "#000",
-			strokeColour: "#000"
-		},
-		"shops": {
-			fillColour: "#e4b53c",
-			strokeColour: "#000"
-		},
-		"bus-stops": {
-			fillColour: "#9C5A9C",
-			strokeColour: "#843284"
-		},
-		"car-parks": {
-			fillColour: "#00b3eb",
-			strokeColour: "#005975"
-		},
-		"cash-machines": {
-			fillColour: "#009900",
-			strokeColour: "#000"
-		},
-		"post-boxes": {
-			fillColour: "#A31919",
-			strokeColour: "#000"
-		}
-	}
-
-
-
 	// load the map
 	function loadMap() {
 		return new google.maps.Map(document.getElementById('map'), {
@@ -151,16 +113,11 @@ $(function() {
 						var icon = {
 						   url: 'img/markers/'+featureCategory+'.svg',
 						   anchor: new google.maps.Point(10,10),
-						   scaledSize: new google.maps.Size(22,22),
-						   //scale: 0.010,
-						   fillOpacity: 1,
-						   fillColor: markerOpts[featureCategory].fillColour,
-						   strokeWeight: 1,
-						   strokeColor: markerOpts[featureCategory].strokeColour
-
+						   scaledSize: new google.maps.Size(22,22)
 					   }
 						return {
-							icon: icon
+							icon: icon,
+							optimized: false
 						};
 					});
 				} else {

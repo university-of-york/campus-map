@@ -11,19 +11,19 @@ body {
     display:flex;
     flex-direction: column;
     justify-content: flex-start;
-    min-height: calc(100% - 3.5rem);
+    height:calc(100% - 3.5rem); /* for IE 10 & 11 benefit don't use min-height */
     position: relative;
 }
 
 @media (min-width: 768px) {
     .wrapper {
-        min-height: calc(100% - 5.5rem);
+        height: calc(100% - 5.5rem);  /* for IE 10 & 11 benefit don't use min-height */
     }
 }
 
 @media (min-width: 923px) {
     .wrapper {
-        min-height: calc(100% - 4rem);
+        height: calc(100% - 4rem);  /* for IE 10 & 11 benefit don't use min-height */
     }
 }
 
@@ -63,7 +63,7 @@ body {
   text-align:left;
 }
 .c-map-header .c-utility-nav__item {
- font-size:0.8rem;   /*0.75rem improves iPad - maybe add to a media query*/
+ font-size:0.8rem;   /*0.75rem improves iPad - maybe add to a media query - DONE*/
 }
 .c-map-header .c-utility-nav__link {
   color:#fff;
@@ -352,7 +352,11 @@ input[type=search] {
   }
 
   .c-map-header {
-      padding: .5rem 1rem;
+      padding: .5rem; /* adjusted for iPad */
+  }
+
+  .c-map-header .c-utility-nav__item {
+   font-size:0.75rem;
   }
 
   .c-form {
