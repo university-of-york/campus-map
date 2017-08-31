@@ -34,12 +34,12 @@ $(function() {
 			center: heslington,
 			zoomControl: true,
 			zoomControlOptions: {
-				position: google.maps.ControlPosition.LEFT_TOP
+				position: google.maps.ControlPosition.RIGHT_TOP
 			},
 			scaleControl: true,
 			streetViewControl: true,
 			streetViewControlOptions: {
-				position: google.maps.ControlPosition.LEFT_TOP
+				position: google.maps.ControlPosition.RIGHT_TOP
 			},
 			fullscreenControl: false,
 			disableDefaultUI: true,
@@ -163,7 +163,7 @@ $(function() {
 	        var controlFText = $("#control-feedback-text");
 	        controlFUI.click(function() {
 	            var $infoPanel = $('.infoPanel');
-	            $('.infoPanel__content').html('<iframe src="https://uni_york.formstack.com/forms/campus_map_feedback" title="Campus map feedback" width="100%" height="900"></iframe>');
+	            $('.infoPanel__content').html('<iframe src="https://uni_york.formstack.com/forms/campus_map_feedback" title="Campus map feedback" width="100%"></iframe>');
 	            openInfoPanel();
 	            $(".closeInfoPanel").click(closeInfoPanel);
 	        });
@@ -234,8 +234,8 @@ $(function() {
 			maxWidth: 320,
 			closeWhenOthersOpen: true,
 			offset: {
-			  top: '3px',
-			  left: '9px'
+			  top: '-8px',
+			  left: '2px'
 			},
 			callbacks: {
 				afterOpen: function(){
@@ -285,8 +285,8 @@ $(function() {
 					subCategory: subCategory,
 					category: category
 			});
-			map.setZoom(16);
-			map.panTo(marker.position);
+			map.setZoom(15);
+			//map.panTo(marker.position);
 			var thisOptions = snazzyOptions({
 				title: title,
 				subtitle: subTitle,
@@ -662,6 +662,26 @@ $(function() {
 			}
 			$(".panel").slideToggle("slow");
 		});
+
+// placeholder
+//function searchPlaceholderText() {
+	if ($(window).width() < 1024) {
+	   $("input").attr("placeholder", "Search the map");
+	} else {
+	   $("input").attr("placeholder", "Search for buildings, departments and rooms");
+	}
+//}
+
+// respond to resizing
+$(window).resize(function () {
+	// searchPlaceholderText();
+	if ($(window).width() < 1024) {
+	   $("input").attr("placeholder", "Search the map");
+	} else {
+	   $("input").attr("placeholder", "Search for buildings, departments and rooms");
+	}
+});
+
 
 
 

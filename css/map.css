@@ -38,6 +38,21 @@ body {
   border-radius: 0 !important;
 }
 
+
+/* to aid with search icon inside search input */
+.c-form__input {
+  padding-left: 2rem;
+}
+.c-icon--search {
+  color: #a23479;
+  font-size: 1.125rem;
+  left: .5rem;
+  position: absolute;
+  top: .5rem;
+}
+
+
+
 /*streetview info caption*/
 .gm-iv-address {
     height: 56px !important;
@@ -54,7 +69,7 @@ body {
 .c-map-header__title {
     color: #fdfdfd;
     font-size: 2rem;
-    margin: 1rem 0 0 1.25rem;
+    margin: .5rem 0 0 1.25rem;
     width: 100%;
 }
 
@@ -152,10 +167,10 @@ body {
 
 .control-ui--feedback{
   border-radius: 0.4em;
-  background-color: #00546e;
+  background-color: #a23479; /*#00546e*/
   color: #fdfdfd;
   font-family: museo-sans,Helvetica,Arial,sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   height: 2.125em;
   margin-bottom: .5em;
   margin-left: 1em;
@@ -207,7 +222,12 @@ body {
       position: relative;
       left: 0;
       top: 1.25rem;
+      /*top: .5rem;*/
       padding: 0;
+  }
+
+  .c-form__label {
+      color: #fff;
   }
 
   .c-main-header__logo {
@@ -337,7 +357,9 @@ input[type=search] {
 /*remove border from formstack iframe*/
 .infoPanel__content iframe {
     border: 0;
+    min-height: 620px;
 }
+
 
 
 
