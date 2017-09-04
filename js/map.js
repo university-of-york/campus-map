@@ -24,6 +24,7 @@ $(function() {
 			lng: -1.0868,
 	};
 	var markers = [];
+	var $window = $(window);
 
 	// marker icon settings
 	var markerOpts = {
@@ -201,7 +202,7 @@ $(function() {
 	// zoom to CE & CW (mobile), CE, CW and KM (desktop)
 	function setBounds() {
 		var bounds;
-		if ($(window).width() > 500) {
+		if ($window.width() > 500) {
 			// CW south, KM west, CE east, KM north
 			bounds = new google.maps.LatLngBounds(
 				new google.maps.LatLng(53.943157, -1.086725),
@@ -295,6 +296,7 @@ $(function() {
 			var category = location.category || false;
 			var shortdesc = location.shortdesc || false;
 			var longdesc = location.longdesc || false;
+			var zoom = location.zoom || 16;
 			if (category === "Room") {
 				var content = '<h4>'+title+'</h4>';
 				content+= '<p>Approximate location only</p>';
@@ -309,10 +311,9 @@ $(function() {
 					title: title,
 					subtitle: subTitle,
 					subCategory: subCategory,
-					category: category
+					category: category,
+					zoom: zoom
 			});
-			map.setZoom(16);
-			map.panTo(marker.position);
 			var thisOptions = snazzyOptions({
 				title: title,
 				subtitle: subTitle,
@@ -331,6 +332,11 @@ $(function() {
 
 			// hide the red marker
 			marker.setVisible(false);
+
+			//console.log(marker.position, location.latlng);
+			// move viewport to correct location and zoom
+			map.setZoom(marker.zoom);
+			map.panTo(marker.position);
 	}
 
 	function createInfoPanel(location) {
@@ -417,7 +423,8 @@ $(function() {
 					'DOES NOT EXIST',
 					'no longer bookable',
 					'NO LONGER BOOKABLE',
-					'NOW A KITCHEN'
+					'NOW A KITCHEN',
+					'USE248X'
 			  ];
 			  var r = -1;
 			  $.each(filterPhrases, function(i, phrase) {
@@ -436,7 +443,7 @@ $(function() {
 			addMarkers();
 			initSearch();
 			checkHash();
-			// For teesting purposes
+			// For testing purposes
 			// window.cachedGeoJson = cachedGeoJson;
 		});
 
@@ -466,7 +473,9 @@ $(function() {
 			}],
 			includeScore: true,
 			includeMatches: true,
-			minMatchCharLength: 3
+			tokenize:true,
+			// location:0,
+			minMatchCharLength: 2
 		}
 		var noSearchCategories = [
 			'Post boxes',
@@ -598,6 +607,8 @@ $(function() {
 			$autocompleteList.empty();
 			var fuseResult = fuse.search(searchTerm);
 
+			console.log(fuseResult);
+
 			if (fuseResult.length === 0) return false;
 
 			$.each(fuseResult, function(i, feature) {
@@ -675,8 +686,10 @@ $(function() {
 		return multiIndex(obj,is.split('.'))
 	}
 
+	$window.on('hashchange', checkHash);
+
 	// button drawer
-	$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
+	//$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
 	$("#drawerStatusButton").click(function() {
 		if ($('.panel').css('display') == 'block') {
 			var height = '-='+$('.panel').height();
