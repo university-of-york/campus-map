@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -38,6 +38,10 @@
 
 <a href="#Main-Content" class="o-skip-link">Skip to content</a>
 
+
+<div class="wrapper">
+
+
 <header class="c-map-header" role="banner">
     <div class="o-wrapper o-wrapper--wide o-grid">
         <div class="o-grid__row">
@@ -45,9 +49,9 @@
                     <h1 class="c-map-header__title">Campus map</h1>
                       <nav class="c-utility-nav js-accessible-nav" role="navigation" aria-label="Utility navigation">
                         <ul class="c-utility-nav__list" role="menubar" aria-hidden="false">
-                          <li class="c-utility-nav__item" role="menuitem" aria-haspopup="false"><a class="c-utility-nav__link" href="#">Getting here</a></li>
-                          <li class="c-utility-nav__item" role="menuitem" aria-haspopup="false"><a class="c-utility-nav__link" href="#">Study</a></li>
-                          <li class="c-utility-nav__item" role="menuitem" aria-haspopup="false"><a class="c-utility-nav__link" href="#">Contact us</a></li>
+                          <li class="c-utility-nav__item" role="menuitem" aria-haspopup="false"><a class="c-utility-nav__link" href="https://www.york.ac.uk/about/maps/">Getting here</a></li>
+                          <li class="c-utility-nav__item" role="menuitem" aria-haspopup="false"><a class="c-utility-nav__link" href="https://www.york.ac.uk/study/">Study</a></li>
+                          <li class="c-utility-nav__item" role="menuitem" aria-haspopup="false"><a class="c-utility-nav__link" href="https://www.york.ac.uk/about/contact/">Contact us</a></li>
                         </ul>
                       </nav>
                 </div>
@@ -55,8 +59,9 @@
                     <form action="#" method="get" class="c-form" id="map-search-form">
                         <fieldset>
                           <div class="c-form__element">
-                            <input class="c-form__input c-form__input--text" type="search" id="map-search-query" name="search-query" placeholder="Enter your search" autocomplete="off" /></a>
-                            <div class="c-autocomplete">
+                              <i class="c-icon c-icon--search"></i>
+                              <input class="c-form__input c-form__input--text"  type="search" id="map-search-query" name="search-query" autocomplete="off"/>
+                             <div class="c-autocomplete">
                               <ul class="c-autocomplete__list">
                               </ul>
                             </div>
@@ -70,16 +75,25 @@
     </div>
 </header>
 
-<div id="mapContainer" class="c-map-container">
+<!-- <div id="mapContainer" class="c-map-container"> -->
     <div id="map" class="map"></div>
-    <div id="control-div" class="control-div">
-         <div id= "control-ui" class="control-ui" title = "Click to reset the map">
-           <div id="control-text" class="control-text">
+    <div id="control-reset-div" class="control-div">
+         <div id= "control-reset-ui" class="control-ui" title = "Click to reset the map">
+           <div id="control-reset-text" class="control-text">
              <p> <span class="is-hidden@small is-hidden@medium-">Reset Map </span> <i class="c-icon c-icon--lg c-icon--refresh"></i> </p>
            </div>
          </div>
     </div>
-</div>
+    <div id="control-feedback-div" class="control-div">
+         <div id= "control-feedback-ui" class="control-ui--feedback" title = "Click to send feedback">
+           <div id="control-feedback-text" class="control-text">
+             <p>
+                 <span class="is-hidden@small is-hidden@medium-">Report a problem</span> <span class="is-hidden@small is-visible@medium-">Feedback</span>
+             </p>
+           </div>
+         </div>
+    </div>
+<!-- </div> -->
 <div class="infoPanel">
     <a href="#" class="closeInfoPanel"><i class="c-icon c-icon--close"></i></a>
     <div class="infoPanel__content"></div>
@@ -115,6 +129,7 @@
     </div>
 </footer>
 
+</div>
 
 </body>
 </html>

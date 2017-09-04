@@ -26,44 +26,6 @@ $(function() {
 	var markers = [];
 	var $window = $(window);
 
-	// marker icon settings
-	var markerOpts = {
-		"food-and-drink": {
-			fillColour: "#f9f9f9",
-			strokeColour: "#000"
-		},
-		"study-spaces": {
-			fillColour: "#a23479",
-			strokeColour: "#000"
-		},
-		"printers": {
-			fillColour: "#000",
-			strokeColour: "#000"
-		},
-		"shops": {
-			fillColour: "#e4b53c",
-			strokeColour: "#000"
-		},
-		"bus-stops": {
-			fillColour: "#9C5A9C",
-			strokeColour: "#843284"
-		},
-		"car-parks": {
-			fillColour: "#00b3eb",
-			strokeColour: "#005975"
-		},
-		"cash-machines": {
-			fillColour: "#009900",
-			strokeColour: "#000"
-		},
-		"post-boxes": {
-			fillColour: "#A31919",
-			strokeColour: "#000"
-		}
-	}
-
-
-
 	// load the map
 	function loadMap() {
 		return new google.maps.Map(document.getElementById('map'), {
@@ -73,12 +35,12 @@ $(function() {
 			center: heslington,
 			zoomControl: true,
 			zoomControlOptions: {
-				position: google.maps.ControlPosition.LEFT_TOP
+				position: google.maps.ControlPosition.RIGHT_TOP
 			},
 			scaleControl: true,
 			streetViewControl: true,
 			streetViewControlOptions: {
-				position: google.maps.ControlPosition.LEFT_TOP
+				position: google.maps.ControlPosition.RIGHT_TOP
 			},
 			fullscreenControl: false,
 			disableDefaultUI: true,
@@ -152,16 +114,11 @@ $(function() {
 						var icon = {
 						   url: 'img/markers/'+featureCategory+'.svg',
 						   anchor: new google.maps.Point(10,10),
-						   scaledSize: new google.maps.Size(24,24),
-						   //scale: 0.010,
-						   fillOpacity: 1,
-						   fillColor: markerOpts[featureCategory].fillColour,
-						   strokeWeight: 1,
-						   strokeColor: markerOpts[featureCategory].strokeColour
-
+						   scaledSize: new google.maps.Size(22,22)
 					   }
 						return {
-							icon: icon
+							icon: icon,
+							optimized: false
 						};
 					});
 				} else {
@@ -185,19 +142,36 @@ $(function() {
 		markers = [];
 	};
 
-	function customControls() {
-			//custom control - reset button
-			var controlDiv = $("#control-div");
-			var controlUI = $("#control-ui");
-			var controlText = $("#control-text");
-			controlUI.click(function() {
-					map.setCenter(heslington);
-					map.setZoom(defaultZoom);
-					DeleteMarkers();
-			});
-			controlDiv.index = 1;
-			map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv[0]);
+	function customResetControl(map) {
+	        //custom control - reset button
+	        var controlDiv = $("#control-reset-div");
+	        var controlUI = $("#control-reset-ui");
+	        var controlText = $("#control-reset-text");
+	        controlUI.click(function() {
+	                // map.setCenter(heslington);
+	                // map.setZoom(defaultZoom);
+					setZoomBounds();
+	                DeleteMarkers();
+	        });
+	        controlDiv.index = 1;
+	        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv[0]);
 	}
+
+	function customFeedbackControl(map) {
+	        //custom control - feedback button
+	        var controlFDiv = $("#control-feedback-div");
+	        var controlFUI = $("#control-feedback-ui");
+	        var controlFText = $("#control-feedback-text");
+	        controlFUI.click(function() {
+	            var $infoPanel = $('.infoPanel');
+	            $('.infoPanel__content').html('<iframe src="https://uni_york.formstack.com/forms/campus_map_feedback" title="Campus map feedback" width="100%"></iframe>');
+	            openInfoPanel();
+	            $(".closeInfoPanel").click(closeInfoPanel);
+	        });
+	        controlFDiv.index = 1;
+	        map.controls[google.maps.ControlPosition.TOP_LEFT].push(controlFDiv[0]);
+	}
+
 
 	// zoom to CE & CW (mobile), CE, CW and KM (desktop)
 	function setBounds() {
@@ -251,7 +225,7 @@ $(function() {
 			content: opts.content,
 			placement: 'top',
 			showCloseButton: true,
-			closeOnMapClick: true,
+			closeOnMapClick: false,
 			padding: '28px',
 			backgroundColor: 'rgba(15, 61, 76, 0.9)',
 			border: false,
@@ -261,8 +235,8 @@ $(function() {
 			maxWidth: 320,
 			closeWhenOthersOpen: true,
 			offset: {
-			  top: '3px',
-			  left: '9px'
+			  top: '-8px',
+			  left: '2px'
 			},
 			callbacks: {
 				afterOpen: function(){
@@ -314,6 +288,11 @@ $(function() {
 					category: category,
 					zoom: zoom
 			});
+<<<<<<< HEAD
+=======
+			map.setZoom(15);
+			//map.panTo(marker.position);
+>>>>>>> d1fedec6bd11619a23b97311287b45d2146c2fec
 			var thisOptions = snazzyOptions({
 				title: title,
 				subtitle: subTitle,
@@ -340,7 +319,6 @@ $(function() {
 	}
 
 	function createInfoPanel(location) {
-		var mapContainer = document.getElementById('mapContainer');
 		var $infoPanel = $('.infoPanel');
 		var html = '<h3>'+location.title+'</h3>';
 		if (location.subtitle !== false) html+= '<h4>'+location.subtitle+'</h4>';
@@ -353,6 +331,7 @@ $(function() {
 		$(".locationMarker").click(function() {
 			 createInfoWindow(location);
 		});
+
 	}
 
 	// Check whether there is a location hash,
@@ -406,7 +385,8 @@ $(function() {
 		map.setMapTypeId('campus');
 
 		// add custom controls
-		customControls();
+		customResetControl(map);
+		customFeedbackControl(map);
 
 		//close infoPanel by clicking anywhere
 		clickAnywherePanelClose();
@@ -688,8 +668,7 @@ $(function() {
 
 	$window.on('hashchange', checkHash);
 
-	// button drawer
-	//$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
+	$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
 	$("#drawerStatusButton").click(function() {
 		if ($('.panel').css('display') == 'block') {
 			var height = '-='+$('.panel').height();
@@ -700,6 +679,29 @@ $(function() {
 		}
 		$(".panel").slideToggle("slow");
 	});
+
+// placeholder
+//function searchPlaceholderText() {
+	if ($(window).width() < 1024) {
+	   $("input").attr("placeholder", "Search the map");
+	} else {
+	   $("input").attr("placeholder", "Search for buildings, departments and rooms");
+	}
+//}
+
+// respond to resizing
+$(window).resize(function () {
+	// searchPlaceholderText();
+	if ($(window).width() < 1024) {
+	   $("input").attr("placeholder", "Search the map");
+	} else {
+	   $("input").attr("placeholder", "Search for buildings, departments and rooms");
+	}
+});
+
+
+
+>>>>>>> d1fedec6bd11619a23b97311287b45d2146c2fec
 
 
 });
