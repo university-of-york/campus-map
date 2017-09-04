@@ -686,19 +686,14 @@ $(function() {
 	}
 //}
 
-// respond to resizing
-$(window).resize(function () {
-	// searchPlaceholderText();
-	if ($(window).width() < 1024) {
-	   $("input").attr("placeholder", "Search the map");
-	} else {
-	   $("input").attr("placeholder", "Search for buildings, departments and rooms");
-	}
-});
-
-
-
->>>>>>> d1fedec6bd11619a23b97311287b45d2146c2fec
-
+	// respond to resizing
+	$(window).resize(function () {
+		// searchPlaceholderText();
+		if ($(window).width() < 1024) {
+		   $("input").attr("placeholder", "Search the map");
+		} else {
+		   $("input").attr("placeholder", "Search for buildings, departments and rooms");
+		}
+	});
 
 });
