@@ -288,11 +288,8 @@ $(function() {
 					category: category,
 					zoom: zoom
 			});
-<<<<<<< HEAD
-=======
 			map.setZoom(15);
 			//map.panTo(marker.position);
->>>>>>> d1fedec6bd11619a23b97311287b45d2146c2fec
 			var thisOptions = snazzyOptions({
 				title: title,
 				subtitle: subTitle,
