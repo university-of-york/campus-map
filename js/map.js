@@ -142,19 +142,43 @@ $(function() {
 		markers = [];
 	};
 
-	function customResetControl(map) {
-	        //custom control - reset button
-	        var controlDiv = $("#control-reset-div");
-	        var controlUI = $("#control-reset-ui");
-	        var controlText = $("#control-reset-text");
-	        controlUI.click(function() {
-	                // map.setCenter(heslington);
-	                // map.setZoom(defaultZoom);
-					setZoomBounds();
-	                DeleteMarkers();
+	function customCampusControl(map) {
+	        //custom control - campus button
+	        var controlCampusDiv = $("#control-campus-div");
+
+	        var controlEastUI = $("#control-east-ui");
+			controlEastUI.click(function() {
+	                map.setCenter(east);
+	                map.setZoom(defaultZoom);
 	        });
-	        controlDiv.index = 1;
-	        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv[0]);
+			var controlWestUI = $("#control-west-ui");
+	        controlWestUI.click(function() {
+	                map.setCenter(west);
+	                map.setZoom(defaultZoom);
+	        });
+			var controlKingsManorUI = $("#control-km-ui");
+		   controlKingsManorUI.click(function() {
+				   map.setCenter(kingsmanor);
+				   map.setZoom(defaultZoom);
+		   });
+	        controlCampusDiv.index = 1;
+	        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlCampusDiv[0]);
+	}
+
+
+	function customResetControl(map) {
+			//custom control - reset button
+			var controlDiv = $("#control-reset-div");
+			var controlUI = $("#control-reset-ui");
+			var controlText = $("#control-reset-text");
+			controlUI.click(function() {
+					// map.setCenter(heslington);
+					// map.setZoom(defaultZoom);
+					setZoomBounds();
+					DeleteMarkers();
+			});
+			controlDiv.index = 1;
+			map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv[0]);
 	}
 
 	function customFeedbackControl(map) {
@@ -164,7 +188,7 @@ $(function() {
 	        var controlFText = $("#control-feedback-text");
 	        controlFUI.click(function() {
 	            var $infoPanel = $('.infoPanel');
-	            $('.infoPanel__content').html('<iframe src="https://uni_york.formstack.com/forms/campus_map_feedback" title="Campus map feedback" width="100%"></iframe>');
+	            $('.infoPanel__content').html('<h2 class="infoPanel__feedbackTitle">Report a problem with the campus map</h2><iframe src="https://uni_york.formstack.com/forms/campus_map_feedback" title="Campus map feedback" width="100%" height="600px"></iframe>');
 	            openInfoPanel();
 	            $(".closeInfoPanel").click(closeInfoPanel);
 	        });
@@ -384,6 +408,7 @@ $(function() {
 		// add custom controls
 		customResetControl(map);
 		customFeedbackControl(map);
+		customCampusControl(map);
 
 		//close infoPanel by clicking anywhere
 		clickAnywherePanelClose();

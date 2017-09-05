@@ -144,7 +144,6 @@ body {
 }
 
 
-
 .control-ui{
   background-color:#fff;
   cursor: pointer;
@@ -164,6 +163,8 @@ body {
   user-select: none;
   cursor: pointer;
 }
+
+
 
 .control-ui--feedback{
   border-radius: 0.4em;
@@ -357,10 +358,11 @@ input[type=search] {
 /*remove border from formstack iframe*/
 .infoPanel__content iframe {
     border: 0;
-    min-height: 620px;
 }
 
-
+.infoPanel__feedbackTitle {
+        padding: .25rem 1rem;
+}
 
 
 @media (min-width: 768px) and (max-width: 1199px) {
