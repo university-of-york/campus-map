@@ -450,7 +450,7 @@ input[type=search] {
   }
   .c-btn--selectable__label {
       flex: 1 1 25%;
-      font-size: .75rem;
+      font-size: .75em;
       padding: 0;
   }
   .c-map-header {
@@ -488,6 +488,8 @@ input[type=search] {
     margin-right: auto;
     width: 100%;
   }
+
+
 
   .c-main-header__logo {
       margin-top: .45rem;

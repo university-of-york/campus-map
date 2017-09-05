@@ -24,7 +24,6 @@ $(function() {
 			lng: -1.0868,
 	};
 	var markers = [];
-	var $window = $(window);
 
 	// load the map
 	function loadMap() {
@@ -174,9 +173,9 @@ $(function() {
 
 
 	// zoom to CE & CW (mobile), CE, CW and KM (desktop)
-	function setBounds() {
+	function setZoomBounds() {
 		var bounds;
-		if ($window.width() > 500) {
+		if ($(window).width() > 500) {
 			// CW south, KM west, CE east, KM north
 			bounds = new google.maps.LatLngBounds(
 				new google.maps.LatLng(53.943157, -1.086725),
@@ -270,7 +269,6 @@ $(function() {
 			var category = location.category || false;
 			var shortdesc = location.shortdesc || false;
 			var longdesc = location.longdesc || false;
-			var zoom = location.zoom || 16;
 			if (category === "Room") {
 				var content = '<h4>'+title+'</h4>';
 				content+= '<p>Approximate location only</p>';
@@ -285,8 +283,7 @@ $(function() {
 					title: title,
 					subtitle: subTitle,
 					subCategory: subCategory,
-					category: category,
-					zoom: zoom
+					category: category
 			});
 			map.setZoom(15);
 			//map.panTo(marker.position);
@@ -308,11 +305,6 @@ $(function() {
 
 			// hide the red marker
 			marker.setVisible(false);
-
-			//console.log(marker.position, location.latlng);
-			// move viewport to correct location and zoom
-			map.setZoom(marker.zoom);
-			map.panTo(marker.position);
 	}
 
 	function createInfoPanel(location) {
@@ -373,8 +365,8 @@ $(function() {
 		// load the map
 		map = loadMap();
 
-		// fit to campuses
-		setBounds();
+		// add custom controls
+		setZoomBounds();
 
 		// load the tiles
 		var yorkTiles = loadYorkTiles();
@@ -400,8 +392,7 @@ $(function() {
 					'DOES NOT EXIST',
 					'no longer bookable',
 					'NO LONGER BOOKABLE',
-					'NOW A KITCHEN',
-					'USE248X'
+					'NOW A KITCHEN'
 			  ];
 			  var r = -1;
 			  $.each(filterPhrases, function(i, phrase) {
@@ -420,7 +411,7 @@ $(function() {
 			addMarkers();
 			initSearch();
 			checkHash();
-			// For testing purposes
+			// For teesting purposes
 			// window.cachedGeoJson = cachedGeoJson;
 		});
 
@@ -450,9 +441,7 @@ $(function() {
 			}],
 			includeScore: true,
 			includeMatches: true,
-			tokenize:true,
-			// location:0,
-			minMatchCharLength: 2
+			minMatchCharLength: 3
 		}
 		var noSearchCategories = [
 			'Post boxes',
@@ -584,8 +573,6 @@ $(function() {
 			$autocompleteList.empty();
 			var fuseResult = fuse.search(searchTerm);
 
-			console.log(fuseResult);
-
 			if (fuseResult.length === 0) return false;
 
 			$.each(fuseResult, function(i, feature) {
@@ -663,19 +650,18 @@ $(function() {
 		return multiIndex(obj,is.split('.'))
 	}
 
-	$window.on('hashchange', checkHash);
-
-	$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
-	$("#drawerStatusButton").click(function() {
-		if ($('.panel').css('display') == 'block') {
-			var height = '-='+$('.panel').height();
-			$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
-		} else {
-			var height = '+='+$('.panel').height();
-			$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i> Find Facilities');
-		}
-		$(".panel").slideToggle("slow");
-	});
+	// button drawer
+		$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
+		$("#drawerStatusButton").click(function() {
+			if ($('.panel').css('display') == 'block') {
+				var height = '-='+$('.panel').height();
+				$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
+			} else {
+				var height = '+='+$('.panel').height();
+				$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i> Find Facilities');
+			}
+			$(".panel").slideToggle("slow");
+		});
 
 // placeholder
 //function searchPlaceholderText() {
@@ -686,14 +672,18 @@ $(function() {
 	}
 //}
 
-	// respond to resizing
-	$(window).resize(function () {
-		// searchPlaceholderText();
-		if ($(window).width() < 1024) {
-		   $("input").attr("placeholder", "Search the map");
-		} else {
-		   $("input").attr("placeholder", "Search for buildings, departments and rooms");
-		}
-	});
+// respond to resizing
+$(window).resize(function () {
+	// searchPlaceholderText();
+	if ($(window).width() < 1024) {
+	   $("input").attr("placeholder", "Search the map");
+	} else {
+	   $("input").attr("placeholder", "Search for buildings, departments and rooms");
+	}
+});
+
+
+
+
 
 });
