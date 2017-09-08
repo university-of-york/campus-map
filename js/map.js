@@ -13,18 +13,20 @@ $(function() {
 	};
 	var west = {
 			lat: 53.9447,
-			lng: -1.0501,
+			lng: -1.0501
 	};
 	var east = {
 			lat: 53.9473,
-			lng: -1.0316,
+			lng: -1.0316
 	};
 	var kingsmanor = {
 			lat: 53.9623,
-			lng: -1.0868,
+			lng: -1.0868
 	};
 	var markers = [];
 	var $window = $(window);
+
+
 
 	// load the map
 	function loadMap() {
@@ -35,12 +37,12 @@ $(function() {
 			center: heslington,
 			zoomControl: true,
 			zoomControlOptions: {
-				position: google.maps.ControlPosition.RIGHT_TOP
+				position: google.maps.ControlPosition.RIGHT_BOTTOM
 			},
 			scaleControl: true,
 			streetViewControl: true,
 			streetViewControlOptions: {
-				position: google.maps.ControlPosition.RIGHT_TOP
+				position: google.maps.ControlPosition.RIGHT_BOTTOM
 			},
 			fullscreenControl: false,
 			disableDefaultUI: true,
@@ -143,45 +145,44 @@ $(function() {
 	};
 
 	function customCampusControl(map) {
+		//custom control - reset button
+
+		var controlUI = $("#control-reset-ui");
+		var controlText = $("#control-reset-text");
+		controlUI.click(function() {
+				// map.setCenter(heslington);
+				// map.setZoom(defaultZoom);
+				setBounds();
+				DeleteMarkers();
+		});
 	        //custom control - campus button
 	        var controlCampusDiv = $("#control-campus-div");
 
 	        var controlEastUI = $("#control-east-ui");
 			controlEastUI.click(function() {
 	                map.setCenter(east);
-	                map.setZoom(defaultZoom);
+	                map.setZoom(16);
 	        });
 			var controlWestUI = $("#control-west-ui");
 	        controlWestUI.click(function() {
 	                map.setCenter(west);
-	                map.setZoom(defaultZoom);
+	                map.setZoom(16);
 	        });
 			var controlKingsManorUI = $("#control-km-ui");
 		   controlKingsManorUI.click(function() {
 				   map.setCenter(kingsmanor);
-				   map.setZoom(defaultZoom);
+				   map.setZoom(18);
+
 		   });
 	        controlCampusDiv.index = 1;
-	        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlCampusDiv[0]);
+	        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlCampusDiv[0]);
 	}
 
 
-	function customResetControl(map) {
-			//custom control - reset button
-			var controlDiv = $("#control-reset-div");
-			var controlUI = $("#control-reset-ui");
-			var controlText = $("#control-reset-text");
-			controlUI.click(function() {
-					// map.setCenter(heslington);
-					// map.setZoom(defaultZoom);
-					setZoomBounds();
-					DeleteMarkers();
-			});
-			controlDiv.index = 1;
-			map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv[0]);
-	}
+
 
 	function customFeedbackControl(map) {
+
 	        //custom control - feedback button
 	        var controlFDiv = $("#control-feedback-div");
 	        var controlFUI = $("#control-feedback-ui");
@@ -246,6 +247,7 @@ $(function() {
 	function snazzyOptions(opts) {
 		return {
 			marker: opts.marker,
+			panOnOpen: false,
 			content: opts.content,
 			placement: 'top',
 			showCloseButton: true,
@@ -268,8 +270,8 @@ $(function() {
 						var $infoPanel = $('.infoPanel');
 						var html = '<h3>'+opts.title+'</h3>';
 						if (opts.subtitle) html+= '<h4>'+opts.subtitle+'</h4>';
-						if (opts.shortdesc) html+= '<p>'+opts.shortdesc+'</p>';
-						if (opts.longdesc) html+= '<p>'+opts.longdesc+'</p>';
+						if (opts.shortdesc) html+= opts.shortdesc;
+						if (opts.longdesc) html+= opts.longdesc;
 						$('.infoPanel__content').html(html);
 						openInfoPanel();
 						$(".closeInfoPanel").click(closeInfoPanel);
@@ -312,8 +314,6 @@ $(function() {
 					category: category,
 					zoom: zoom
 			});
-			map.setZoom(15);
-			//map.panTo(marker.position);
 			var thisOptions = snazzyOptions({
 				title: title,
 				subtitle: subTitle,
@@ -335,16 +335,16 @@ $(function() {
 
 			//console.log(marker.position, location.latlng);
 			// move viewport to correct location and zoom
-			map.setZoom(marker.zoom);
-			map.panTo(marker.position);
+			// map.setZoom(marker.zoom);
+			// map.panTo(marker.position);
 	}
 
 	function createInfoPanel(location) {
 		var $infoPanel = $('.infoPanel');
 		var html = '<h3>'+location.title+'</h3>';
 		if (location.subtitle !== false) html+= '<h4>'+location.subtitle+'</h4>';
-		if (location.shortdesc !== false) html+= '<p>'+location.shortdesc+'</p>';
-		if (location.longdesc !== false) html+= '<p>'+location.longdesc+'</p>';
+		if (location.shortdesc !== false) html+= location.shortdesc;
+		if (location.longdesc !== false) html+= location.longdesc;
 		html+= '<p><a class="locationMarker">Show building on map</a></p>';
 		$('.infoPanel__content').html(html);
 		openInfoPanel();
@@ -406,7 +406,7 @@ $(function() {
 		map.setMapTypeId('campus');
 
 		// add custom controls
-		customResetControl(map);
+
 		customFeedbackControl(map);
 		customCampusControl(map);
 
@@ -690,14 +690,14 @@ $(function() {
 
 	$window.on('hashchange', checkHash);
 
-	$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
+	$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find facilities');
 	$("#drawerStatusButton").click(function() {
 		if ($('.panel').css('display') == 'block') {
 			var height = '-='+$('.panel').height();
-			$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
+			$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find facilities');
 		} else {
 			var height = '+='+$('.panel').height();
-			$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i> Find Facilities');
+			$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i> Find facilities');
 		}
 		$(".panel").slideToggle("slow");
 	});
@@ -705,6 +705,8 @@ $(function() {
 // placeholder
 //function searchPlaceholderText() {
 	if ($(window).width() < 1024) {
+		//call showPosition for mobile
+		showPosition();
 	   $("input").attr("placeholder", "Search the map");
 	} else {
 	   $("input").attr("placeholder", "Search for buildings, departments and rooms");
@@ -720,5 +722,35 @@ $(function() {
 		   $("input").attr("placeholder", "Search for buildings, departments and rooms");
 		}
 	});
+
+	//user location
+	function showPosition() {
+	    if (navigator.geolocation) {
+	        navigator.geolocation.getCurrentPosition(success, error);
+	    } else {
+	        alert('location not supported');
+	    }
+	    //callbacks
+	    function error(msg) {
+	        alert('error in geolocation');
+	    }
+
+	    function success(position) {
+	        var lats = position.coords.latitude;
+	        var lngs = position.coords.longitude;
+	        var myLatLng = {lat:lats, lng: lngs};
+	        var icon = {
+	           url: 'img/markers/user.svg',
+	           anchor: new google.maps.Point(8,8),
+	           scaledSize: new google.maps.Size(12,12),
+	       };
+	        var marker = new google.maps.Marker({
+	          position: myLatLng,
+	          icon: icon,
+	          map: map,
+	          title: 'You are here!'
+	        });
+	    };
+	}
 
 });
