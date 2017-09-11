@@ -448,9 +448,12 @@ $(function() {
 			// For testing purposes
 			// window.cachedGeoJson = cachedGeoJson;
 		});
-
+		google.maps.event.addListener(map, "idle", function(){
+			  google.maps.event.trigger(map, 'resize');
+		});
 
 	} // end initMap
+
 
 	//load
 	google.maps.event.addDomListener(window, 'load', initMap);

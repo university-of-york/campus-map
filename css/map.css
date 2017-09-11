@@ -4,7 +4,6 @@ body {
   margin:0;
   padding:0;
   width: 100%;
-
 }
 
 .wrapper {
@@ -30,6 +29,7 @@ body {
 
 .map {
     flex: 1 1 auto;
+
 }
 
 /*prevent safari styling on text input*/
