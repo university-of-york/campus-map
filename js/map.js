@@ -252,7 +252,7 @@ $(function() {
 			placement: 'top',
 			showCloseButton: true,
 			closeOnMapClick: false,
-			padding: '28px',
+			padding: '24px 18px',
 			backgroundColor: 'rgba(15, 61, 76, 0.9)',
 			border: false,
 			borderRadius: '12px',
@@ -345,7 +345,8 @@ $(function() {
 		if (location.subtitle !== false) html+= '<h4>'+location.subtitle+'</h4>';
 		if (location.shortdesc !== false) html+= location.shortdesc;
 		if (location.longdesc !== false) html+= location.longdesc;
-		if (location.latlng !== '0,0') html+= '<p><a class="locationMarker">Show building on map</a></p>';
+		// if (location.latlng !== '0,0')
+		html+= '<p><a class="locationMarker">Show building on map</a></p>';
 		console.log("location:" + location.latlng);
 		$('.infoPanel__content').html(html);
 		openInfoPanel();
