@@ -345,7 +345,8 @@ $(function() {
 		if (location.subtitle !== false) html+= '<h4>'+location.subtitle+'</h4>';
 		if (location.shortdesc !== false) html+= location.shortdesc;
 		if (location.longdesc !== false) html+= location.longdesc;
-		html+= '<p><a class="locationMarker">Show building on map</a></p>';
+		if (location.latlng !== '0,0') html+= '<p><a class="locationMarker">Show building on map</a></p>';
+		console.log("location:" + location.latlng);
 		$('.infoPanel__content').html(html);
 		openInfoPanel();
 		$(".closeInfoPanel").click(closeInfoPanel);
@@ -450,6 +451,8 @@ $(function() {
 		});
 		google.maps.event.addListener(map, "idle", function(){
 			  google.maps.event.trigger(map, 'resize');
+			  // fit to campuses
+			  //setBounds();
 		});
 
 	} // end initMap
@@ -558,6 +561,12 @@ $(function() {
 			  	return feature.properties.subtitle === selectedSubtitle;
 				});
 			}
+			if (selectedFeature[0].properties.longdesc === undefined) {
+				content = '<h4>'+selectedTitle+'</h4>';
+			} else {
+				content = '<h4>'+selectedTitle+'</h4>'+'<p><a class="si-content-more-link">More information</a></p>';
+			 }
+			console.log(selectedFeature[0].properties.longdesc);
 			var location = {
 				title: selectedTitle,
 				subtitle: selectedSubtitle,
@@ -566,7 +575,7 @@ $(function() {
 				subcategory: selectedFeature[0].properties.subcategory || false,
 				shortdesc: selectedFeature[0].properties.shortdesc || false,
 				longdesc: selectedFeature[0].properties.longdesc || false,
-				content: '<h4>'+selectedTitle+'</h4>'+'<p><a class="si-content-more-link">More information</a></p>'
+				content: content
 			}
 
 			DeleteMarkers();
@@ -709,7 +718,7 @@ $(function() {
 //function searchPlaceholderText() {
 	if ($(window).width() < 1024) {
 		//call showPosition for mobile
-		showPosition();
+		// showPosition();
 	   $("input").attr("placeholder", "Search the map");
 	} else {
 	   $("input").attr("placeholder", "Search for buildings, departments and rooms");
@@ -727,33 +736,33 @@ $(function() {
 	});
 
 	//user location
-	function showPosition() {
-	    if (navigator.geolocation) {
-	        navigator.geolocation.getCurrentPosition(success, error);
-	    } else {
-	        alert('location not supported');
-	    }
-	    //callbacks
-	    function error(msg) {
-	        alert('error in geolocation');
-	    }
-
-	    function success(position) {
-	        var lats = position.coords.latitude;
-	        var lngs = position.coords.longitude;
-	        var myLatLng = {lat:lats, lng: lngs};
-	        var icon = {
-	           url: 'img/markers/user.svg',
-	           anchor: new google.maps.Point(8,8),
-	           scaledSize: new google.maps.Size(12,12),
-	       };
-	        var marker = new google.maps.Marker({
-	          position: myLatLng,
-	          icon: icon,
-	          map: map,
-	          title: 'You are here!'
-	        });
-	    };
-	}
+	// function showPosition() {
+	//     if (navigator.geolocation) {
+	//         navigator.geolocation.getCurrentPosition(success, error);
+	//     } else {
+	//         alert('location not supported');
+	//     }
+	//     //callbacks
+	//     function error(msg) {
+	//         alert('error in geolocation');
+	//     }
+	//
+	//     function success(position) {
+	//         var lats = position.coords.latitude;
+	//         var lngs = position.coords.longitude;
+	//         var myLatLng = {lat:lats, lng: lngs};
+	//         var icon = {
+	//            url: 'img/markers/user.svg',
+	//            anchor: new google.maps.Point(8,8),
+	//            scaledSize: new google.maps.Size(12,12),
+	//        };
+	//         var marker = new google.maps.Marker({
+	//           position: myLatLng,
+	//           icon: icon,
+	//           map: map,
+	//           title: 'You are here!'
+	//         });
+	//     };
+	// }
 
 });

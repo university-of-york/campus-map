@@ -4,6 +4,7 @@ body {
   margin:0;
   padding:0;
   width: 100%;
+  overflow:hidden;
 }
 
 .wrapper {
@@ -150,6 +151,7 @@ body {
 
 .control-campus-div--campus-buttons {
     background-color:rgba(240,242,233,0.8);
+    border-radius: 0.4em;
     display: block;
     margin: .5rem;
     padding:  .25rem  0 .25rem .35rem;
@@ -178,15 +180,21 @@ body {
 
 .control-ui{
   background-color:#fff;
+  border-radius: 0.4em;
   cursor: pointer;
   font-size: 12px;
-  height: 2em;
+  height: 1.75rem;
   margin-bottom: .5em;
   margin-top: .5em;
   margin-right: .5em;
   text-align: center;
   user-select: none;
   width: 4em;
+}
+
+.c-icon--refresh {
+    font-size: 12px;
+    padding: .2rem;
 }
 
 
@@ -199,8 +207,8 @@ body {
 
 
 .control-ui--feedback {
-  border-radius: 0.4em;
   background-color: #a23479; /*#00546e*/
+  border-radius: 0.4em;
   color: #fdfdfd;
   font-family: museo-sans,Helvetica,Arial,sans-serif;
   font-size: 0.8rem;
