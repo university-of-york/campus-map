@@ -199,20 +199,10 @@ $(function() {
 
 	// zoom to CE & CW (mobile), CE, CW and KM (desktop)
 	function setBounds() {
-		var bounds;
-		if ($window.width() > 500) {
-			// CW south, KM west, CE east, KM north
-			bounds = new google.maps.LatLngBounds(
-				new google.maps.LatLng(53.943157, -1.086725),
-				new google.maps.LatLng(53.962789, -1.024085)
-			);
-		} else {
-			// CW south and west, CE north and east
-			bounds = new google.maps.LatLngBounds(
-				new google.maps.LatLng(53.943157, -1.058537),
-				new google.maps.LatLng(53.950877, -1.024085)
-			);
-		}
+		var bounds= new google.maps.LatLngBounds(
+			new google.maps.LatLng(53.943157, -1.058537),
+			new google.maps.LatLng(53.950877, -1.024085)
+		);
 		map.fitBounds(bounds);
 	}
 
