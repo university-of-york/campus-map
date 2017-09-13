@@ -100,7 +100,11 @@ body {
   width: 100%;
 }
 .panel {
-  display: none;
+  max-height:0;
+  transition:max-height 0.4s;
+}
+.panel.is-open {
+  max-height:100vh;
 }
 .bar {
   border-bottom: 1px solid #26505d;
@@ -115,13 +119,6 @@ body {
   color: #fff;
   text-decoration: none;
 }
-
-
-.panel.is-open {
-  width:25%;
-  display:block;
-}
-
 
 .c-btn-group {
     margin: 0;

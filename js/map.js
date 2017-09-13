@@ -106,7 +106,7 @@ $(function() {
 							shortdesc: shortdesc,
 							longdesc: longdesc,
 							content: '<h4>'+title+'</h4>'+'<p><a class="si-content-more-link">More information</a></p>'
-						}
+						};
 						createInfoWindow(location);
 
 
@@ -118,7 +118,7 @@ $(function() {
 						   url: 'img/markers/'+featureCategory+'.svg',
 						   anchor: new google.maps.Point(10,10),
 						   scaledSize: new google.maps.Size(22,22)
-					   }
+					   };
 						return {
 							icon: icon,
 							optimized: false
@@ -145,7 +145,7 @@ $(function() {
 			}
 		}
 		markers = [];
-	};
+	}
 
 	function customCampusControl(map) {
 		//custom control - reset button
@@ -203,20 +203,10 @@ $(function() {
 
 	// zoom to CE & CW (mobile), CE, CW and KM (desktop)
 	function setBounds() {
-		var bounds;
-		if ($window.width() > 500) {
-			// CW south, KM west, CE east, KM north
-			bounds = new google.maps.LatLngBounds(
-				new google.maps.LatLng(53.943157, -1.086725),
-				new google.maps.LatLng(53.962789, -1.024085)
-			);
-		} else {
-			// CW south and west, CE north and east
-			bounds = new google.maps.LatLngBounds(
-				new google.maps.LatLng(53.943157, -1.058537),
-				new google.maps.LatLng(53.950877, -1.024085)
-			);
-		}
+		var bounds= new google.maps.LatLngBounds(
+			new google.maps.LatLng(53.943157, -1.058537),
+			new google.maps.LatLng(53.950877, -1.024085)
+		);
 		map.fitBounds(bounds);
 	}
 
@@ -277,6 +267,7 @@ $(function() {
 						if (opts.longdesc) html+= opts.longdesc;
 						$('.infoPanel__content').html(html);
 						openInfoPanel();
+						toggleDrawer();
 						$(".closeInfoPanel").click(closeInfoPanel);
 					});
 				},
@@ -285,7 +276,7 @@ $(function() {
 					//closeInfoPanel();
 				}
 			}
-	   }
+	   };
 	}
 
 	function createInfoWindow(location) {
@@ -302,12 +293,13 @@ $(function() {
 			var shortdesc = location.shortdesc || false;
 			var longdesc = location.longdesc || false;
 			var zoom = location.zoom || 16;
+			var content;
 			if (category === "Room") {
-				var content = '<h4>'+title+'</h4>';
+				content = '<h4>'+title+'</h4>';
 				content+= '<p>Approximate location only</p>';
 				content+= '<p>Please allow yourself time to locate the room</p>';
 			} else {
-				var content = location.content;
+				content = location.content;
 			}
 			DeleteMarkers();
 			var marker = new google.maps.Marker({
@@ -401,7 +393,7 @@ $(function() {
 		// Remove all non-word or non-- chars ([^a-zA-Z0-9_-])
 		// Encode as URI, just in case
 		return encodeURI(str.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9_-]/g, ""));
-	};
+	}
 
 	// initialise the map
 	function initMap() {
@@ -493,12 +485,13 @@ $(function() {
 				name: 'properties.codes',
 				weight: 0.1
 			}],
+			threshold: 0.2,
 			includeScore: true,
 			includeMatches: true,
 			tokenize:true,
 			// location:0,
 			minMatchCharLength: 2
-		}
+		};
 		var noSearchCategories = [
 			'Post boxes',
 			'Printers',
@@ -570,7 +563,7 @@ $(function() {
 
 			// Is there more than one with this title? Check against subtitle
 			// Should really use a unique ID
-			if (selectedFeature.length > 1) {
+			if (selectedFeature.length > 1 && selectedSubtitle != '') {
 				selectedFeature = $.grep(selectedFeature, function(feature) {
 			  	return feature.properties.subtitle === selectedSubtitle;
 				});
@@ -580,7 +573,6 @@ $(function() {
 			} else {
 				content = '<h4>'+selectedTitle+'</h4>'+'<p><a class="si-content-more-link">More information</a></p>';
 			 }
-			console.log(selectedFeature[0].properties.longdesc);
 			var location = {
 				title: selectedTitle,
 				subtitle: selectedSubtitle,
@@ -590,7 +582,7 @@ $(function() {
 				shortdesc: selectedFeature[0].properties.shortdesc || false,
 				longdesc: selectedFeature[0].properties.longdesc || false,
 				content: content
-			}
+			};
 
 			DeleteMarkers();
 
@@ -603,12 +595,12 @@ $(function() {
 
 			$autocompleteList.empty();
 
-		}
+		};
 
 		// Update autosuggest on keyup
 		$searchQuery.on('keyup', function(e) {
 			e.preventDefault();
-			// Check if it's up, down, left, right, enter or tab
+			// Check if it's certain keys
 			var keyCode = e.keyCode;
 			var stopReturn = false;
 			var searchTerm = $searchQuery.val();
@@ -621,12 +613,19 @@ $(function() {
 						stopReturn = true;
 					}
 					break;
+			  // Up
 				case 38:
 					selectItem('up');
 					stopReturn = true;
 					break;
+				// Down
 				case 40:
 					selectItem('down');
+					stopReturn = true;
+					break;
+			  // Escape
+				case 27:
+					$autocompleteList.empty();
 					stopReturn = true;
 					break;
 			}
@@ -689,11 +688,16 @@ $(function() {
 
 		});
 
-		// Select all text when you click the input
-		// (much easier than deleting existing value)
+		// Select all text when you click the input (much easier than deleting existing value)
+		// Also re-searches if there is content
 		$searchQuery.on('focus click', function(e) {
 			var $this = $(this);
+			var searchTerm = $searchQuery.val();
 			$this.select();
+			if (searchTerm != '') {
+				// run the search
+				$this.trigger('keyup');
+			}
 		});
 
 		// Prevent form submit
@@ -702,31 +706,39 @@ $(function() {
 			return false;
 		});
 
+		// Clicking on map closes autocomplete
+		map.addListener('click', function() {
+			$autocompleteList.empty();
+    });
+
+
 	} // end initSearch
 
 	// Function to get property from dot notation
 	// e.g. foo["bar.baz"] -> foo.bar.baz
 	// Because of the way fuse.js returns matches
 	function multiIndex(obj,is) {  // obj,['1','2','3'] -> ((obj['1'])['2'])['3']
-		return is.length ? multiIndex(obj[is[0]],is.slice(1)) : obj
+		return is.length ? multiIndex(obj[is[0]],is.slice(1)) : obj;
 	}
 	function pathIndex(obj,is) {   // obj,'1.2.3' -> multiIndex(obj,['1','2','3'])
-		return multiIndex(obj,is.split('.'))
+		return multiIndex(obj,is.split('.'));
 	}
 
 	$window.on('hashchange', checkHash);
 
-	$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find facilities');
-	$("#drawerStatusButton").click(function() {
-		if ($('.panel').css('display') == 'block') {
-			var height = '-='+$('.panel').height();
-			$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find facilities');
+	$("#drawerStatusButton").click(toggleDrawer);
+
+	function toggleDrawer(e) {
+		var $panel = $('.panel');
+		var $icon = $('.c-icon', '#drawerStatusButton');
+		if ($panel.hasClass('is-open')) {
+			$icon.removeClass('c-icon--chevron-down').addClass('c-icon--chevron-up');
 		} else {
-			var height = '+='+$('.panel').height();
-			$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i> Find facilities');
+			$icon.removeClass('c-icon--chevron-up').addClass('c-icon--chevron-down');
 		}
-		$(".panel").slideToggle("slow");
-	});
+		$panel.toggleClass('is-open');
+
+	}
 
 // placeholder
 //function searchPlaceholderText() {
