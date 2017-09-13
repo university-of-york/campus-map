@@ -258,7 +258,7 @@ $(function() {
 			padding: '24px 18px',
 			backgroundColor: 'rgba(15, 61, 76, 0.9)',
 			border: false,
-			borderRadius: '12px',
+			borderRadius: '0.4rem',
 			shadow: false,
 			fontColor: '#fff',
 			maxWidth: 320,
@@ -281,7 +281,8 @@ $(function() {
 					});
 				},
 				afterClose: function(){
-					closeInfoPanel();
+					//affects hover popup
+					//closeInfoPanel();
 				}
 			}
 	   }
@@ -289,7 +290,8 @@ $(function() {
 
 	function createInfoWindow(location) {
 			if (location.category != "Room") {
-				closeInfoPanel();
+				//affects hover popup
+				//closeInfoPanel();
 			}
 			// Everything must have a title!
 			if (!location.title) return false;
@@ -386,7 +388,7 @@ $(function() {
 			createInfoPanel(location);
 		} else {
 			createInfoWindow(location);
-			// move viewport to correct location and zoom
+			// move viewport to correct location and zoom - not working
 			 map.setZoom(location.zoom);
 			 map.panTo(location.latlng);
 		}
@@ -421,7 +423,8 @@ $(function() {
 		customCampusControl(map);
 
 		//close infoPanel by clicking anywhere
-		clickAnywherePanelClose();
+		//affects hover popup
+		//clickAnywherePanelClose();
 
 		// Load GeoJSON.
 		$.getJSON(GeoJSONFile).then(function(data){
