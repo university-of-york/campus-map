@@ -23,6 +23,36 @@ $(function() {
 			lat: 53.9623,
 			lng: -1.0868
 	};
+	// Google maps style that roughly matches our tiles
+	var mapStyle = [
+	{
+    "featureType": "landscape.man_made",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#eeeeee"
+      }
+    ]
+  },
+  {
+    "featureType": "landscape.natural",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#E7ECB1"
+      }
+    ]
+  },
+  {
+    "featureType": "water",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#7599a2"
+      }
+    ]
+  }
+];
 	var markers = [];
 	var $window = $(window);
 	var $panel = $('.panel');
@@ -47,7 +77,8 @@ $(function() {
 			fullscreenControl: false,
 			disableDefaultUI: true,
 			gestureHandling: "greedy",
-			mapTypeId: google.maps.MapTypeId.ROADMAP
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			styles: mapStyle
 		});
 	}
 
@@ -395,8 +426,32 @@ $(function() {
       this.tileSize = tileSize;
     }
 
+    // WHat tiles do we have available?
+    // e.g. zoom 13, x from 4069-4073, y from 2630-2633
+    var limits = {
+    	13: { xMin:   4069, xMax:   4073, yMin:  2630, yMax:  2633 },
+    	14: { xMin:   8139, xMax:   8146, yMin:  5260, yMax:  5266 },
+    	15: { xMin:  16279, xMax:  16292, yMin: 10520, yMax: 10533 },
+    	16: { xMin:  32558, xMax:  32585, yMin: 21040, yMax: 21067 },
+    	17: { xMin:  65116, xMax:  65170, yMin: 42080, yMax: 42135 },
+    	18: { xMin: 130233, xMax: 130341, yMin: 84161, yMax: 84271 }
+    };
+
     CoordMapType.prototype.getTile = function(coord, zoom, ownerDocument) {
+    	var span = ownerDocument.createElement('span');
     	//if (1 == 1) return ownerDocument.createElement('span');
+    	// Find out if it's outside our limits
+    	console.log(limits[zoom], zoom, coord.x, coord.y);
+    	if (!limits[zoom]) return span;
+    	console.log('z');
+    	if (coord.x > limits[zoom].xMax) return span;
+    	console.log('xMax');
+    	if (coord.x < limits[zoom].xMin) return span;
+    	console.log('xMin');
+    	if (coord.y > limits[zoom].yMax) return span;
+    	console.log('yMax');
+    	if (coord.y < limits[zoom].yMin) return span;
+    	console.log('yMin');
       var tile = ownerDocument.createElement('img');
       tile.alt = coord;
       tile.src = "https://www.york.ac.uk/static/data/maps/tiles/"+zoom+"/"+coord.x+"/"+coord.y+".png";
