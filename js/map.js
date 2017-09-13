@@ -140,7 +140,7 @@ $(function() {
 			}
 		}
 		markers = [];
-	};
+	}
 
 	function customCampusControl(map) {
 	        //custom control - campus button
@@ -463,12 +463,13 @@ $(function() {
 				name: 'properties.codes',
 				weight: 0.1
 			}],
+			threshold: 0.2,
 			includeScore: true,
 			includeMatches: true,
 			tokenize:true,
 			// location:0,
 			minMatchCharLength: 2
-		}
+		};
 		var noSearchCategories = [
 			'Post boxes',
 			'Printers',
