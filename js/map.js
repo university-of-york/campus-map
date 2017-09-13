@@ -1,7 +1,7 @@
 $(function() {
 
 	// defaults
-	var GeoJSONFile = "https://york.funnelback.co.uk//s/search.html?collection=york-uni-campusmap&form=geojson&query=!padrenullquery&num_ranks=5000";
+	var GeoJSONFile = "https://york.funnelback.co.uk/s/search.html?collection=york-uni-campusmap&form=geojson&query=!padrenullquery&num_ranks=5000";
 	var cachedGeoJson = {};
 	var map;
 	var maxZoom = 18,
@@ -46,25 +46,10 @@ $(function() {
 			},
 			fullscreenControl: false,
 			disableDefaultUI: true,
-			gestureHandling: "greedy"
+			gestureHandling: "greedy",
+			mapTypeId: google.maps.MapTypeId.ROADMAP
 		});
 	}
-
-	// load UoY tiles
-	function loadYorkTiles() {
-		return new google.maps.ImageMapType({
-			getTileUrl: function(coord, zoom) {
-				return "https://www.york.ac.uk/static/data/maps/tiles/"+zoom+"/"+coord.x+"/"+coord.y+".png";
-			},
-			tileSize: new google.maps.Size(256, 256),
-			isPng: true,
-			zoom: defaultZoom,
-			maxZoom: maxZoom,
-			minZoom: minZoom,
-			name: 'Map'
-		});
-	}
-
 
 	// add groups of markers based on selectable categories
 	function addMarkers() {
@@ -404,10 +389,21 @@ $(function() {
 		// fit to campuses
 		setBounds();
 
-		// load the tiles
-		var yorkTiles = loadYorkTiles();
-		map.mapTypes.set('campus', yorkTiles);
-		map.setMapTypeId('campus');
+		// overlay our tiles
+
+		function CoordMapType(tileSize) {
+      this.tileSize = tileSize;
+    }
+
+    CoordMapType.prototype.getTile = function(coord, zoom, ownerDocument) {
+    	//if (1 == 1) return ownerDocument.createElement('span');
+      var tile = ownerDocument.createElement('img');
+      tile.alt = coord;
+      tile.src = "https://www.york.ac.uk/static/data/maps/tiles/"+zoom+"/"+coord.x+"/"+coord.y+".png";
+      return tile;
+    };
+
+    map.overlayMapTypes.insertAt(0, new CoordMapType(new google.maps.Size(256, 256)));
 
 		// add custom controls
 
