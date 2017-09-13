@@ -173,8 +173,11 @@ body {
 }
 
 @media (max-width: 767px){
-    #control-campus-div {
+    .control-campus-div--campus-buttons {
         display: none;
+    }
+    #control-campus-div {
+        margin-right: .75rem;
     }
 }
 
@@ -218,6 +221,15 @@ body {
   margin-top: .5em;
 
 }
+
+
+/* iPad fix for showing reset button text */
+@media (min-width: 768px) and (max-width: 839px) {
+    .ipad-fix {
+        display: inline-block;
+    }
+}
+
 
 
 
