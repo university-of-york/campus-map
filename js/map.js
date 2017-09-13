@@ -542,11 +542,13 @@ $(function() {
 
 			// Is there more than one with this title? Check against subtitle
 			// Should really use a unique ID
-			if (selectedFeature.length > 1) {
+			if (selectedFeature.length > 1 && selectedSubtitle != '') {
 				selectedFeature = $.grep(selectedFeature, function(feature) {
 			  	return feature.properties.subtitle === selectedSubtitle;
 				});
 			}
+			if (selectedFeature.length === 0) return;
+			console.log(selectedFeature);
 			var location = {
 				title: selectedTitle,
 				subtitle: selectedSubtitle,
@@ -574,11 +576,10 @@ $(function() {
 		// Update autosuggest on keyup
 		$searchQuery.on('keyup', function(e) {
 			e.preventDefault();
-			// Check if it's up, down, left, right, enter or tab
+			// Check if it's certain keys
 			var keyCode = e.keyCode;
 			var stopReturn = false;
 			var searchTerm = $searchQuery.val();
-			console.log(keyCode);
 			switch (keyCode) {
 				// Return
 				case 13:
@@ -663,11 +664,16 @@ $(function() {
 
 		});
 
-		// Select all text when you click the input
-		// (much easier than deleting existing value)
+		// Select all text when you click the input (much easier than deleting existing value)
+		// Also re-searches if there is content
 		$searchQuery.on('focus click', function(e) {
 			var $this = $(this);
+			var searchTerm = $searchQuery.val();
 			$this.select();
+			if (searchTerm != '') {
+				// run the search
+				$this.trigger('keyup');
+			}
 		});
 
 		// Prevent form submit
