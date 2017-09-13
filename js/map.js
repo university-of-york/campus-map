@@ -25,8 +25,8 @@ $(function() {
 	};
 	var markers = [];
 	var $window = $(window);
-
-
+	var $panel = $('.panel');
+	var $icon = $('.c-icon', '#drawerStatusButton');
 
 	// load the map
 	function loadMap() {
@@ -728,9 +728,8 @@ $(function() {
 
 	$("#drawerStatusButton").click(toggleDrawer);
 
+	// Open/Close the drawer
 	function toggleDrawer(e) {
-		var $panel = $('.panel');
-		var $icon = $('.c-icon', '#drawerStatusButton');
 		if ($panel.hasClass('is-open')) {
 			$icon.removeClass('c-icon--chevron-down').addClass('c-icon--chevron-up');
 		} else {
