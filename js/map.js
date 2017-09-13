@@ -262,6 +262,7 @@ $(function() {
 						if (opts.longdesc) html+= '<p>'+opts.longdesc+'</p>';
 						$('.infoPanel__content').html(html);
 						openInfoPanel();
+						toggleDrawer();
 						$(".closeInfoPanel").click(closeInfoPanel);
 					});
 				},
@@ -702,18 +703,19 @@ $(function() {
 
 	$window.on('hashchange', checkHash);
 
-	$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
-	$("#drawerStatusButton").click(function() {
-		var height;
-		if ($('.panel').css('display') == 'block') {
-			height = '-='+$('.panel').height();
-			$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-up"></i> Find Facilities');
+	$("#drawerStatusButton").click(toggleDrawer);
+
+	function toggleDrawer(e) {
+		var $panel = $('.panel');
+		var $icon = $('.c-icon', '#drawerStatusButton');
+		if ($panel.hasClass('is-open')) {
+			$icon.removeClass('c-icon--chevron-down').addClass('c-icon--chevron-up');
 		} else {
-			height = '+='+$('.panel').height();
-			$('#drawerStatusButton').html('<i class="c-icon c-icon--above c-icon--chevron-down"></i> Find Facilities');
+			$icon.removeClass('c-icon--chevron-up').addClass('c-icon--chevron-down');
 		}
-		$(".panel").slideToggle("slow");
-	});
+		$panel.toggleClass('is-open');
+
+	}
 
 // placeholder
 //function searchPlaceholderText() {
