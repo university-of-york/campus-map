@@ -740,26 +740,21 @@ $(function() {
 
 	}
 
-// placeholder
-//function searchPlaceholderText() {
-	if ($(window).width() < 1024) {
-		//call showPosition for mobile
-		// showPosition();
-	   $("input").attr("placeholder", "Search the map");
-	} else {
-	   $("input").attr("placeholder", "Search for buildings, departments and rooms");
+  // Update placeholder text
+	function searchPlaceholderText() {
+		var placeholderText;
+		if ($window.width() < 1024) {
+		   placeholderText = "Search the map";
+		} else {
+		   placeholderText = "Search for buildings, departments and rooms";
+		}
+		$("input").attr("placeholder", placeholderText);
 	}
-//}
+
+	searchPlaceholderText();
 
 	// respond to resizing
-	$(window).resize(function () {
-		// searchPlaceholderText();
-		if ($(window).width() < 1024) {
-		   $("input").attr("placeholder", "Search the map");
-		} else {
-		   $("input").attr("placeholder", "Search for buildings, departments and rooms");
-		}
-	});
+	$(window).resize(searchPlaceholderText);
 
 	//user location
 	// function showPosition() {
