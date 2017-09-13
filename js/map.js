@@ -374,13 +374,17 @@ $(function() {
 			latlng: new google.maps.LatLng(parseFloat(selectedFeature[0].geometry.coordinates[1]), parseFloat(selectedFeature[0].geometry.coordinates[0])),
 			shortdesc: selectedFeature[0].properties.shortdesc || false,
 			longdesc: selectedFeature[0].properties.longdesc || false,
-			content: '<h4>'+selectedFeature[0].properties.title+'</h4>'+'<p><a class="si-content-more-link">More information</a></p>'
+			content: '<h4>'+selectedFeature[0].properties.title+'</h4>'+'<p><a class="si-content-more-link">More information</a></p>',
+			zoom: 16
 		}
 		// Drop pin and inforWindow on map
 		if (location.category === "Room") {
 			createInfoPanel(location);
 		} else {
 			createInfoWindow(location);
+			// move viewport to correct location and zoom
+			 map.setZoom(location.zoom);
+			 map.panTo(location.latlng);
 		}
 	}
 
@@ -455,6 +459,8 @@ $(function() {
 			  // fit to campuses
 			  //setBounds();
 		});
+
+
 
 	} // end initMap
 
