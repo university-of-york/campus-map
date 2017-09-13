@@ -82,6 +82,27 @@ $(function() {
 				return featureCategory === selectableCategory;
 			});
 		});
+
+		function popupAction(event) {
+			var title = event.feature.getProperty("title");
+			var subTitle = event.feature.getProperty("subtitle");
+			var category = event.feature.getProperty("category");
+			var subCategory = event.feature.getProperty("subcategory");
+			var shortdesc = event.feature.getProperty("shortdesc");
+			var longdesc = event.feature.getProperty("longdesc");
+			var location = {
+				title: title,
+				subtitle: subTitle,
+				latlng: event.feature.getGeometry().get(),
+				category: category,
+				subcategory: subCategory,
+				shortdesc: shortdesc,
+				longdesc: longdesc,
+				content: '<h4>'+title+'</h4>'+'<p><a class="si-content-more-link">More information</a></p>'
+			};
+			createInfoWindow(location);
+		};
+
 		$(".c-btn--selectable").click(function(e) {
 			var $selectable = $(this);
 			var selectableCategory = $selectable.attr("id");
@@ -90,27 +111,9 @@ $(function() {
 				// var dataFeature = new google.maps.Data(feature);
 				if ($selectable.is(':checked')) {
 					markerFeatures[selectableCategory] = map.data.addGeoJson(thisGroup);
-					map.data.addListener('mouseover', function(event) {
-						var title = event.feature.getProperty("title");
-						var subTitle = event.feature.getProperty("subtitle");
-						var category = event.feature.getProperty("category");
-						var subCategory = event.feature.getProperty("subcategory");
-						var shortdesc = event.feature.getProperty("shortdesc");
-						var longdesc = event.feature.getProperty("longdesc");
-						var location = {
-							title: title,
-							subtitle: subTitle,
-							latlng: event.feature.getGeometry().get(),
-							category: category,
-							subcategory: subCategory,
-							shortdesc: shortdesc,
-							longdesc: longdesc,
-							content: '<h4>'+title+'</h4>'+'<p><a class="si-content-more-link">More information</a></p>'
-						};
-						createInfoWindow(location);
 
-
-					});
+					map.data.addListener('click', popupAction);
+					map.data.addListener('mouseover', popupAction);
 
 					map.data.setStyle(function(feature) {
 						var featureCategory = feature.getProperty('category').toLowerCase().replace(/\s+/g, '-');
