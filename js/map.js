@@ -90,7 +90,7 @@ $(function() {
 				// var dataFeature = new google.maps.Data(feature);
 				if ($selectable.is(':checked')) {
 					markerFeatures[selectableCategory] = map.data.addGeoJson(thisGroup);
-					map.data.addListener('click', function(event) {
+					map.data.addListener('mouseover', function(event) {
 						var title = event.feature.getProperty("title");
 						var subTitle = event.feature.getProperty("subtitle");
 						var category = event.feature.getProperty("category");
@@ -111,6 +111,7 @@ $(function() {
 
 
 					});
+
 					map.data.setStyle(function(feature) {
 						var featureCategory = feature.getProperty('category').toLowerCase().replace(/\s+/g, '-');
 						var icon = {
@@ -123,9 +124,11 @@ $(function() {
 							optimized: false
 						};
 					});
+
 				} else {
     			$.each(markerFeatures[selectableCategory], function(i, feature) {
     				map.data.remove(feature);
+
 				  });
 				}
 			// })
@@ -332,6 +335,7 @@ $(function() {
 
 			// hide the red marker
 			marker.setVisible(false);
+
 
 			//console.log(marker.position, location.latlng);
 			// move viewport to correct location and zoom
