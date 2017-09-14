@@ -391,7 +391,7 @@ $(function() {
 			shortdesc: selectedFeature[0].properties.shortdesc || false,
 			longdesc: selectedFeature[0].properties.longdesc || false,
 			content: '<h4>'+selectedFeature[0].properties.title+'</h4>'+'<p><a class="si-content-more-link">More information</a></p>',
-			zoom: selectedFeature[0].properties.zoom || 16
+			zoom: parseInt(selectedFeature[0].properties.zoom, 10) || 16
 		};
 		// Drop pin and inforWindow on map
 		if (location.category === "Room") {
@@ -625,7 +625,7 @@ $(function() {
 				shortdesc: selectedFeature[0].properties.shortdesc || false,
 				longdesc: selectedFeature[0].properties.longdesc || false,
 				content: content,
-				zoom: selectedFeature[0].properties.zoom || 16
+				zoom: parseInt(selectedFeature[0].properties.zoom, 10) || 16
 			};
 
 			DeleteMarkers();
