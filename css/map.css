@@ -320,8 +320,6 @@ body {
   color: #e4b53c;
   cursor: pointer;
   text-decoration: none;
-}
-.si-content-more-link:hover {
   text-decoration: underline;
 }
 
@@ -411,14 +409,22 @@ input[type=search] {
   color: #e4b53c;
   cursor: pointer;
   text-decoration: none;
-}
-.infoPanel__content a:hover {
   text-decoration: underline;
+}
+
+.infoPanel__content a:hover {
+    color: #00b3eb;
 }
 
 .infoPanel__content p {
     line-height: 1.5;
 }
+
+.c-icon--map-marker {
+    color: red;
+    font-size: 1.5rem;
+}
+
 .closeInfoPanel {
   position:absolute;
   top:10px;
