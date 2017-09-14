@@ -1,7 +1,7 @@
 $(function() {
 
 	// defaults
-	var GeoJSONFile = "https://york.funnelback.co.uk/s/search.html?collection=york-uni-campusmap&form=geojson&query=!padrenullquery&num_ranks=5000";
+	var GeoJSONFile = "https://york.funnelback.co.uk/s/search.html?collection=york-uni-campusmap&form=geojson&query=!padrenullquery&num_ranks=5000&MBL=800";
 	var cachedGeoJson = {};
 	var map;
 	var maxZoom = 18,
@@ -129,34 +129,27 @@ $(function() {
 			var $selectable = $(this);
 			var selectableCategory = $selectable.attr("id");
 			var thisGroup = markerGroups[selectableCategory];
-			// $.each(thisGroup, function(j, feature) {
-				// var dataFeature = new google.maps.Data(feature);
-				if ($selectable.is(':checked')) {
-					markerFeatures[selectableCategory] = map.data.addGeoJson(thisGroup);
-
-					map.data.addListener('click', popupAction);
-					map.data.addListener('mouseover', popupAction);
-
-					map.data.setStyle(function(feature) {
-						var featureCategory = feature.getProperty('category').toLowerCase().replace(/\s+/g, '-');
-						var icon = {
-						   url: 'img/markers/'+featureCategory+'.svg',
-						   anchor: new google.maps.Point(10,10),
-						   scaledSize: new google.maps.Size(22,22)
-					   };
-						return {
-							icon: icon,
-							optimized: false
-						};
-					});
-
-				} else {
-    			$.each(markerFeatures[selectableCategory], function(i, feature) {
-    				map.data.remove(feature);
-
-				  });
-				}
-			// })
+			if ($selectable.is(':checked')) {
+				markerFeatures[selectableCategory] = map.data.addGeoJson(thisGroup);
+				map.data.addListener('click', popupAction);
+				map.data.addListener('mouseover', popupAction);
+				map.data.setStyle(function(feature) {
+					var featureCategory = feature.getProperty('category').toLowerCase().replace(/\s+/g, '-');
+					var icon = {
+					   url: 'img/markers/'+featureCategory+'.svg',
+					   anchor: new google.maps.Point(10,10),
+					   scaledSize: new google.maps.Size(22,22)
+				   };
+					return {
+						icon: icon,
+						optimized: false
+					};
+				});
+			} else {
+  			$.each(markerFeatures[selectableCategory], function(i, feature) {
+  				map.data.remove(feature);
+			  });
+			}
 		});
 	}
 
