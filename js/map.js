@@ -368,7 +368,7 @@ $(function() {
 		if (location.subtitle !== false) html+= '<h4>'+location.subtitle+'</h4>';
 		if (location.shortdesc !== false) html+= '<p>'+location.shortdesc+'</p>';
 		if (location.longdesc !== false) html+= '<p>'+location.longdesc+'</p>';
-		if (location.latlng !== '0,0') html+= '<p><a class="locationMarker"><i class="c-icon c-icon--map-marker" aria-hidden="true"></i> '+location.subtitle+'</a></p>';
+		if (location.latlng !== '0,0') html+= '<p><a class="locationMarker"><i class="c-icon c-icon--map-marker" aria-hidden="true"></i> '+location.subtitle.split(',')[0]+'</a></p>';
 		$('.infoPanel__content').html(html);
 		openInfoPanel();
 		$(".closeInfoPanel").click(closeInfoPanel);
