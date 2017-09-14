@@ -292,7 +292,7 @@ $(function() {
 						if (opts.longdesc) html+= opts.longdesc;
 						$('.infoPanel__content').html(html);
 						openInfoPanel();
-						toggleDrawer();
+						toggleDrawer('close');
 						$(".closeInfoPanel").click(closeInfoPanel);
 					});
 				},
@@ -778,13 +778,18 @@ $(function() {
 	$("#drawerStatusButton").click(toggleDrawer);
 
 	// Open/Close the drawer
+	// Can call with argument 'open' or 'close'
 	function toggleDrawer(e) {
-		if ($panel.hasClass('is-open')) {
+		var overwrite;
+		if (e === 'open') overwrite = 'open';
+		if (e === 'close') overwrite = 'close';
+		if ($panel.hasClass('is-open') || overwrite === 'close') {
 			$icon.removeClass('c-icon--chevron-down').addClass('c-icon--chevron-up');
+			$panel.removeClass('is-open');
 		} else {
 			$icon.removeClass('c-icon--chevron-up').addClass('c-icon--chevron-down');
+			$panel.addClass('is-open');
 		}
-		$panel.toggleClass('is-open');
 	}
 
   // Update placeholder text

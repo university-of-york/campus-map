@@ -99,6 +99,8 @@ body {
   .footer {
     min-height:5.5rem;
   }
+}
+@media (max-width: 767px) {
   .panel {
     max-height:0;
     transition:max-height 0.4s;
