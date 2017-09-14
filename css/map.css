@@ -415,6 +415,10 @@ input[type=search] {
 .infoPanel__content a:hover {
   text-decoration: underline;
 }
+
+.infoPanel__content p {
+    line-height: 1.5;
+}
 .closeInfoPanel {
   position:absolute;
   top:10px;

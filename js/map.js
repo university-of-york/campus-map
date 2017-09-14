@@ -288,8 +288,8 @@ $(function() {
 						var $infoPanel = $('.infoPanel');
 						var html = '<h3>'+opts.title+'</h3>';
 						if (opts.subtitle) html+= '<h4>'+opts.subtitle+'</h4>';
-						if (opts.shortdesc) html+= opts.shortdesc;
-						if (opts.longdesc) html+= opts.longdesc;
+						if (opts.shortdesc) html+= '<p>'+opts.shortdesc+'</p>';
+						if (opts.longdesc) html+= '<p>'+opts.longdesc+'</p>';
 						$('.infoPanel__content').html(html);
 						openInfoPanel();
 						toggleDrawer('close');
@@ -366,8 +366,8 @@ $(function() {
 		var $infoPanel = $('.infoPanel');
 		var html = '<h3>'+location.title+'</h3>';
 		if (location.subtitle !== false) html+= '<h4>'+location.subtitle+'</h4>';
-		if (location.shortdesc !== false) html+= location.shortdesc;
-		if (location.longdesc !== false) html+= location.longdesc;
+		if (location.shortdesc !== false) html+= '<p>'+location.shortdesc+'</p>';
+		if (location.longdesc !== false) html+= '<p>'+location.longdesc+'</p>';
 		// if (location.latlng !== '0,0')
 		html+= '<p><a class="locationMarker">Show building on map</a></p>';
 		$('.infoPanel__content').html(html);
