@@ -393,6 +393,7 @@ $(function() {
 		var location = {
 			title: selectedFeature[0].properties.title,
 			subtitle: selectedFeature[0].properties.subtitle,
+			category: selectedFeature[0].properties.category,
 			latlng: new google.maps.LatLng(parseFloat(selectedFeature[0].geometry.coordinates[1]), parseFloat(selectedFeature[0].geometry.coordinates[0])),
 			shortdesc: selectedFeature[0].properties.shortdesc || false,
 			longdesc: selectedFeature[0].properties.longdesc || false,
@@ -405,8 +406,8 @@ $(function() {
 		} else {
 			createInfoWindow(location);
 			// move viewport to correct location and zoom - not working
-			 map.setZoom(location.zoom);
-			 map.panTo(location.latlng);
+			map.setZoom(location.zoom);
+			map.panTo(location.latlng);
 		}
 	}
 
@@ -537,9 +538,9 @@ $(function() {
 			threshold: 0.2,
 			includeScore: true,
 			includeMatches: true,
-			tokenize:true,
-			// location:0,
-			minMatchCharLength: 2
+			//tokenize:true,
+			//location:0,
+			minMatchCharLength: 3
 		};
 		var noSearchCategories = [
 			'Post boxes',
