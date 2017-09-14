@@ -1,7 +1,7 @@
 $(function() {
 
 	// defaults
-	var GeoJSONFile = "https://york.funnelback.co.uk/s/search.html?collection=york-uni-campusmap&form=geojson&query=!padrenullquery&num_ranks=5000";
+	var GeoJSONFile = "https://york.funnelback.co.uk/s/search.html?collection=york-uni-campusmap&form=geojson&query=!padrenullquery&num_ranks=5000&MBL=800";
 	var cachedGeoJson = {};
 	var map;
 	var maxZoom = 18,
@@ -129,34 +129,27 @@ $(function() {
 			var $selectable = $(this);
 			var selectableCategory = $selectable.attr("id");
 			var thisGroup = markerGroups[selectableCategory];
-			// $.each(thisGroup, function(j, feature) {
-				// var dataFeature = new google.maps.Data(feature);
-				if ($selectable.is(':checked')) {
-					markerFeatures[selectableCategory] = map.data.addGeoJson(thisGroup);
-
-					map.data.addListener('click', popupAction);
-					map.data.addListener('mouseover', popupAction);
-
-					map.data.setStyle(function(feature) {
-						var featureCategory = feature.getProperty('category').toLowerCase().replace(/\s+/g, '-');
-						var icon = {
-						   url: 'img/markers/'+featureCategory+'.svg',
-						   anchor: new google.maps.Point(10,10),
-						   scaledSize: new google.maps.Size(22,22)
-					   };
-						return {
-							icon: icon,
-							optimized: false
-						};
-					});
-
-				} else {
-    			$.each(markerFeatures[selectableCategory], function(i, feature) {
-    				map.data.remove(feature);
-
-				  });
-				}
-			// })
+			if ($selectable.is(':checked')) {
+				markerFeatures[selectableCategory] = map.data.addGeoJson(thisGroup);
+				map.data.addListener('click', popupAction);
+				map.data.addListener('mouseover', popupAction);
+				map.data.setStyle(function(feature) {
+					var featureCategory = feature.getProperty('category').toLowerCase().replace(/\s+/g, '-');
+					var icon = {
+					   url: 'img/markers/'+featureCategory+'.svg',
+					   anchor: new google.maps.Point(10,10),
+					   scaledSize: new google.maps.Size(22,22)
+				   };
+					return {
+						icon: icon,
+						optimized: false
+					};
+				});
+			} else {
+  			$.each(markerFeatures[selectableCategory], function(i, feature) {
+  				map.data.remove(feature);
+			  });
+			}
 		});
 	}
 
@@ -392,6 +385,7 @@ $(function() {
 		var location = {
 			title: selectedFeature[0].properties.title,
 			subtitle: selectedFeature[0].properties.subtitle,
+			category: selectedFeature[0].properties.category,
 			latlng: new google.maps.LatLng(parseFloat(selectedFeature[0].geometry.coordinates[1]), parseFloat(selectedFeature[0].geometry.coordinates[0])),
 			shortdesc: selectedFeature[0].properties.shortdesc || false,
 			longdesc: selectedFeature[0].properties.longdesc || false,
@@ -404,8 +398,8 @@ $(function() {
 		} else {
 			createInfoWindow(location);
 			// move viewport to correct location and zoom - not working
-			 map.setZoom(location.zoom);
-			 map.panTo(location.latlng);
+			map.setZoom(location.zoom);
+			map.panTo(location.latlng);
 		}
 	}
 
@@ -536,9 +530,9 @@ $(function() {
 			threshold: 0.2,
 			includeScore: true,
 			includeMatches: true,
-			tokenize:true,
-			// location:0,
-			minMatchCharLength: 2
+			//tokenize:true,
+			//location:0,
+			minMatchCharLength: 3
 		};
 		var noSearchCategories = [
 			'Post boxes',
@@ -638,6 +632,7 @@ $(function() {
 			if (location.category === "Room") {
 				createInfoPanel(location);
 			} else {
+				closeInfoPanel();
 				createInfoWindow(location);
 			}
 

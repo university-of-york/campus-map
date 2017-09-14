@@ -85,7 +85,11 @@ body {
 .c-map-header .c-utility-nav__item:first-of-type .c-utility-nav__link {
   padding-left:0;
 }
-
+@media (max-width: 767px) {
+  .c-map-header .c-utility-nav {
+    display:none;
+  }
+}
 .footer {
   bottom: 0;
   border-top: 2px solid #f9f9f9;
