@@ -8,29 +8,25 @@ body {
 }
 
 .wrapper {
-    display:flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    height:calc(100% - 3.5rem); /* for IE 10 & 11 benefit don't use min-height */
-    position: relative;
+  display:flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height:calc(100% - 3.5rem); /* for IE 10 & 11 benefit don't use min-height */
+  position: relative;
 }
-
 @media (min-width: 768px) {
-    .wrapper {
-        height: calc(100% - 5.5rem);  /* for IE 10 & 11 benefit don't use min-height */
-    }
+  .wrapper {
+    height: calc(100% - 5.5rem);  /* for IE 10 & 11 benefit don't use min-height */
+  }
 }
-
 @media (min-width: 923px) {
-    .wrapper {
-        height: calc(100% - 3.5rem);  /* for IE 10 & 11 benefit don't use min-height */
-    }
+  .wrapper {
+    height: calc(100% - 3.5rem);  /* for IE 10 & 11 benefit don't use min-height */
+  }
 }
-
 
 .map {
-    flex: 1 1 auto;
-
+  flex: 1 1 auto;
 }
 
 /*prevent safari styling on text input*/
@@ -99,13 +95,24 @@ body {
   padding: 0;
   width: 100%;
 }
-.panel {
-  max-height:0;
-  transition:max-height 0.4s;
+@media (min-width: 768px) {
+  .footer {
+    min-height:5.5rem;
+  }
+  .panel {
+    max-height:0;
+    transition:max-height 0.4s;
+  }
+  .panel.is-open {
+    max-height:100vh;
+  }
 }
-.panel.is-open {
-  max-height:100vh;
+@media (min-width: 923px) {
+  .footer {
+    min-height:3.5rem;
+  }
 }
+
 .bar {
   border-bottom: 1px solid #26505d;
   background-color: #0f3d4c;
@@ -264,9 +271,6 @@ body {
 
 
 @media (min-width:768px) {
-  .panel {
-      display: block;
-  }
 
   .bar {
       display: none;

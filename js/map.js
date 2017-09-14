@@ -24,8 +24,7 @@ $(function() {
 			lng: -1.0868
 	};
 	// Google maps style that roughly matches our tiles
-	var mapStyle = [
-	{
+	var mapStyle = [{
     "featureType": "landscape.man_made",
     "elementType": "geometry.fill",
     "stylers": [
@@ -51,8 +50,15 @@ $(function() {
         "color": "#7599a2"
       }
     ]
-  }
-];
+  },
+  {
+    "featureType": "poi",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  }];
 	var markers = [];
 	var $window = $(window);
 	var $panel = $('.panel');
@@ -117,7 +123,7 @@ $(function() {
 				content: '<h4>'+title+'</h4>'+'<p><a class="si-content-more-link">More information</a></p>'
 			};
 			createInfoWindow(location);
-		};
+		}
 
 		$(".c-btn--selectable").click(function(e) {
 			var $selectable = $(this);
@@ -364,7 +370,6 @@ $(function() {
 		if (location.longdesc !== false) html+= location.longdesc;
 		// if (location.latlng !== '0,0')
 		html+= '<p><a class="locationMarker">Show building on map</a></p>';
-		console.log("location:" + location.latlng);
 		$('.infoPanel__content').html(html);
 		openInfoPanel();
 		$(".closeInfoPanel").click(closeInfoPanel);
@@ -393,7 +398,7 @@ $(function() {
 			longdesc: selectedFeature[0].properties.longdesc || false,
 			content: '<h4>'+selectedFeature[0].properties.title+'</h4>'+'<p><a class="si-content-more-link">More information</a></p>',
 			zoom: 16
-		}
+		};
 		// Drop pin and inforWindow on map
 		if (location.category === "Room") {
 			createInfoPanel(location);
@@ -444,17 +449,11 @@ $(function() {
     	var span = ownerDocument.createElement('span');
     	//if (1 == 1) return ownerDocument.createElement('span');
     	// Find out if it's outside our limits
-    	console.log(limits[zoom], zoom, coord.x, coord.y);
     	if (!limits[zoom]) return span;
-    	console.log('z');
     	if (coord.x > limits[zoom].xMax) return span;
-    	console.log('xMax');
     	if (coord.x < limits[zoom].xMin) return span;
-    	console.log('xMin');
     	if (coord.y > limits[zoom].yMax) return span;
-    	console.log('yMax');
     	if (coord.y < limits[zoom].yMin) return span;
-    	console.log('yMin');
       var tile = ownerDocument.createElement('img');
       tile.alt = coord;
       tile.src = "https://www.york.ac.uk/static/data/maps/tiles/"+zoom+"/"+coord.x+"/"+coord.y+".png";
@@ -464,7 +463,6 @@ $(function() {
     map.overlayMapTypes.insertAt(0, new CoordMapType(new google.maps.Size(256, 256)));
 
 		// add custom controls
-
 		customFeedbackControl(map);
 		customCampusControl(map);
 
@@ -506,6 +504,8 @@ $(function() {
 			checkHash();
 			// For testing purposes
 			// window.cachedGeoJson = cachedGeoJson;
+		}).fail(function(err) {
+			console.log('The map data failed to load', err);
 		});
 		google.maps.event.addListener(map, "idle", function(){
 			  google.maps.event.trigger(map, 'resize');
@@ -513,16 +513,12 @@ $(function() {
 			  //setBounds();
 		});
 
-
-
 	} // end initMap
-
 
 	//load
 	google.maps.event.addDomListener(window, 'load', initMap);
 
 	// Initialise search functionality
-
 	function initSearch() {
 
 		var $searchForm = $('#map-search-form');
@@ -688,7 +684,7 @@ $(function() {
 			$autocompleteList.empty();
 			var fuseResult = fuse.search(searchTerm);
 
-			console.log(fuseResult);
+			// console.log(fuseResult);
 
 			if (fuseResult.length === 0) return false;
 
@@ -765,7 +761,6 @@ $(function() {
 			$autocompleteList.empty();
     });
 
-
 	} // end initSearch
 
 	// Function to get property from dot notation
@@ -790,7 +785,6 @@ $(function() {
 			$icon.removeClass('c-icon--chevron-up').addClass('c-icon--chevron-down');
 		}
 		$panel.toggleClass('is-open');
-
 	}
 
   // Update placeholder text
