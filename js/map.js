@@ -639,6 +639,7 @@ $(function() {
 			if (location.category === "Room") {
 				createInfoPanel(location);
 			} else {
+				closeInfoPanel();
 				createInfoWindow(location);
 			}
 
