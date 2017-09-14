@@ -21,7 +21,7 @@ body {
 }
 @media (min-width: 923px) {
   .wrapper {
-    height: calc(100% - 3.5rem);  /* for IE 10 & 11 benefit don't use min-height */
+    height: calc(100% - 3.8rem);  /* for IE 10 & 11 benefit don't use min-height */
   }
 }
 
