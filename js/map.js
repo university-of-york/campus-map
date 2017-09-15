@@ -513,12 +513,12 @@ $(function() {
 				name: 'properties.codes',
 				weight: 0.1
 			}],
-			threshold: 0.2,
+			threshold: 0.3,
 			includeScore: true,
 			includeMatches: true,
-			//tokenize:true,
+			tokenize:true,
 			//location:0,
-			minMatchCharLength: 3
+			minMatchCharLength: 2
 		};
 		var noSearchCategories = [
 			'Post boxes',
@@ -690,6 +690,7 @@ $(function() {
 																				 .text(featureSubtitle)
 																				 .appendTo(featureLink);
 				}
+				/* This is buggy - needs fixing before we can use it
 				$.each(feature.matches, function(j, match) {
 					var newText = pathIndex(feature.item, match.key);
 					var l = match.indices.length-1;
@@ -705,7 +706,7 @@ $(function() {
 					} else if (match.key === "properties.subtitle") {
 						featureSmall.html(newText);
 					}
-				});
+				});*/
 
 				$autocompleteList.append(featureItem);
 				featureLink.click(function(e) {
