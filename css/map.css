@@ -424,10 +424,6 @@ input[type=search] {
     line-height: 1.5;
 }
 
-.c-icon--map-marker {
-    color: #fff;
-    font-size: 1.5rem;
-}
 
 .closeInfoPanel {
   position:absolute;
@@ -515,6 +511,42 @@ input[type=search] {
     .c-map-header__title {
        font-size: 1.5rem;
        margin: .5rem 0;
+    }
+}
+
+@media (min-width: 960px) and (max-width: 974px)  and (orientation: landscape)  {
+    .c-main-header__logo {
+        margin-top: 0;
+        width: 160px;
+        float: right;
+    }
+
+
+    .c-map-header {
+        height: 4.5rem;
+        padding: 0;
+    }
+
+    .c-map-header__title {
+       font-size: 1.5rem;
+       margin: .5rem 1rem;
+    }
+
+    .c-utility-nav {
+        margin: 0;
+        padding: 0;
+    }
+
+    .c-utility-nav__list {
+        float: left;
+        margin: 0;
+        padding: 0;
+    }
+
+    .c-utility-nav__item {
+        float: left;
+        margin: 0;
+        padding: 0;
     }
 }
 
