@@ -88,6 +88,27 @@ $(function() {
 		});
 	}
 
+	//what to do when a marker is hovered over or clicked
+	function popupAction(event) {
+		var title = event.feature.getProperty("title");
+		var subTitle = event.feature.getProperty("subtitle");
+		var category = event.feature.getProperty("category");
+		var subCategory = event.feature.getProperty("subcategory");
+		var shortdesc = event.feature.getProperty("shortdesc");
+		var longdesc = event.feature.getProperty("longdesc");
+		var location = {
+			title: title,
+			subtitle: subTitle,
+			latlng: event.feature.getGeometry().get(),
+			category: category,
+			subcategory: subCategory,
+			shortdesc: shortdesc,
+			longdesc: longdesc,
+			content: '<h4>'+title+'</h4>'+'<p><a class="si-content-more-link">More information</a></p>'
+		};
+		createInfoWindow(location);
+	}
+
 	// add groups of markers based on selectable categories
 	function addMarkers() {
 		// Make arrays of markers for each category
@@ -105,25 +126,6 @@ $(function() {
 			});
 		});
 
-		function popupAction(event) {
-			var title = event.feature.getProperty("title");
-			var subTitle = event.feature.getProperty("subtitle");
-			var category = event.feature.getProperty("category");
-			var subCategory = event.feature.getProperty("subcategory");
-			var shortdesc = event.feature.getProperty("shortdesc");
-			var longdesc = event.feature.getProperty("longdesc");
-			var location = {
-				title: title,
-				subtitle: subTitle,
-				latlng: event.feature.getGeometry().get(),
-				category: category,
-				subcategory: subCategory,
-				shortdesc: shortdesc,
-				longdesc: longdesc,
-				content: '<h4>'+title+'</h4>'+'<p><a class="si-content-more-link">More information</a></p>'
-			};
-			createInfoWindow(location);
-		}
 
 		$(".c-btn--selectable").click(function(e) {
 			var $selectable = $(this);
@@ -166,56 +168,46 @@ $(function() {
 	}
 
 	function customCampusControl(map) {
+		var controlCampusDiv = $("#control-campus-div");
 		//custom control - reset button
-
-		var controlUI = $("#control-reset-ui");
-		var controlText = $("#control-reset-text");
-		controlUI.click(function() {
-				// map.setCenter(heslington);
-				// map.setZoom(defaultZoom);
-				setBounds();
-				DeleteMarkers();
+		var controlResetUI = $("#control-reset-ui");
+		controlResetUI.click(function() {
+			setBounds();
+			DeleteMarkers();
 		});
-	        //custom control - campus button
-	        var controlCampusDiv = $("#control-campus-div");
-
-	        var controlEastUI = $("#control-east-ui");
-			controlEastUI.click(function() {
-	                map.setCenter(east);
-	                map.setZoom(16);
-	        });
-			var controlWestUI = $("#control-west-ui");
-	        controlWestUI.click(function() {
-	                map.setCenter(west);
-	                map.setZoom(16);
-	        });
-			var controlKingsManorUI = $("#control-km-ui");
-		   controlKingsManorUI.click(function() {
-				   map.setCenter(kingsmanor);
-				   map.setZoom(18);
-
-		   });
-	        controlCampusDiv.index = 1;
-	        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlCampusDiv[0]);
+        //custom control - campus buttons
+        var controlEastUI = $("#control-east-ui");
+		controlEastUI.click(function() {
+            map.setCenter(east);
+            map.setZoom(16);
+        });
+		var controlWestUI = $("#control-west-ui");
+        controlWestUI.click(function() {
+            map.setCenter(west);
+            map.setZoom(16);
+        });
+		var controlKingsManorUI = $("#control-km-ui");
+	   controlKingsManorUI.click(function() {
+		   map.setCenter(kingsmanor);
+		   map.setZoom(18);
+	   });
+        controlCampusDiv.index = 1;
+        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlCampusDiv[0]);
 	}
 
-
-
-
 	function customFeedbackControl(map) {
-
 	        //custom control - feedback button
-	        var controlFDiv = $("#control-feedback-div");
-	        var controlFUI = $("#control-feedback-ui");
-	        var controlFText = $("#control-feedback-text");
-	        controlFUI.click(function() {
+	        var controlFeedbackDiv = $("#control-feedback-div");
+	        var controlFeedbackUI = $("#control-feedback-ui");
+	        var controlFeedbackText = $("#control-feedback-text");
+	        controlFeedbackUI.click(function() {
 	            var $infoPanel = $('.infoPanel');
 	            $('.infoPanel__content').html('<h3 class="infoPanel__feedbackTitle">Report a problem with the campus map</h3><iframe src="https://uni_york.formstack.com/forms/campus_map_feedback" title="Campus map feedback" width="100%" height="600px"></iframe>');
 	            openInfoPanel();
 	            $(".closeInfoPanel").click(closeInfoPanel);
 	        });
-	        controlFDiv.index = 1;
-	        map.controls[google.maps.ControlPosition.TOP_LEFT].push(controlFDiv[0]);
+	        controlFeedbackDiv.index = 1;
+	        map.controls[google.maps.ControlPosition.TOP_LEFT].push(controlFeedbackDiv[0]);
 	}
 
 
@@ -347,13 +339,6 @@ $(function() {
 
 			// hide the red marker
 			marker.setVisible(false);
-
-
-			//console.log(marker.position, location.latlng);
-			// move viewport to correct location and zoom
-
-			// map.setZoom(marker.zoom);
-			// map.panTo(marker.position);
 	}
 
 	function createInfoPanel(location) {
