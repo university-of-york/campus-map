@@ -159,6 +159,8 @@ $(function() {
 		});
 	}
 
+
+
 	function DeleteMarkers() {
 		//Loop through all the markers and remove
 		for (var i = 0; i < markers.length; i++) {
@@ -168,6 +170,12 @@ $(function() {
 				markers[i].snazzy.destroy();
 			}
 		}
+		// uncheck feature buttons
+		$('.c-btn--selectable').prop('checked', false);
+		//remove svg feature markers
+		map.data.forEach(function(feature) {
+		    map.data.remove(feature);
+		});
 		markers = [];
 	}
 
@@ -178,6 +186,8 @@ $(function() {
 		controlResetUI.click(function() {
 			setBounds();
 			DeleteMarkers();
+			// remove hash from url
+			window.location.hash = '';
 		});
         //custom control - campus buttons
         var controlEastUI = $("#control-east-ui");
