@@ -166,7 +166,9 @@ $(function() {
 				markers[i].snazzy.destroy();
 			}
 		}
+		// uncheck feature buttons
 		$('.c-btn--selectable').prop('checked', false);
+		//remove svg feature markers
 		map.data.forEach(function(feature) {
 		    map.data.remove(feature);
 		});
@@ -180,6 +182,7 @@ $(function() {
 		controlResetUI.click(function() {
 			setBounds();
 			DeleteMarkers();
+			// remove hash from url
 			window.location.hash = '';
 		});
         //custom control - campus buttons
