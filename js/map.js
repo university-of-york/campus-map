@@ -106,7 +106,7 @@ $(function() {
 			longdesc: longdesc,
 			content: '<h4>'+title+'</h4>'+'<p><a class="si-content-more-link">More information</a></p>'
 		};
-		createInfoWindow(location);
+		event.feature.marker = createInfoWindow(location);
 	}
 
 	// add groups of markers based on selectable categories
@@ -125,7 +125,6 @@ $(function() {
 				return featureCategory === selectableCategory;
 			});
 		});
-
 
 		$(".c-btn--selectable").click(function(e) {
 			var $selectable = $(this);
@@ -150,6 +149,11 @@ $(function() {
 			} else {
   			$.each(markerFeatures[selectableCategory], function(i, feature) {
   				map.data.remove(feature);
+  				if (feature.marker) {
+	  				console.log(feature.marker);
+  					feature.marker.setMap(null);
+  					feature.marker = null;
+  				}
 			  });
 			}
 		});
@@ -339,6 +343,15 @@ $(function() {
 
 			// hide the red marker
 			marker.setVisible(false);
+
+			return marker;
+
+			//console.log(marker.position, location.latlng);
+			// move viewport to correct location and zoom
+
+			// map.setZoom(marker.zoom);
+			// map.panTo(marker.position);
+
 	}
 
 	function createInfoPanel(location) {
