@@ -650,6 +650,10 @@ $(function() {
 			var keyCode = e.keyCode;
 			var stopReturn = false;
 			var searchTerm = $searchQuery.val();
+			if (searchTerm === '') {
+				$autocompleteList.empty();
+				return false;
+			}
 			switch (keyCode) {
 				// Return
 				case 13:
