@@ -148,21 +148,20 @@ $(function() {
 				});
 			} else {
   			$.each(markerFeatures[selectableCategory], function(i, feature) {
+ 				//console.log(feature);
   				map.data.remove(feature);
-  				if (feature.marker) {
-	  				console.log(feature.marker);
-  					feature.marker.setMap(null);
-  					feature.marker = null;
-  				}
+  				//if (feature.marker) {
+  				//	feature.marker.setMap(null);
+  				//	feature.marker = null;
+  				//}
 			  });
 			}
 		});
 	}
 
-
-
 	function DeleteMarkers() {
 		//Loop through all the markers and remove
+		console.log(markers);
 		for (var i = 0; i < markers.length; i++) {
 			markers[i].setMap(null);
 			// Remove snazzy window
@@ -170,13 +169,16 @@ $(function() {
 				markers[i].snazzy.destroy();
 			}
 		}
+		markers = [];
+	}
+
+	function DeleteIcons(category) {
 		// uncheck feature buttons
 		$('.c-btn--selectable').prop('checked', false);
 		//remove svg feature markers
 		map.data.forEach(function(feature) {
 		    map.data.remove(feature);
 		});
-		markers = [];
 	}
 
 	function customCampusControl(map) {
@@ -186,6 +188,8 @@ $(function() {
 		controlResetUI.click(function() {
 			setBounds();
 			DeleteMarkers();
+			DeleteIcons();
+			toggleDrawer('close');
 			// remove hash from url
 			window.location.hash = '';
 		});
