@@ -191,7 +191,13 @@ $(function() {
 			DeleteIcons();
 			toggleDrawer('close');
 			// remove hash from url
-			window.location.hash = '';
+			//	window.location.hash = '';
+			var loc = window.location.href,
+			    index = loc.indexOf('#');
+
+			if (index > 0) {
+			  window.location = loc.substring(0, index);
+			}
 		});
         //custom control - campus buttons
         var controlEastUI = $("#control-east-ui");
