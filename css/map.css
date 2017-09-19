@@ -68,7 +68,6 @@ body {
     color: #fdfdfd;
     font-size: 2rem;
     margin: .5rem .25rem 0 .25rem;
-    width: 100%;
 }
 
 .c-map-header .c-utility-nav__list {
@@ -443,9 +442,9 @@ input[type=search] {
     display:block;
   }
 
-  .c-map-header .c-utility-nav__item {
+  /*.c-map-header .c-utility-nav__item {
    font-size: 0.7rem;
-  }
+  }*/
 
   .c-form {
       margin: .25rem;
