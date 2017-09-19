@@ -67,21 +67,25 @@ body {
 .c-map-header__title {
     color: #fdfdfd;
     font-size: 2rem;
+    line-height: normal;
     margin: .5rem .25rem 0 .25rem;
 }
 
 .c-map-header .c-utility-nav__list {
+  line-height: normal;
   margin: 0 .25rem;
   text-align:left;
 }
 .c-map-header .c-utility-nav__item {
+ line-height: normal;
  font-size: 0.8rem;
 }
 .c-map-header .c-utility-nav__link {
+  line-height: normal;
   color:#fff;
-  padding: .25rem;
 }
 .c-map-header .c-utility-nav__item:first-of-type .c-utility-nav__link {
+  line-height: normal;
   padding-left:0;
 }
 
@@ -238,6 +242,7 @@ body {
     .ipad-fix {
         display: inline-block;
     }
+
 }
 
 
@@ -442,10 +447,6 @@ input[type=search] {
     display:block;
   }
 
-  /*.c-map-header .c-utility-nav__item {
-   font-size: 0.7rem;
-  }*/
-
   .c-form {
       margin: .25rem;
   }
@@ -483,13 +484,6 @@ input[type=search] {
    }
 }
 
-
-/*@media (min-width: 960px) and (max-width: 974px)  and (orientation: landscape)  {
-    .c-map-header {
-        height: 4.5rem;
-    }
-}*/
-
 @media (max-width: 767px) {
   .infoPanel {
     border-right: 0;
@@ -508,10 +502,6 @@ input[type=search] {
       font-size: .75em;
       padding: 0;
   }
-  /*.c-map-header {
-      height: 4rem;
-  }*/
-
 
   .c-form {
       padding: 0;
