@@ -60,31 +60,32 @@ body {
     border-bottom: 2px solid #f9f9f9;
     background-color: #0f3d4c;
     height: 5rem;
+    padding: 0 .5rem;
     width: 100%;
 }
 
 .c-map-header__title {
     color: #fdfdfd;
     font-size: 2rem;
-    margin: .5rem 0 0 1.25rem;
+    margin: .5rem .25rem 0 .25rem;
     width: 100%;
 }
 
 .c-map-header .c-utility-nav__list {
-  margin-left:1.25rem;
+  margin: 0 .25rem;
   text-align:left;
 }
 .c-map-header .c-utility-nav__item {
- font-size:0.8rem;   /*0.75rem improves iPad - maybe add to a media query - DONE*/
+ font-size: 0.8rem;
 }
 .c-map-header .c-utility-nav__link {
   color:#fff;
-  padding-top:0;
-  padding-bottom:0;
+  padding: .25rem;
 }
 .c-map-header .c-utility-nav__item:first-of-type .c-utility-nav__link {
   padding-left:0;
 }
+
 @media (max-width: 767px) {
   .c-map-header .c-utility-nav {
     display:none;
@@ -281,27 +282,21 @@ body {
   .bar {
       display: none;
   }
-
-
-
   .c-form {
       position: relative;
       left: 0;
       top: 1.25rem;
-      /*top: .5rem;*/
       padding: 0;
   }
-
   .c-form__label {
       color: #fff;
   }
-
   .c-main-header__logo {
       margin-left: 0;
       margin-right: 0;
       float: right;
-      padding: 0.5em 1em;
-      width: 180px;
+      padding: 0.5rem 0;
+      width: 150px;
   }
 
   .control-ui {
@@ -448,16 +443,8 @@ input[type=search] {
     display:block;
   }
 
-  .c-map-header {
-      height: 6rem;
-  }
-
-  .c-map-header {
-      padding: .5rem; /* adjusted for iPad */
-  }
-
   .c-map-header .c-utility-nav__item {
-   font-size:0.75rem;
+   font-size: 0.7rem;
   }
 
   .c-form {
@@ -471,7 +458,7 @@ input[type=search] {
 @media (min-width: 768px) and (orientation: portrait) {
     .infoPanel {
       height: calc(100vh - 10rem);
-      top: 6rem;
+      top: 5rem;
     }
 }
 
@@ -485,7 +472,7 @@ input[type=search] {
 @media (min-width: 1024px) and (orientation: landscape) {
     .infoPanel {
       height: calc(100vh - 8.5rem);
-      top: 6rem;
+      top: 5rem;
    }
 }
 
@@ -497,58 +484,12 @@ input[type=search] {
    }
 }
 
-@media (min-width: 568px) and (max-width: 974px) and (orientation: landscape) {
-    .c-main-header__logo {
-        margin-top: 0;
-        width: 120px;
-        float: right;
-    }
 
-    .c-map-header {
-        padding: .5rem 1rem;
-    }
-
-    .c-map-header__title {
-       font-size: 1.5rem;
-       margin: .5rem 0;
-    }
-}
-
-@media (min-width: 960px) and (max-width: 974px)  and (orientation: landscape)  {
-    .c-main-header__logo {
-        margin-top: 0;
-        width: 160px;
-        float: right;
-    }
-
-
+/*@media (min-width: 960px) and (max-width: 974px)  and (orientation: landscape)  {
     .c-map-header {
         height: 4.5rem;
-        padding: 0;
     }
-
-    .c-map-header__title {
-       font-size: 1.5rem;
-       margin: .5rem 1rem;
-    }
-
-    .c-utility-nav {
-        margin: 0;
-        padding: 0;
-    }
-
-    .c-utility-nav__list {
-        float: left;
-        margin: 0;
-        padding: 0;
-    }
-
-    .c-utility-nav__item {
-        float: left;
-        margin: 0;
-        padding: 0;
-    }
-}
+}*/
 
 @media (max-width: 767px) {
   .infoPanel {
@@ -568,27 +509,19 @@ input[type=search] {
       font-size: .75em;
       padding: 0;
   }
-  .c-map-header {
+  /*.c-map-header {
       height: 4rem;
-  }
+  }*/
 
 
   .c-form {
       padding: 0;
-      margin-top: .5rem;
+      margin-top: 1rem;
   }
   .c-main-header__logo {
-      margin-top: 0;
-      width: 120px;
+      margin-top: .5rem;
+      width: 130px;
       float: right;
-  }
-
-  .c-map-header {
-      padding: .5rem 1rem;
-  }
-  .c-map-header__title {
-     font-size: 1.5rem;
-     margin: .5rem 0;
   }
 
 }
@@ -597,11 +530,11 @@ input[type=search] {
 @media (max-width: 400px) {
   .c-form {
     padding: 0;
-    margin-top: .5rem;
-    margin-bottom: 0;
-    margin-left: auto;
-    margin-right: auto;
     width: 100%;
+  }
+
+  .c-main-header__logo {
+      margin-top: 1rem;
   }
 
   /*.c-btn--selectable__label:not(:first-of-type) {
@@ -609,10 +542,6 @@ input[type=search] {
   }
 
   */
-
-  .c-main-header__logo {
-      margin-top: .45rem;
-  }
 
   .c-form__input, input[type=text] {
     border: 0;
