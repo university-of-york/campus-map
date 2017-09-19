@@ -395,6 +395,11 @@ $(function() {
 		});
 		if (selectedFeature.length === 0) return false;
 		//return selectedFeature;
+		if (selectedFeature[0].properties.longdesc === undefined) {
+			content = '<h4>'+selectedFeature[0].properties.title+'</h4>';
+		} else {
+			content = '<h4>'+selectedFeature[0].properties.title+'</h4>'+'<p><a class="si-content-more-link">More information</a></p>';
+		 }
 		var location = {
 			title: selectedFeature[0].properties.title,
 			subtitle: selectedFeature[0].properties.subtitle,
@@ -402,7 +407,7 @@ $(function() {
 			latlng: new google.maps.LatLng(parseFloat(selectedFeature[0].geometry.coordinates[1]), parseFloat(selectedFeature[0].geometry.coordinates[0])),
 			shortdesc: selectedFeature[0].properties.shortdesc || false,
 			longdesc: selectedFeature[0].properties.longdesc || false,
-			content: '<h4>'+selectedFeature[0].properties.title+'</h4>'+'<p><a class="si-content-more-link">More information</a></p>',
+			content: content,
 			zoom: parseInt(selectedFeature[0].properties.zoom, 10) || 16
 		};
 		// Drop pin and inforWindow on map
