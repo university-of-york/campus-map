@@ -193,6 +193,10 @@ body {
     #control-campus-div {
         margin-right: .75rem;
     }
+    .c-map-header {
+        height: 4rem;
+    
+    }
 }
 
 .control-ui{
