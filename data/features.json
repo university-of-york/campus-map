@@ -1,0 +1,140 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "",
+        "description": "",
+        "category": "parking"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.0562539100646973,
+          53.949342806079954
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Car Park G",
+        "description": "",
+        "category": "parking"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.0590648651123047,
+          53.946772960138354
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "South",
+        "description": "Somewhere to leave your car.",
+        "category": "parking"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.052842140197754,
+          53.944701814276364
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "West",
+        "description": "Somewhere to leave your car.",
+        "category": "parking"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.0552453994750974,
+          53.94512489206367
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "",
+        "description": "",
+        "category": "parking"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.0516083240509033,
+          53.94830730980928
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "",
+        "description": "",
+        "category": "parking"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.0522520542144775,
+          53.95004995949057
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "",
+        "description": "",
+        "category": "parking"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.0250866413116455,
+          53.950062587121074
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "",
+        "description": "",
+        "category": "parking"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.0285735130310059,
+          53.94985423072882
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bike Rack",
+        "description": "It's a place to put your bike while you aren't using it.",
+        "category": "bikes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.0575279593467712,
+          53.9460910088329
+        ]
+      }
+    }
+  ]
+}
