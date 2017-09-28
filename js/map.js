@@ -386,6 +386,13 @@ $(function() {
 		$(".closeInfoPanel").click(closeInfoPanel);
 		$(".locationMarker").click(function() {
 			 createInfoWindow(location);
+			 //Close infoPanel on mobile
+			 if ($infoPanel.outerWidth() === $window.width()) {
+			 		closeInfoPanel();
+			 }
+			 // Pan to location
+			 map.setZoom(location.zoom);
+			 map.panTo(location.latlng);
 		});
 
 	}
@@ -653,7 +660,7 @@ $(function() {
 
 			DeleteMarkers();
 
-			// Drop pin and inforWindow on map
+			// Drop pin and infoWindow on map
 			if (location.category === "Room") {
 				createInfoPanel(location);
 			} else {
