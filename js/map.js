@@ -161,7 +161,7 @@ $(function() {
 
 	function DeleteMarkers() {
 		//Loop through all the markers and remove
-		console.log(markers);
+		//console.log(markers);
 		for (var i = 0; i < markers.length; i++) {
 			markers[i].setMap(null);
 			// Remove snazzy window
@@ -385,14 +385,14 @@ $(function() {
 		openInfoPanel();
 		$(".closeInfoPanel").click(closeInfoPanel);
 		$(".locationMarker").click(function() {
-			 createInfoWindow(location);
-			 //Close infoPanel on mobile
-			 if ($infoPanel.outerWidth() === $window.width()) {
-			 		closeInfoPanel();
-			 }
-			 // Pan to location
-			 map.setZoom(location.zoom);
-			 map.panTo(location.latlng);
+			createInfoWindow(location);
+			//Close infoPanel on mobile
+			if ($infoPanel.outerWidth() === $window.width()) {
+					closeInfoPanel();
+			}
+			// Pan to location
+			map.setZoom(location.zoom);
+			map.panTo(location.latlng);
 		});
 
 	}
@@ -522,6 +522,14 @@ $(function() {
 			  	return true;
 			  }
 			}, true); // Change to false to invert the filter i.e. show 'bad' results
+			// Update some wayward locations
+			$.each(cachedGeoJson.features, function(i, d) {
+		    if (d.properties.codes == 'O/EXT/P-temp') {
+		      cachedGeoJson.features[i].geometry.coordinates = [-1.051738,53.9417839];
+		      cachedGeoJson.features[i].properties.subtitle = 'Adjacent to Pavilion, Campus West';
+		    }
+			});
+
 			addMarkers();
 			initSearch();
 			checkHash();
@@ -561,9 +569,9 @@ $(function() {
 			threshold: 0.3,
 			includeScore: true,
 			includeMatches: true,
-			tokenize:true,
-			//location:0,
-			minMatchCharLength: 2
+			tokenize:false,
+			location:0,
+			minMatchCharLength: 1
 		};
 		var noSearchCategories = [
 			'Post boxes',
@@ -662,6 +670,7 @@ $(function() {
 
 			// Drop pin and infoWindow on map
 			if (location.category === "Room") {
+				//console.log(selectedFeature[0].geometry);
 				createInfoPanel(location);
 			} else {
 				closeInfoPanel();
