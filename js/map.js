@@ -569,9 +569,9 @@ $(function() {
 			threshold: 0.3,
 			includeScore: true,
 			includeMatches: true,
-			tokenize:false,
-			location:0,
-			minMatchCharLength: 1
+			tokenize:true,
+			//location:0,
+			minMatchCharLength: 3
 		};
 		var noSearchCategories = [
 			'Post boxes',
