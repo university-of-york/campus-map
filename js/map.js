@@ -682,6 +682,10 @@ $(function() {
 
 			$autocompleteList.empty();
 
+			// Send event to GA
+			// ga('send', 'event', [eventCategory], [eventAction], [eventLabel], [eventValue], [fieldsObject]);
+			ga('send', 'event', 'Map', 'Search', 'submitForm', selectedTitle);
+
 		};
 
 		// Update autosuggest on keyup
