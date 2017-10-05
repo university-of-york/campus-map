@@ -7,6 +7,7 @@ body {
   overflow:hidden;
 }
 
+
 .wrapper {
   display:flex;
   flex-direction: column;
@@ -156,6 +157,21 @@ body {
 
 .gm-style-iw p {
   margin: 0;
+}
+
+
+.control-div-feedback {
+    z-index: 0;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+.control-div-centre {
+    z-index: 0;
+    position: absolute;
+    right: 0px;
+    top: 0px;
 }
 
 #control-reset-ui {
