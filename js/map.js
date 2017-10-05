@@ -854,14 +854,19 @@ $(function() {
 		});
 
 		// Clicking on map closes autocomplete
-		map.addListener('click', function() {
-			// Send 'no selection' event to GA
+		map.addListener('click', function(e) {
 			var searchTerm = $searchQuery.val();
 			if (searchTerm !== '') {
+				// Send 'no selection' event to GA
 				addAnalyticsEvent('Search', 'No selection (query: '+searchTerm+')');
+			} else {
+				// Send click event to GA
+				addAnalyticsEvent('Click', e.latLng.lat()+','+e.latLng.lng());
 			}
 			$autocompleteList.empty();
 		});
+
+		console.log(map.getStreetView());
 
 	} // end initSearch
 
