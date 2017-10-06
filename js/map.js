@@ -25,44 +25,62 @@ $(function() {
 	};
 	// Google maps style that roughly matches our tiles
 	var mapStyle = [{
-    "featureType": "landscape.man_made",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#eeeeee"
-      }
-    ]
-  },
-  {
-    "featureType": "landscape.natural",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#E7ECB1"
-      }
-    ]
-  },
-  {
-    "featureType": "water",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#7599a2"
-      }
-    ]
-  },
-  {
-    "featureType": "poi",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  }];
+		"featureType": "landscape.man_made",
+		"elementType": "geometry.fill",
+		"stylers": [
+			{
+				"color": "#eeeeee"
+			}
+		]
+	},
+	{
+		"featureType": "landscape.natural",
+		"elementType": "geometry.fill",
+		"stylers": [
+			{
+				"color": "#E7ECB1"
+			}
+		]
+	},
+	{
+		"featureType": "water",
+		"elementType": "geometry.fill",
+		"stylers": [
+			{
+				"color": "#7599a2"
+			}
+		]
+	},
+	{
+		"featureType": "poi",
+		"stylers": [
+			{
+				"visibility": "off"
+			}
+		]
+	}];
 	var markers = [];
 	var $window = $(window);
 	var $panel = $('.panel');
 	var $icon = $('.c-icon', '#drawerStatusButton');
+
+	// Placeholder for the name of the tracker that Tag Manager loads
+	var gaTracker = false;
+
+	// Add an event to Google Analytics
+	var addAnalyticsEvent = function(action, label, value) {
+		// Analytics hasn't loaded yet
+		if (typeof ga === 'undefined') return false;
+		if (gaTracker === false) {
+			// Get the name of the tracker that Tag Manager loads
+			ga(function() {
+				var trackers = ga.getAll();
+				gaTracker = trackers[0].get('name');
+			});
+		}
+		ga(gaTracker+'.send', 'event', 'Map', action, label, value);
+
+	};
 
 	// load the map
 	function loadMap() {
@@ -107,6 +125,8 @@ $(function() {
 			content: '<h4>'+title+'</h4>'+'<p><a class="si-content-more-link">More information</a></p>'
 		};
 		event.feature.marker = createInfoWindow(location);
+		// Send marker event to GA
+		addAnalyticsEvent('Select marker', title);
 	}
 
 	// add groups of markers based on selectable categories
@@ -137,24 +157,28 @@ $(function() {
 				map.data.setStyle(function(feature) {
 					var featureCategory = feature.getProperty('category').toLowerCase().replace(/\s+/g, '-');
 					var icon = {
-					   url: 'img/markers/'+featureCategory+'.svg',
-					   anchor: new google.maps.Point(10,10),
-					   scaledSize: new google.maps.Size(22,22)
-				   };
+						 url: 'img/markers/'+featureCategory+'.svg',
+						 anchor: new google.maps.Point(10,10),
+						 scaledSize: new google.maps.Size(22,22)
+					 };
 					return {
 						icon: icon,
 						optimized: false
 					};
 				});
+				// Send facilities event to GA
+				addAnalyticsEvent('Show facilities', selectableCategory);
 			} else {
-  			$.each(markerFeatures[selectableCategory], function(i, feature) {
+				$.each(markerFeatures[selectableCategory], function(i, feature) {
  				//console.log(feature);
-  				map.data.remove(feature);
-  				//if (feature.marker) {
-  				//	feature.marker.setMap(null);
-  				//	feature.marker = null;
-  				//}
-			  });
+					map.data.remove(feature);
+					//if (feature.marker) {
+					//	feature.marker.setMap(null);
+					//	feature.marker = null;
+					//}
+				});
+				// Send facilities event to GA
+				addAnalyticsEvent('Hide facilities', selectableCategory);
 			}
 		});
 	}
@@ -177,7 +201,7 @@ $(function() {
 		$('.c-btn--selectable').prop('checked', false);
 		//remove svg feature markers
 		map.data.forEach(function(feature) {
-		    map.data.remove(feature);
+				map.data.remove(feature);
 		});
 	}
 
@@ -193,45 +217,52 @@ $(function() {
 			// remove hash from url
 			//	window.location.hash = '';
 			var loc = window.location.href,
-			    index = loc.indexOf('#');
-
+					index = loc.indexOf('#');
 			if (index > 0) {
-			  window.location = loc.substring(0, index);
+				window.location = loc.substring(0, index);
 			}
+			// Send centre on event to GA
+			addAnalyticsEvent('Reset', '');
 		});
-        //custom control - campus buttons
-        var controlEastUI = $("#control-east-ui");
+		//custom control - campus buttons
+		var controlEastUI = $("#control-east-ui");
 		controlEastUI.click(function() {
-            map.setCenter(east);
-            map.setZoom(16);
-        });
+			map.setCenter(east);
+			map.setZoom(16);
+			// Send centre on event to GA
+			addAnalyticsEvent('Centre on', 'Campus East');
+		});
 		var controlWestUI = $("#control-west-ui");
-        controlWestUI.click(function() {
-            map.setCenter(west);
-            map.setZoom(16);
-        });
+		controlWestUI.click(function() {
+			map.setCenter(west);
+			map.setZoom(16);
+			// Send centre on event to GA
+			addAnalyticsEvent('Centre on', 'Campus West');
+		});
 		var controlKingsManorUI = $("#control-km-ui");
-	   controlKingsManorUI.click(function() {
-		   map.setCenter(kingsmanor);
-		   map.setZoom(18);
-	   });
-        controlCampusDiv.index = 1;
-        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlCampusDiv[0]);
+		controlKingsManorUI.click(function() {
+			map.setCenter(kingsmanor);
+			map.setZoom(18);
+			// Send centre on event to GA
+			addAnalyticsEvent('Centre on', 'King\'s Manor');
+		});
+		controlCampusDiv.index = 1;
+		map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlCampusDiv[0]);
 	}
 
 	function customFeedbackControl(map) {
-	        //custom control - feedback button
-	        var controlFeedbackDiv = $("#control-feedback-div");
-	        var controlFeedbackUI = $("#control-feedback-ui");
-	        var controlFeedbackText = $("#control-feedback-text");
-	        controlFeedbackUI.click(function() {
-	            var $infoPanel = $('.infoPanel');
-	            $('.infoPanel__content').html('<h3 class="infoPanel__feedbackTitle">Send us feedback about the campus map</h3><iframe src="https://uni_york.formstack.com/forms/campus_map_feedback" title="Campus map feedback" width="100%" height="600px"></iframe>');
-	            openInfoPanel();
-	            $(".closeInfoPanel").click(closeInfoPanel);
-	        });
-	        controlFeedbackDiv.index = 1;
-	        map.controls[google.maps.ControlPosition.TOP_LEFT].push(controlFeedbackDiv[0]);
+		//custom control - feedback button
+		var controlFeedbackDiv = $("#control-feedback-div");
+		var controlFeedbackUI = $("#control-feedback-ui");
+		var controlFeedbackText = $("#control-feedback-text");
+		controlFeedbackUI.click(function() {
+			var $infoPanel = $('.infoPanel');
+			$('.infoPanel__content').html('<h3 class="infoPanel__feedbackTitle">Report a problem with the campus map</h3><iframe src="https://uni_york.formstack.com/forms/campus_map_feedback" title="Campus map feedback" width="100%" height="600px"></iframe>');
+			openInfoPanel();
+			$(".closeInfoPanel").click(closeInfoPanel);
+		});
+		controlFeedbackDiv.index = 1;
+		map.controls[google.maps.ControlPosition.TOP_LEFT].push(controlFeedbackDiv[0]);
 	}
 
 
@@ -288,21 +319,29 @@ $(function() {
 			maxWidth: 320,
 			closeWhenOthersOpen: true,
 			offset: {
-			  top: '-8px',
-			  left: '2px'
+				top: '-8px',
+				left: '2px'
 			},
 			callbacks: {
 				afterOpen: function(){
 					$(".si-content-more-link").click(function(event) {
 						var $infoPanel = $('.infoPanel');
+						var $infoPanelContent = $('.infoPanel__content');
 						var html = '<h3>'+opts.title+'</h3>';
 						if (opts.subtitle) html+= '<h4>'+opts.subtitle+'</h4>';
 						if (opts.shortdesc) html+= '<p>'+opts.shortdesc+'</p>';
 						if (opts.longdesc) html+= '<p>'+opts.longdesc+'</p>';
-						$('.infoPanel__content').html(html);
+						$infoPanelContent.html(html);
 						openInfoPanel();
 						toggleDrawer('close');
 						$(".closeInfoPanel").click(closeInfoPanel);
+						// Send popup interaction event to GA
+						addAnalyticsEvent('Popup interaction', opts.title+' (more information)');
+						$infoPanelContent.find('a').not('.locationMarker').click(function(e){
+							var $this = $(this);
+							// Send panel interaction event to GA
+							addAnalyticsEvent('Panel interaction', $this.text()+'('+$this.attr('href')+')');
+						});
 					});
 				},
 				afterClose: function(){
@@ -310,7 +349,7 @@ $(function() {
 					//closeInfoPanel();
 				}
 			}
-	   };
+		 };
 	}
 
 	function createInfoWindow(location) {
@@ -393,6 +432,10 @@ $(function() {
 			// Pan to location
 			map.setZoom(location.zoom);
 			map.panTo(location.latlng);
+
+			// Send panel interaction event to GA
+			addAnalyticsEvent('Panel interaction', location.subtitle.split(',')[0]+' (show location)');
+
 		});
 
 	}
@@ -423,7 +466,7 @@ $(function() {
 			content: content,
 			zoom: parseInt(selectedFeature[0].properties.zoom, 10) || 16
 		};
-		// Drop pin and inforWindow on map
+		// Drop pin and infoWindow on map
 		if (location.category === "Room") {
 			createInfoPanel(location);
 		} else {
@@ -455,35 +498,35 @@ $(function() {
 		// overlay our tiles
 
 		function CoordMapType(tileSize) {
-      this.tileSize = tileSize;
-    }
+			this.tileSize = tileSize;
+		}
 
-    // WHat tiles do we have available?
-    // e.g. zoom 13, x from 4069-4073, y from 2630-2633
-    var limits = {
-    	13: { xMin:   4069, xMax:   4073, yMin:  2630, yMax:  2633 },
-    	14: { xMin:   8139, xMax:   8146, yMin:  5260, yMax:  5266 },
-    	15: { xMin:  16279, xMax:  16292, yMin: 10520, yMax: 10533 },
-    	16: { xMin:  32558, xMax:  32585, yMin: 21040, yMax: 21067 },
-    	17: { xMin:  65116, xMax:  65170, yMin: 42080, yMax: 42135 },
-    	18: { xMin: 130233, xMax: 130341, yMin: 84161, yMax: 84271 }
-    };
+		// WHat tiles do we have available?
+		// e.g. zoom 13, x from 4069-4073, y from 2630-2633
+		var limits = {
+			13: { xMin:	 4069, xMax:	 4073, yMin:	2630, yMax:	2633 },
+			14: { xMin:	 8139, xMax:	 8146, yMin:	5260, yMax:	5266 },
+			15: { xMin:	16279, xMax:	16292, yMin: 10520, yMax: 10533 },
+			16: { xMin:	32558, xMax:	32585, yMin: 21040, yMax: 21067 },
+			17: { xMin:	65116, xMax:	65170, yMin: 42080, yMax: 42135 },
+			18: { xMin: 130233, xMax: 130341, yMin: 84161, yMax: 84271 }
+		};
 
-    CoordMapType.prototype.getTile = function(coord, zoom, ownerDocument) {
-    	var span = ownerDocument.createElement('span');
-    	//if (1 == 1) return ownerDocument.createElement('span');
-    	// Find out if it's outside our limits
-    	if (!limits[zoom]) return span;
-    	if (coord.x > limits[zoom].xMax) return span;
-    	if (coord.x < limits[zoom].xMin) return span;
-    	if (coord.y > limits[zoom].yMax) return span;
-    	if (coord.y < limits[zoom].yMin) return span;
-      var tile = ownerDocument.createElement('img');
-      tile.src = "https://www.york.ac.uk/static/data/maps/tiles/"+zoom+"/"+coord.x+"/"+coord.y+".png";
-      return tile;
-    };
+		CoordMapType.prototype.getTile = function(coord, zoom, ownerDocument) {
+			var span = ownerDocument.createElement('span');
+			//if (1 == 1) return ownerDocument.createElement('span');
+			// Find out if it's outside our limits
+			if (!limits[zoom]) return span;
+			if (coord.x > limits[zoom].xMax) return span;
+			if (coord.x < limits[zoom].xMin) return span;
+			if (coord.y > limits[zoom].yMax) return span;
+			if (coord.y < limits[zoom].yMin) return span;
+			var tile = ownerDocument.createElement('img');
+			tile.src = "https://www.york.ac.uk/static/data/maps/tiles/"+zoom+"/"+coord.x+"/"+coord.y+".png";
+			return tile;
+		};
 
-    map.overlayMapTypes.insertAt(0, new CoordMapType(new google.maps.Size(256, 256)));
+		map.overlayMapTypes.insertAt(0, new CoordMapType(new google.maps.Size(256, 256)));
 
 		// add custom controls
 		customFeedbackControl(map);
@@ -507,27 +550,27 @@ $(function() {
 					'NO LONGER BOOKABLE',
 					'NOW A KITCHEN',
 					'USE248X'
-			  ];
-			  var r = -1;
-			  $.each(filterPhrases, function(i, phrase) {
+				];
+				var r = -1;
+				$.each(filterPhrases, function(i, phrase) {
 					var phraseIndex = title.indexOf(phrase);
 					if (phraseIndex > -1) {
-			   		r = phraseIndex;
-			   		return false;
-			   	}
-			  });
-			  if (r > -1) return true;
-			  // Check lat and long to see if it's 0,0 (fake data)
-			  if (feature.geometry.coordinates[0] === 0 || feature.geometry.coordinates[1] === 0) {
-			  	return true;
-			  }
+				 		r = phraseIndex;
+				 		return false;
+				 	}
+				});
+				if (r > -1) return true;
+				// Check lat and long to see if it's 0,0 (fake data)
+				if (feature.geometry.coordinates[0] === 0 || feature.geometry.coordinates[1] === 0) {
+					return true;
+				}
 			}, true); // Change to false to invert the filter i.e. show 'bad' results
 			// Update some wayward locations
 			$.each(cachedGeoJson.features, function(i, d) {
-		    if (d.properties.codes == 'O/EXT/P-temp') {
-		      cachedGeoJson.features[i].geometry.coordinates = [-1.051738,53.9417839];
-		      cachedGeoJson.features[i].properties.subtitle = 'Adjacent to Pavilion, Campus West';
-		    }
+				if (d.properties.codes == 'O/EXT/P-temp') {
+					cachedGeoJson.features[i].geometry.coordinates = [-1.051738,53.9417839];
+					cachedGeoJson.features[i].properties.subtitle = 'Adjacent to Pavilion, Campus West';
+				}
 			});
 
 			addMarkers();
@@ -539,9 +582,9 @@ $(function() {
 			console.log('The map data failed to load', err);
 		});
 		google.maps.event.addListener(map, "idle", function(){
-			  google.maps.event.trigger(map, 'resize');
-			  // fit to campuses
-			  //setBounds();
+				google.maps.event.trigger(map, 'resize');
+				// fit to campuses
+				//setBounds();
 		});
 
 	} // end initMap
@@ -581,7 +624,7 @@ $(function() {
 		];
 		var searchGeoJson = JSON.parse(JSON.stringify(cachedGeoJson));
 		searchGeoJson.features = $.grep(cachedGeoJson.features, function(feature) {
-			  return $.inArray(feature.properties.category, noSearchCategories) === -1;
+				return $.inArray(feature.properties.category, noSearchCategories) === -1;
 		});
 		var fuse = new Fuse(searchGeoJson.features, fuseOptions);
 
@@ -624,6 +667,9 @@ $(function() {
 			var selectedTitle = selectedLink.children('.c-autocomplete__title').text();
 			var selectedSubtitle = selectedLink.children('.c-autocomplete__subtitle').text();
 			var selectedHash = selectedLink.attr("href");
+			var searchQueryText = $searchQuery.val();
+
+			var selectedIndex = $autocompleteItems.index(selectedItem) + 1;
 
 			if (selectedItem.length === 0) return false;
 
@@ -632,21 +678,21 @@ $(function() {
 
 			// Update hash
 			if (history.pushState) {
-    		history.pushState(null, null, selectedHash);
+				history.pushState(null, null, selectedHash);
 			} else {
-			  location.hash = selectedHash;
+				location.hash = selectedHash;
 			}
 
 			// Get rest of details from cachedGeoJson
 			var selectedFeature = $.grep(cachedGeoJson.features, function(feature) {
-			  return feature.properties.title === selectedTitle;
+				return feature.properties.title === selectedTitle;
 			});
 
 			// Is there more than one with this title? Check against subtitle
 			// Should really use a unique ID
 			if (selectedFeature.length > 1 && selectedSubtitle != '') {
 				selectedFeature = $.grep(selectedFeature, function(feature) {
-			  	return feature.properties.subtitle === selectedSubtitle;
+					return feature.properties.subtitle === selectedSubtitle;
 				});
 			}
 			if (selectedFeature[0].properties.longdesc === undefined) {
@@ -682,6 +728,9 @@ $(function() {
 
 			$autocompleteList.empty();
 
+			// Send query event to GA
+			addAnalyticsEvent('Search', selectedTitle+' (query: '+searchQueryText+')', selectedIndex);
+
 		};
 
 		// Update autosuggest on keyup
@@ -704,7 +753,7 @@ $(function() {
 						stopReturn = true;
 					}
 					break;
-			  // Up
+				// Up
 				case 38:
 					selectItem('up');
 					stopReturn = true;
@@ -714,9 +763,11 @@ $(function() {
 					selectItem('down');
 					stopReturn = true;
 					break;
-			  // Escape
+				// Escape
 				case 27:
 					$autocompleteList.empty();
+					// Send 'no selection' event to GA
+					addAnalyticsEvent('Search', 'No selection (query: '+searchTerm+')');
 					stopReturn = true;
 					break;
 			}
@@ -727,7 +778,11 @@ $(function() {
 
 			// console.log(fuseResult);
 
-			if (fuseResult.length === 0) return false;
+			if (fuseResult.length === 0) {
+				// Send 'no results' event to GA
+				addAnalyticsEvent('Search', 'No results (query: '+searchTerm+')');
+				return false;
+			}
 
 			$.each(fuseResult, function(i, feature) {
 				if (i > 9) return false;
@@ -799,19 +854,34 @@ $(function() {
 		});
 
 		// Clicking on map closes autocomplete
-		map.addListener('click', function() {
+		map.addListener('click', function(e) {
+			var searchTerm = $searchQuery.val();
+			if (searchTerm !== '') {
+				// Send 'no selection' event to GA
+				addAnalyticsEvent('Search', 'No selection (query: '+searchTerm+')');
+			} else {
+				// Send click event to GA
+				addAnalyticsEvent('Click', e.latLng.lat()+','+e.latLng.lng());
+			}
 			$autocompleteList.empty();
-    });
+		});
+
+		var mapPanorama = map.getStreetView();
+		mapPanorama.addListener("visible_changed", function() {
+		  var pos = mapPanorama.getPosition();
+			// Send click event to GA
+			addAnalyticsEvent('Show StreetView', pos.lat()+','+pos.lng());
+		});
 
 	} // end initSearch
 
 	// Function to get property from dot notation
 	// e.g. foo["bar.baz"] -> foo.bar.baz
 	// Because of the way fuse.js returns matches
-	function multiIndex(obj,is) {  // obj,['1','2','3'] -> ((obj['1'])['2'])['3']
+	function multiIndex(obj,is) {	// obj,['1','2','3'] -> ((obj['1'])['2'])['3']
 		return is.length ? multiIndex(obj[is[0]],is.slice(1)) : obj;
 	}
-	function pathIndex(obj,is) {   // obj,'1.2.3' -> multiIndex(obj,['1','2','3'])
+	function pathIndex(obj,is) {	 // obj,'1.2.3' -> multiIndex(obj,['1','2','3'])
 		return multiIndex(obj,is.split('.'));
 	}
 
@@ -834,13 +904,13 @@ $(function() {
 		}
 	}
 
-  // Update placeholder text
+	// Update placeholder text
 	function searchPlaceholderText() {
 		var placeholderText;
 		if ($window.width() < 1024) {
-		   placeholderText = "Search the map";
+			 placeholderText = "Search the map";
 		} else {
-		   placeholderText = "Search for buildings, departments and rooms";
+			 placeholderText = "Search for buildings, departments and rooms";
 		}
 		$("input").attr("placeholder", placeholderText);
 	}
@@ -852,32 +922,32 @@ $(function() {
 
 	//user location
 	// function showPosition() {
-	//     if (navigator.geolocation) {
-	//         navigator.geolocation.getCurrentPosition(success, error);
-	//     } else {
-	//         alert('location not supported');
-	//     }
-	//     //callbacks
-	//     function error(msg) {
-	//         alert('error in geolocation');
-	//     }
+	//		 if (navigator.geolocation) {
+	//				 navigator.geolocation.getCurrentPosition(success, error);
+	//		 } else {
+	//				 alert('location not supported');
+	//		 }
+	//		 //callbacks
+	//		 function error(msg) {
+	//				 alert('error in geolocation');
+	//		 }
 	//
-	//     function success(position) {
-	//         var lats = position.coords.latitude;
-	//         var lngs = position.coords.longitude;
-	//         var myLatLng = {lat:lats, lng: lngs};
-	//         var icon = {
-	//            url: 'img/markers/user.svg',
-	//            anchor: new google.maps.Point(8,8),
-	//            scaledSize: new google.maps.Size(12,12),
-	//        };
-	//         var marker = new google.maps.Marker({
-	//           position: myLatLng,
-	//           icon: icon,
-	//           map: map,
-	//           title: 'You are here!'
-	//         });
-	//     };
+	//		 function success(position) {
+	//				 var lats = position.coords.latitude;
+	//				 var lngs = position.coords.longitude;
+	//				 var myLatLng = {lat:lats, lng: lngs};
+	//				 var icon = {
+	//						url: 'img/markers/user.svg',
+	//						anchor: new google.maps.Point(8,8),
+	//						scaledSize: new google.maps.Size(12,12),
+	//				};
+	//				 var marker = new google.maps.Marker({
+	//					 position: myLatLng,
+	//					 icon: icon,
+	//					 map: map,
+	//					 title: 'You are here!'
+	//				 });
+	//		 };
 	// }
 
 });
