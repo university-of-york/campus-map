@@ -866,7 +866,12 @@ $(function() {
 			$autocompleteList.empty();
 		});
 
-		console.log(map.getStreetView());
+		var mapPanorama = map.getStreetView();
+		mapPanorama.addListener("visible_changed", function() {
+		  var pos = mapPanorama.getPosition();
+			// Send click event to GA
+			addAnalyticsEvent('Show StreetView', pos.lat()+','+pos.lng());
+		});
 
 	} // end initSearch
 
