@@ -257,7 +257,7 @@ $(function() {
 		var controlFeedbackText = $("#control-feedback-text");
 		controlFeedbackUI.click(function() {
 			var $infoPanel = $('.infoPanel');
-			$('.infoPanel__content').html('<h3 class="infoPanel__feedbackTitle">Report a problem with the campus map</h3><iframe src="https://uni_york.formstack.com/forms/campus_map_feedback" title="Campus map feedback" width="100%" height="600px"></iframe>');
+			$('.infoPanel__content').html('<h3 class="infoPanel__feedbackTitle">Send us feedback about the campus map</h3><iframe src="https://uni_york.formstack.com/forms/campus_map_feedback" title="Campus map feedback" width="100%" height="600px"></iframe>');
 			openInfoPanel();
 			$(".closeInfoPanel").click(closeInfoPanel);
 		});
