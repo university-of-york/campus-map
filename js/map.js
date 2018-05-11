@@ -522,7 +522,8 @@ $(function() {
 			if (coord.y > limits[zoom].yMax) return span;
 			if (coord.y < limits[zoom].yMin) return span;
 			var tile = ownerDocument.createElement('img');
-			tile.src = "https://www.york.ac.uk/static/data/maps/tiles/"+zoom+"/"+coord.x+"/"+coord.y+".png";
+			//tile.src = "https://www.york.ac.uk/static/data/maps/tiles/"+zoom+"/"+coord.x+"/"+coord.y+".png";
+			tile.src = "https://www.york.ac.uk/map/tiles/"+zoom+"/"+coord.x+"/"+coord.y+".png";
 			return tile;
 		};
 
