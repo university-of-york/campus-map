@@ -2,155 +2,147 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="author" content="University of York">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Campus map, University of York</title>
-
-    <meta name="description" content="Use our interactive campus map to find your way around the University of York">
-
-    <link rel="shortcut icon" href="https://www.york.ac.uk/static/1.5/img/favicon.ico">
-    <link rel="icon" type="image/x-icon" href="https://www.york.ac.uk/static/1.5/img/favicon.ico">
-
-    <link rel="stylesheet" href="https://www.york.ac.uk/static/1.5/css/styles.min.css">
-    <link rel="stylesheet" href="css/snazzy-info-window.css">
-    <link rel="stylesheet" href="css/map.css">
-
-    <script src="https://www.york.ac.uk/static/1.5/js/modernizr.min.js"></script>
-    <!-- <script src="js/app.min.js"></script> -->
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	  <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.0.4/fuse.min.js"></script>
-
-    <script src="js/map.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBRU46Whb7IqeK2RW6SP4u69vDpCbTct8&libraries=places" ></script>
-    <script src="js/snazzy-info-window.js"></script>
-
-    <!-- Typekit script -->
-    <script src="//use.typekit.net/dvj8rpp.js"></script>
-    <script>
-        try {
-            Typekit.load();
-        } catch (e) {}
-    </script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="author" content="University of York">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Campus map, University of York</title>
+  <meta name="description" content="Use our interactive campus map to find your way around the University of York">
+  <link rel="shortcut icon" href="https://www.york.ac.uk/static/dev/img/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="https://www.york.ac.uk/static/dev/img/favicon.ico">
+  <link rel="stylesheet" href="https://www.york.ac.uk/static/dev/css/styles.min.css">
+  <link rel="stylesheet" href="css/snazzy-info-window.css">
+  <link rel="stylesheet" href="css/map.css">
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBRU46Whb7IqeK2RW6SP4u69vDpCbTct8&libraries=places"></script>
+  <script src="https://www.york.ac.uk/static/dev/js/modernizr.min.js"></script>
+  <script src="https://www.york.ac.uk/static/dev/js/app.min.js"></script>
+  <!--script src="js/snazzy-info-window.js"></script-->
+  <script src="js/map.js"></script>
+  <!-- Typekit script -->
+  <script src="//use.typekit.net/dvj8rpp.js"></script>
+  <script>
+  try {
+    Typekit.load();
+  } catch (e) {}
+  </script>
 </head>
+
 <body>
-
-<!-- Google Tag Manager -->
-<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-WXLX54" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WXLX54');</script>
-
-<a href="#Main-Content" class="o-skip-link">Skip to content</a>
-
-<div class="wrapper">
-
-
-<header class="c-map-header" role="banner">
-    <div class="o-wrapper o-wrapper--wide o-grid">
+  <!-- Google Tag Manager -->
+  <noscript>
+    <iframe src="//www.googletagmanager.com/ns.html?id=GTM-WXLX54" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
+  <script>
+  (function(w, d, s, l, i) { w[l] = w[l] || [];
+    w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s),
+      dl = l != 'dataLayer' ? '&l=' + l : '';
+    j.async = true;
+    j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl;
+    f.parentNode.insertBefore(j, f); })(window, document, 'script', 'dataLayer', 'GTM-WXLX54');
+  </script>
+  <a href="#Main-Content" class="o-skip-link">Skip to content</a>
+  <div class="wrapper">
+    <header class="c-map-header" role="banner">
+      <div class="o-wrapper o-wrapper--wide o-grid">
         <div class="o-grid__row">
-                <div class="o-grid__box o-grid__box--quarter o-grid__box--third@medium is-hidden@tiny is-hidden@small">
-                    <h1 class="c-map-header__title">Campus map</h1>
-                      <nav class="c-utility-nav js-accessible-nav" role="navigation" aria-label="Utility navigation">
-                        <ul class="c-utility-nav__list" role="menubar" aria-hidden="false">
-                          <li class="c-utility-nav__item" role="menuitem" aria-haspopup="false"><a class="c-utility-nav__link" href="https://www.york.ac.uk/about/maps/"><u>Maps and directions</u></a></li>
-
-                        </ul>
-                      </nav>
+          <div class="o-grid__box o-grid__box--quarter o-grid__box--third@medium is-hidden@tiny is-hidden@small">
+            <h1 class="c-map-header__title">Campus map</h1>
+            <nav class="c-utility-nav js-accessible-nav" role="navigation" aria-label="Utility navigation">
+              <ul class="c-utility-nav__list" role="menubar" aria-hidden="false">
+                <li class="c-utility-nav__item" role="menuitem" aria-haspopup="false"><a class="c-utility-nav__link" href="https://www.york.ac.uk/about/maps/"><u>Maps and directions</u></a></li>
+              </ul>
+            </nav>
+          </div>
+          <div class="o-grid__box  o-grid__box--half o-grid__box--third@medium  o-grid__box--twothirds@small o-grid__box--twothirds@tiny">
+            <form action="#" method="get" class="c-form" id="map-search-form">
+              <fieldset>
+                <div class="c-form__element">
+                  <i class="c-icon c-icon--search"></i>
+                  <input class="c-form__input c-form__input--text" type="search" id="map-search-query" name="search-query" autocomplete="off" />
+                  <div class="c-autocomplete">
+                    <ul class="c-autocomplete__list">
+                    </ul>
+                  </div>
                 </div>
-                <div class="o-grid__box  o-grid__box--half o-grid__box--third@medium  o-grid__box--twothirds@small o-grid__box--twothirds@tiny">
-                    <form action="#" method="get" class="c-form" id="map-search-form">
-                        <fieldset>
-                          <div class="c-form__element">
-                              <i class="c-icon c-icon--search"></i>
-                              <input class="c-form__input c-form__input--text"  type="search" id="map-search-query" name="search-query" autocomplete="off"/>
-                             <div class="c-autocomplete">
-                              <ul class="c-autocomplete__list">
-                              </ul>
-                            </div>
-                        </fieldset>
-                    </form>
-                </div>
-            <div class="o-grid__box o-grid__box--quarter o-grid__box--third@medium  o-grid__box--third@small o-grid__box--third@tiny">
-                 <a href="https://www.york.ac.uk/"><img class="c-main-header__logo" src="https://www.york.ac.uk/static/1.5/img/logo-white.svg" alt="University of York"></a>
-            </div>
+              </fieldset>
+            </form>
+          </div>
+          <div class="o-grid__box o-grid__box--quarter o-grid__box--third@medium  o-grid__box--third@small o-grid__box--third@tiny">
+            <a href="https://www.york.ac.uk/"><img class="c-main-header__logo" src="https://www.york.ac.uk/static/dev/img/logo-white.svg" alt="University of York"></a>
+          </div>
         </div>
-    </div>
-</header>
-
-
+      </div>
+    </header>
     <div id="map" class="map"></div>
     <div id="control-feedback-div" class="control-div control-div-feedback">
-         <div id= "control-feedback-ui" class="control-ui--feedback" title = "Click to send feedback">
-           <div id="control-feedback-text" class="control-text">
-             <p>Feedback</p>
-           </div>
-         </div>
-    </div>
-    <div id="control-campus-div" class="control-div control-div-centre">
-            <div id="control-reset-ui" class="control-ui" title = "Click to reset the map">
-              <div id="control-reset-text" class="control-text">
-                <p> <span class="is-hidden@small is-hidden@medium- ipad-fix">Reset map </span> <i class="c-icon c-icon--lg c-icon--refresh"></i> </p>
-              </div>
-            </div>
-        <div class="control-campus-div--campus-buttons">
-        <p>
-            Centre the map on
-        </p>
-         <div id= "control-east-ui" class="control-ui" title="Centre on Campus West">
-           <div id="control-east-text" class="control-text">
-            Campus East
-           </div>
-         </div>
-         <div id= "control-west-ui" class="control-ui" title="Centre on Campus East">
-           <div id="control-west-text" class="control-text">
-             Campus West
-           </div>
-         </div>
-         <div id= "control-km-ui" class="control-ui" title="Centre on King's Manor">
-           <div id="control-km-text" class="control-text">
-             King's Manor
-           </div>
-         </div>
-        </div>
-    </div>
-
-<div class="infoPanel">
-    <a href="#" class="closeInfoPanel"><i class="c-icon c-icon--close"></i></a>
-    <div class="infoPanel__content"></div>
-</div>
-
-<footer class="footer">
-    <div class="bar">
-        <a href="#" id="drawerStatusButton" ><i class="c-icon c-icon--above c-icon--chevron-up"></i>Find facilities</a>
-    </div>
-    <div class="o-wrapper o-wrapper--wide o-grid panel">
-      <div class="o-grid__row">
-          <div class="o-grid__box o-grid__box--full">
-            <div class="c-btn-group c-btn-group--block">
-                <input type="checkbox" id="food-and-drink" name="mapButton" class="c-btn--selectable" value="Food and drink">
-                <label for="food-and-drink" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--coffee"></i>Food and drink</label>
-                <input type="checkbox" id="study-spaces" name="mapButton" class="c-btn--selectable" value="Study spaces">
-                <label for="study-spaces" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--book"></i>Study spaces</label>
-                <!--<input type="checkbox" id="printers" name="mapButton" class="c-btn--selectable" value="Printers">
-                <label for="printers" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--print"></i>Printers</label>-->
-                <input type="checkbox" id="shops" name="mapButton" class="c-btn--selectable" value="Shops">
-                <label for="shops" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--shopping-basket"></i>Shops</label>
-                <input type="checkbox" id="car-parks" name="mapButton" class="c-btn--selectable" value="Car parks">
-                <label for="car-parks" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--car"></i>Car parks</label>
-                <input type="checkbox" id="bus-stops" name="mapButton" class="c-btn--selectable" value="Bus stops">
-                <label for="bus-stops" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--bus"></i>Bus stops</label>
-                <input type="checkbox" id="cash-machines" name="mapButton" class="c-btn--selectable" value="Cash machines">
-                <label for="cash-machines" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--money"></i>Cash machines</label>
-                <input type="checkbox" id="post-boxes" name="mapButton" class="c-btn--selectable" value="Post boxes">
-                <label for="post-boxes" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--envelope"></i>Post boxes</label>
-            </div>
+      <div id="control-feedback-ui" class="control-ui--feedback" title="Click to send feedback">
+        <div id="control-feedback-text" class="control-text">
+          <p>Feedback</p>
         </div>
       </div>
     </div>
-</footer>
-
-</div>
-
+    <div id="control-campus-div" class="control-div control-div-centre">
+      <div id="control-reset-ui" class="control-ui" title="Click to reset the map">
+        <div id="control-reset-text" class="control-text">
+          <p> <span class="is-hidden@small is-hidden@medium- ipad-fix">Reset map </span> <i class="c-icon c-icon--lg c-icon--refresh"></i> </p>
+        </div>
+      </div>
+      <div class="control-campus-div--campus-buttons">
+        <p>
+          Centre the map on
+        </p>
+        <div id="control-east-ui" class="control-ui" title="Centre on Campus West">
+          <div id="control-east-text" class="control-text">
+            Campus East
+          </div>
+        </div>
+        <div id="control-west-ui" class="control-ui" title="Centre on Campus East">
+          <div id="control-west-text" class="control-text">
+            Campus West
+          </div>
+        </div>
+        <div id="control-km-ui" class="control-ui" title="Centre on King's Manor">
+          <div id="control-km-text" class="control-text">
+            King's Manor
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="infoPanel">
+      <a href="#" class="closeInfoPanel"><i class="c-icon c-icon--close"></i></a>
+      <div class="infoPanel__content"></div>
+    </div>
+    <footer class="footer">
+      <div class="bar">
+        <a href="#" id="drawerStatusButton"><i class="c-icon c-icon--above c-icon--chevron-up"></i>Find facilities</a>
+      </div>
+      <div class="o-wrapper o-wrapper--wide o-grid panel">
+        <div class="o-grid__row">
+          <div class="o-grid__box o-grid__box--full">
+            <div class="c-btn-group c-btn-group--block">
+              <input type="checkbox" id="food-and-drink" name="mapButton" class="c-btn--selectable" value="Food and drink">
+              <label for="food-and-drink" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--coffee"></i>Food and drink</label>
+              <input type="checkbox" id="study-spaces" name="mapButton" class="c-btn--selectable" value="Study spaces">
+              <label for="study-spaces" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--book"></i>Study spaces</label>
+              <!--<input type="checkbox" id="printers" name="mapButton" class="c-btn--selectable" value="Printers">
+        <label for="printers" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--print"></i>Printers</label>-->
+              <input type="checkbox" id="shops" name="mapButton" class="c-btn--selectable" value="Shops">
+              <label for="shops" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--shopping-basket"></i>Shops</label>
+              <input type="checkbox" id="car-parks" name="mapButton" class="c-btn--selectable" value="Car parks">
+              <label for="car-parks" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--car"></i>Car parks</label>
+              <input type="checkbox" id="bus-stops" name="mapButton" class="c-btn--selectable" value="Bus stops">
+              <label for="bus-stops" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--bus"></i>Bus stops</label>
+              <input type="checkbox" id="cash-machines" name="mapButton" class="c-btn--selectable" value="Cash machines">
+              <label for="cash-machines" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--money"></i>Cash machines</label>
+              <input type="checkbox" id="post-boxes" name="mapButton" class="c-btn--selectable" value="Post boxes">
+              <label for="post-boxes" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above c-icon--envelope"></i>Post boxes</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    </div>
 </body>
+
 </html>
