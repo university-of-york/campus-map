@@ -63,6 +63,7 @@ $(function() {
 	var $window = $(window);
 	var $panel = $('.panel');
 	var $icon = $('.c-icon', '#drawerStatusButton');
+	var $selectables = $(".c-btn--selectable");
 
 	// Placeholder for the name of the tracker that Tag Manager loads
 	var gaTracker = false;
@@ -135,7 +136,7 @@ $(function() {
 		var markerGroups = {};
 		var markerFeatures = {};
 
-		$(".c-btn--selectable").each(function(i, selectable) {
+		$selectables.each(function(i, selectable) {
 			var $selectable = $(this);
 			var selectableCategory = $selectable.attr("id");
 			// 'Clone' new GeoJSON file for each category
@@ -146,11 +147,31 @@ $(function() {
 			});
 		});
 
-		$(".c-btn--selectable").click(function(e) {
+		$selectables.click(function(e) {
 			var $selectable = $(this);
-			var selectableCategory = $selectable.attr("id");
-			var thisGroup = markerGroups[selectableCategory];
 			if ($selectable.is(':checked')) {
+				ShowMarkers($selectable);
+			} else {
+				$.each(markerFeatures[selectableCategory], function(i, feature) {
+					map.data.remove(feature);
+				});
+				// Send facilities event to GA
+				addAnalyticsEvent('Hide facilities', selectableCategory);
+			}
+		});
+
+		// If there are any selectables selected on load, show the icons on the map
+		// This happens when navigating away, then back
+		$selectables.each(function(i, v) {
+			var $v = $(v);
+			if ($v.prop("checked") === true) {
+				ShowMarkers($v);
+			}
+		});
+
+		function ShowMarkers($s) {
+				var selectableCategory = $s.attr("id");
+				var thisGroup = markerGroups[selectableCategory];
 				markerFeatures[selectableCategory] = map.data.addGeoJson(thisGroup);
 				map.data.addListener('click', popupAction);
 				map.data.addListener('mouseover', popupAction);
@@ -168,19 +189,8 @@ $(function() {
 				});
 				// Send facilities event to GA
 				addAnalyticsEvent('Show facilities', selectableCategory);
-			} else {
-				$.each(markerFeatures[selectableCategory], function(i, feature) {
- 				//console.log(feature);
-					map.data.remove(feature);
-					//if (feature.marker) {
-					//	feature.marker.setMap(null);
-					//	feature.marker = null;
-					//}
-				});
-				// Send facilities event to GA
-				addAnalyticsEvent('Hide facilities', selectableCategory);
-			}
-		});
+		}
+
 	}
 
 	function DeleteMarkers() {
@@ -577,8 +587,10 @@ $(function() {
 			addMarkers();
 			initSearch();
 			checkHash();
+
 			// For testing purposes
 			// window.cachedGeoJson = cachedGeoJson;
+
 		}).fail(function(err) {
 			console.log('The map data failed to load', err);
 		});
