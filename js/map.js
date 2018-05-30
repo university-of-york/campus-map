@@ -935,7 +935,6 @@ $(function() {
 		var myLatlng = new google.maps.LatLng(lat, long);
 		var icon = {
 			url: 'img/markers/pin.svg',
-			anchor: new google.maps.Point(8,8),
 			scaledSize: new google.maps.Size(24,32)
 		};
 		if (typeof(marker) != "undefined") marker.setMap(null);
@@ -943,13 +942,11 @@ $(function() {
 				map: map,
 				icon: icon
 		});
-		marker.setPosition(myLatlng);
-		if (typeof(map) != "undefined") map.panTo(myLatlng);
+			marker.setPosition(myLatlng);
+			if (typeof(map) != "undefined") map.panTo(myLatlng);
+		}
+		function onError(msg) {
+			 alert('There has been a problem finding your location');
+	 }
 	}
-	function onError(msg) {
-		 alert('There has been a problem finding your location');
- }
-}
-
-
 });
