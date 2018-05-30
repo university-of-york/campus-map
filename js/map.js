@@ -608,9 +608,9 @@ $(function() {
 				weight: 0.3
 			}, {
 				name: 'properties.codes',
-				weight: 0.1
+				weight: 0.7
 			}],
-			threshold: 0.3,
+			threshold: 0.4,
 			includeScore: true,
 			includeMatches: true,
 			tokenize:true,
