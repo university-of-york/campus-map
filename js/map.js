@@ -922,33 +922,39 @@ $(function() {
 	$(window).resize(searchPlaceholderText);
 
 	//user location
-	// function showPosition() {
-	//		 if (navigator.geolocation) {
-	//				 navigator.geolocation.getCurrentPosition(success, error);
-	//		 } else {
-	//				 alert('location not supported');
-	//		 }
-	//		 //callbacks
-	//		 function error(msg) {
-	//				 alert('error in geolocation');
-	//		 }
-	//
-	//		 function success(position) {
-	//				 var lats = position.coords.latitude;
-	//				 var lngs = position.coords.longitude;
-	//				 var myLatLng = {lat:lats, lng: lngs};
-	//				 var icon = {
-	//						url: 'img/markers/user.svg',
-	//						anchor: new google.maps.Point(8,8),
-	//						scaledSize: new google.maps.Size(12,12),
-	//				};
-	//				 var marker = new google.maps.Marker({
-	//					 position: myLatLng,
-	//					 icon: icon,
-	//					 map: map,
-	//					 title: 'You are here!'
-	//				 });
-	//		 };
-	// }
+	function showPosition() {
+			 if (navigator.geolocation) {
+					 navigator.geolocation.watchPosition(success, error);
+			 } else {
+					 alert('location not supported');
+			 }
+			 //callbacks
+			 function error(msg) {
+					 alert('error in geolocation');
+			 }
+
+			 function success(position) {
+					 var lats = position.coords.latitude;
+					 var lngs = position.coords.longitude;
+					 var myLatLng = {lat:lats, lng: lngs};
+					 var icon = {
+							url: 'img/markers/pin.svg',
+							anchor: new google.maps.Point(8,8),
+							scaledSize: new google.maps.Size(24,32)
+
+					};
+					 var marker = new google.maps.Marker({
+						 position: myLatLng,
+						 icon: icon,
+						 //animation: google.maps.Animation.DROP,
+						 map: map
+					});
+
+					console.log(myLatLng);
+
+			 };
+	}
+	showPosition()
+
 
 });
