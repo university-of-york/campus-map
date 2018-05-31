@@ -933,34 +933,32 @@ $(function() {
 	// respond to resizing
 	$(window).resize(searchPlaceholderText);
 
-	//user location
-	// function showPosition() {
-	//		 if (navigator.geolocation) {
-	//				 navigator.geolocation.getCurrentPosition(success, error);
-	//		 } else {
-	//				 alert('location not supported');
-	//		 }
-	//		 //callbacks
-	//		 function error(msg) {
-	//				 alert('error in geolocation');
-	//		 }
-	//
-	//		 function success(position) {
-	//				 var lats = position.coords.latitude;
-	//				 var lngs = position.coords.longitude;
-	//				 var myLatLng = {lat:lats, lng: lngs};
-	//				 var icon = {
-	//						url: 'img/markers/user.svg',
-	//						anchor: new google.maps.Point(8,8),
-	//						scaledSize: new google.maps.Size(12,12),
-	//				};
-	//				 var marker = new google.maps.Marker({
-	//					 position: myLatLng,
-	//					 icon: icon,
-	//					 map: map,
-	//					 title: 'You are here!'
-	//				 });
-	//		 };
-	// }
-
+	// User location
+	// Geolocation
+	if (navigator.geolocation) {
+		navigator.geolocation.watchPosition(onSuccess, onError, {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  });
+	function onSuccess(position) {
+		var lat = position.coords.latitude;
+		var long = position.coords.longitude;
+		var myLatlng = new google.maps.LatLng(lat, long);
+		var icon = {
+			url: 'img/markers/pin.svg',
+			scaledSize: new google.maps.Size(24,32)
+		};
+		if (typeof(marker) != "undefined") marker.setMap(null);
+		marker = new google.maps.Marker({
+				map: map,
+				icon: icon
+		});
+			marker.setPosition(myLatlng);
+			if (typeof(map) != "undefined") map.panTo(myLatlng);
+		}
+		function onError(msg) {
+			 alert('There has been a problem finding your location');
+	 }
+	}
 });
