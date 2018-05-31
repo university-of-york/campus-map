@@ -923,16 +923,12 @@ $(function() {
 
 	// User location
 	// Geolocation
-	if (navigator.geolocation) {
-		navigator.geolocation.watchPosition(onSuccess, onError, {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0
-  });
+	// User location
+// Geolocation
+if (navigator.geolocation) {
+	navigator.geolocation.watchPosition(onSuccess, onError, watchOptions);
 	function onSuccess(position) {
-		var lat = position.coords.latitude;
-		var long = position.coords.longitude;
-		var myLatlng = new google.maps.LatLng(lat, long);
+		var userLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 		var icon = {
 			url: 'img/markers/pin.svg',
 			scaledSize: new google.maps.Size(24,32)
@@ -942,11 +938,16 @@ $(function() {
 				map: map,
 				icon: icon
 		});
-			marker.setPosition(myLatlng);
-			if (typeof(map) != "undefined") map.panTo(myLatlng);
-		}
-		function onError(msg) {
-			 alert('There has been a problem finding your location');
-	 }
+		marker.setPosition(userLatlng);
+		if (typeof(map) != "undefined") map.panTo(userLatlng);
 	}
+	function onError(msg) {
+		 alert('There has been a problem finding your location');
+	}
+	var watchOptions = {
+		 enableHighAccuracy: true,
+		 timeout: 5000,
+		 maximumAge: 0
+	}
+}
 });
