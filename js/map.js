@@ -113,8 +113,8 @@ $(function() {
 		var subTitle = event.feature.getProperty("subtitle");
 		var category = event.feature.getProperty("category");
 		var subCategory = event.feature.getProperty("subcategory");
-		var shortdesc = event.feature.getProperty("shortdesc");
-		var longdesc = event.feature.getProperty("longdesc");
+		var shortdesc = event.feature.getProperty("shortdesc")  || "";
+		var longdesc = event.feature.getProperty("longdesc")  || "";
 		var location = {
 			title: title,
 			subtitle: subTitle,
@@ -123,7 +123,7 @@ $(function() {
 			subcategory: subCategory,
 			shortdesc: shortdesc,
 			longdesc: longdesc,
-			content: '<h4>'+title+'</h4>'+'<p><a class="si-content-more-link">More information</a></p>'
+			content: '<h4>'+title+'</h4>'+shortdesc+'<p><a class="si-content-more-link">More information</a></p>'
 		};
 		event.feature.marker = createInfoWindow(location);
 		// Send marker event to GA
