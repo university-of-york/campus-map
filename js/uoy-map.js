@@ -1,6 +1,7 @@
 const uoy_map = (function(){
 
-    const cookieName = 'global-notice-status';
+    var _mapConfigData = {};
+    const _cookieName = 'global-notice-status';
     let _closeBtnHTML = '<button type="button" class="c-alert__close js-alert-close" aria-label="Close">&times;</button>';
     let _noticeHTML = '<div class="c-global-notice {0}">{x}{1}{2}</div>';
     let _noticeTitle = '<h2 class="c-global-notice__title">{0}</h2>';
@@ -12,6 +13,7 @@ const uoy_map = (function(){
         noticeModifierClasses: '',
         closeable: false
     };
+
 
     // map variables
     var _gmap = null;
@@ -56,6 +58,7 @@ const uoy_map = (function(){
         return "";
     }
 
+    // Setters
     function setMap(gMap) {
         _gmap = gMap;
     }
@@ -63,7 +66,39 @@ const uoy_map = (function(){
         _poiArr = poiArr;
     }
 
+    // getters
+    function getConfig() {
+        return _mapConfigData;
+    }
 
+    // Private/internal functions
+    const renderMapButtons = function() {
+        let mapButtonContainer = document.getElementById('map-button-container');
+
+        let checkboxHtml = ' <input type="checkbox" id="{0}" name="mapButton" class="c-btn--selectable" value="{1}">';
+        let labelHtml = '<label for="{0}" class="c-btn  c-btn--secondary c-btn--medium c-btn--selectable__label" role="button"><i class="c-icon c-icon--above {1}"></i>{2}</label>';
+
+        if(_mapConfigData.mapButtons) {
+            var mapButtonHtml = '';
+
+            for (var i = 0; i < _mapConfigData.mapButtons.length; i++) {
+                let mapButton = _mapConfigData.mapButtons[i];
+
+                mapButtonHtml += checkboxHtml
+                    .replace('{0}', mapButton.id)
+                    .replace('{1}', mapButton.value);
+                mapButtonHtml += labelHtml
+                    .replace('{0}', mapButton.id)
+                    .replace('{1}', mapButton.iconClass)
+                    .replace('{2}', mapButton.value)
+            }
+
+            // spit the buttons on the page
+            mapButtonContainer.innerHTML = mapButtonHtml;
+        }
+    };
+
+    // External functions
     const addGlobalNotice = function(options) {
         // merge passed in options into defaults
         $.extend(_defaultOptions, options);
@@ -83,14 +118,14 @@ const uoy_map = (function(){
             outputHTML = outputHTML.replace('{x}', _closeBtnHTML);
 
             // check if the element has already been closed and set by a cookie
-            if(getCookie(cookieName) === 'closed' ){
+            if(getCookie(_cookieName) === 'closed' ){
                 return; // prevents the global notice being written
             } else {
                 $('div[class=wrapper]').on('click', '.js-alert-close', function (e) {
                     e.preventDefault();
                     $('.c-global-notice').hide();
                     // set a cookie to stash the closure status
-                    setCookie(cookieName, 'closed', null);
+                    setCookie(_cookieName, 'closed', null);
                 });
             }
         }
@@ -135,11 +170,28 @@ const uoy_map = (function(){
         }
     };
 
+    const init = function(options) {
+        // load the campus map configuration data
+        $.getJSON( "/mapconfig.json", function( data ) {
+            if(data) {
+                _mapConfigData = data;
+
+                renderMapButtons();
+
+                // add the open day global notice
+                uoy_map.addGlobalNotice(_mapConfigData.globalNotice);
+                uoy_map.setPointsOfInterest(_mapConfigData.pointsOfInterest);
+            }
+        });
+    };
+
     return {
         addGlobalNotice : addGlobalNotice,
         setGoogleMapObj: setMap,
         setPointsOfInterest: setPointsOfInterest,
-        plotPOIItems: plotPOIItems
+        plotPOIItems: plotPOIItems,
+        init: init,
+        getConfig: getConfig
     }
 })();
 window.uoy_map = uoy_map || {};

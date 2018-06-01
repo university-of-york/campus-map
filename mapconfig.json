@@ -1,0 +1,74 @@
+{
+  "geoJSONFile": "https://york.funnelback.co.uk/s/search.html?collection=york-uni-campusmap&form=geojson&query=!padrenullquery&num_ranks=5000&MBL=800",
+  "mapButtons":[
+    {
+      "id": "food-and-drink",
+      "value": "Food and drink",
+      "iconClass": "c-icon--coffee"
+    },
+    {
+      "id": "study-spaces",
+      "value": "Study spaces",
+      "iconClass": "c-icon--book"
+    },
+    {
+      "id": "shops",
+      "value": "Shops",
+      "iconClass": "c-icon--shopping-basket"
+    },
+    {
+      "id": "car-parks",
+      "value": "Car parks",
+      "iconClass": "c-icon--car"
+    },
+    {
+      "id": "bus-stops",
+      "value": "Bus stops",
+      "iconClass": "c-icon--bus"
+    },
+    {
+      "id": "cash-machines",
+      "value": "Cash machines",
+      "iconClass": "c-icon--money"
+    },
+    {
+      "id": "post-boxes",
+      "value": "Post boxes",
+      "iconClass": "c-icon--envelope"
+    }
+  ],
+  "globalNotice": {
+    "placeBeforeElement": ".c-map-header",
+    "title": "",
+    "description": "Here for Open Day? We've got an <a href=\"https://www.york.ac.uk/map/open-day-map\">Open Day Map</a> just for you",
+    "noticeModifierClasses": "c-global-notice--highlighted",
+    "closeable": true
+  },
+  "pointsOfInterest" : [
+    {
+      "title": "Piazza Building",
+      "lat": 53.9476135,
+      "lon": -1.0280116
+    },
+    {
+      "title": "Ron Cooke Hub",
+      "lat": 53.947226,
+      "lon": -1.0297289
+    },
+    {
+      "title": "Spring Lane Building",
+      "lat": 53.9476566,
+      "lon": -1.0511597
+    },
+    {
+      "title": "Central Hall",
+      "lat": 53.9469181,
+      "lon": -1.0529672
+    },
+    {
+      "title": "Exhibition Centre",
+      "lat": 53.9462674,
+      "lon": -1.0533276
+    }
+  ]
+}

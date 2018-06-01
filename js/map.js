@@ -1,7 +1,7 @@
 $(function() {
 
 	// defaults
-	var GeoJSONFile = "https://york.funnelback.co.uk/s/search.html?collection=york-uni-campusmap&form=geojson&query=!padrenullquery&num_ranks=5000&MBL=800";
+	var GeoJSONFile = uoy_map.getConfig().geoJSONFile; // loads the geoJson file from the mapconfig.json file
 	var cachedGeoJson = {};
 	var map;
 	var maxZoom = 18,
@@ -955,7 +955,12 @@ $(function() {
 			if (typeof(map) != "undefined") map.panTo(userLatlng);
 		}
 		function onError(msg) {
-			 alert('There has been a problem finding your location');
+		    const message = "There has been a problem finding your location";
+		    if(window.location.hostname.indexOf('localhost') >= 0) {
+		        console.log(message);
+            } else {
+                alert(message);
+            }
 		}
 		var watchOptions = {
 			 enableHighAccuracy: true,
