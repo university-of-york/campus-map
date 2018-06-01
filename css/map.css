@@ -574,9 +574,6 @@ input[type=search] {
 /* Global notification area (to be abstracted to pattern-library and deleted */
 /* ========================================================================== */
 
-/*
-c-global-notice--highlighted
-*/
 .c-global-notice {
     background-color: #f4f1ce;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, .5);
@@ -618,7 +615,41 @@ c-global-notice--highlighted
 }
 
 
+/* ========================================================================== */
+/* Special, permanent points of interest markers */
+/* ========================================================================== */
 
+/* The location pointed to by the popup tip. */
+.o-poi-item {
+    height: 0;
+    position: absolute;
+    /* The max width of the info window. */
+    width: 200px;
+    display: inherit !important;
+}
+/* The bubble is anchored above the tip. */
+.o-poi-item--anchor {
+    position: absolute;
+    width: 100%;
+    /*bottom: !* TIP_HEIGHT= *! 8px;*/
+    bottom: 0;
+    left: 0;
+}
+/* The popup bubble itself. */
+.o-poi-item--content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /*transform: translate(-50%, -100%);*/
+    background-color: #00b3eb;
+    color: #fff;
+    padding: 5px;
+    overflow-y: auto;
+    max-height: 60px;
+    text-transform: uppercase;
+    font-size: 10px;
+    font-family: museo-sans,Helvetica,Arial,sans-serif;
+}
 
 
 
