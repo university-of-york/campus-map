@@ -63,6 +63,7 @@ const uoy_map = (function(){
         _poiArr = poiArr;
     }
 
+
     const addGlobalNotice = function(options) {
         // merge passed in options into defaults
         $.extend(_defaultOptions, options);
@@ -112,6 +113,7 @@ const uoy_map = (function(){
             poi_builder.constructPopupClass();
             let Popup = poi_builder.getPopupClass();
 
+            // plot the markers on the map
             for (let i = 0; i < poiArr.length; i++){
                 let pointObj = poiArr[i],
                     poiID = 'poi-id' + i.toString();
@@ -125,6 +127,11 @@ const uoy_map = (function(){
                 );
                 popup.setMap(_gmap);
             }
+
+            // hide the popup/poi items below selected zoom levels on smaller screens
+            _gmap.addListener('zoom_changed', function(){
+                poi_builder.hidePopupItemsOnMobileZoom(_gmap)
+            });
         }
     };
 

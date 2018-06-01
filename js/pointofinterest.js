@@ -1,17 +1,22 @@
 const poi_builder = (function(){
 
     var Popup = null; // null object container which will be populated once constructed.
+    const _classNameAnchor = "o-poi-item--anchor",
+        _classNameItem = "o-poi-item",
+        _classNameIsHidden = 'is-hidden';
 
     function constructPopupClass() {
         Popup = function (position, content) {
             this.position = position;
 
-            var pixelOffset = document.createElement('div');
-            pixelOffset.classList.add('o-poi-item--anchor');
+            let pixelOffset = document.createElement('div');
+            pixelOffset.classList.add(_classNameAnchor);
             pixelOffset.appendChild(content);
 
             this.anchor = document.createElement('div');
-            this.anchor.classList.add('o-poi-item');
+            this.anchor.classList.add(_classNameItem);
+            // we hide this initially to determine current device and zoom level
+            this.anchor.classList.add(_classNameIsHidden);
             this.anchor.appendChild(pixelOffset);
 
             this.stopEventPropagation();
@@ -50,7 +55,7 @@ const poi_builder = (function(){
         };
         /** Stops clicks/drags from bubbling up to the map. */
         Popup.prototype.stopEventPropagation = function() {
-            var anchor = this.anchor;
+            let anchor = this.anchor;
             anchor.style.cursor = 'auto';
 
             ['click', 'dblclick', 'contextmenu', 'wheel', 'mousedown', 'touchstart',
@@ -66,11 +71,28 @@ const poi_builder = (function(){
     function getPopupClass() {
         return Popup;
     }
+    function hidePopupItemsOnMobileZoom(gmap, zoomLimit = 14) {
+        let zoomLevel = gmap.getZoom(),
+            smallScreen = window.matchMedia("(max-width: 40em)").matches;
+
+        togglePoiItems(smallScreen && zoomLevel >= zoomLimit || !smallScreen);
+    }
+
+    function togglePoiItems(visible) {
+        let $poiItems = $('.' + _classNameItem);
+
+        if(!visible) {
+            $poiItems.addClass(_classNameIsHidden);
+        } else {
+            $poiItems.removeClass(_classNameIsHidden);
+        }
+    }
 
     return {
         // methods
         constructPopupClass: constructPopupClass,
-        getPopupClass: getPopupClass
+        getPopupClass: getPopupClass,
+        hidePopupItemsOnMobileZoom: hidePopupItemsOnMobileZoom
     }
 })();
 window.poi_builder = poi_builder || {};

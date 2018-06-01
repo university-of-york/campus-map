@@ -625,7 +625,10 @@ input[type=search] {
     position: absolute;
     /* The max width of the info window. */
     width: 200px;
-    display: inherit !important;
+    /*display: inherit !important;*/
+}
+.o-poi-item.is-hidden {
+    visibility: hidden;
 }
 /* The bubble is anchored above the tip. */
 .o-poi-item--anchor {
