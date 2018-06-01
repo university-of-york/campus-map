@@ -1,30 +1,25 @@
 {
-  "geoJSONFile": "https://york.funnelback.co.uk/s/search.html?collection=york-uni-campusmap&form=geojson&query=!padrenullquery&num_ranks=5000&MBL=800",
+  "geoJSONFile": "https://york.funnelback.co.uk/s/search.html?collection=york-uni-campusmap-openday&form=geojson&query=!padrenullquery&num_ranks=5000&MBL=800",
   "mapButtons":[
+    {
+      "id": "information-points",
+      "value": "Information points",
+      "iconClass": "c-icon--info-circle"
+    },
+    {
+      "id": "view-accommodation",
+      "value": "View accommodation",
+      "iconClass": "c-icon--bed"
+    },
     {
       "id": "food-and-drink",
       "value": "Food and drink",
       "iconClass": "c-icon--coffee"
     },
     {
-      "id": "study-spaces",
-      "value": "Study spaces",
-      "iconClass": "c-icon--book"
-    },
-    {
       "id": "shops",
-      "value": "Shops",
+      "value": "shops",
       "iconClass": "c-icon--shopping-basket"
-    },
-    {
-      "id": "car-parks",
-      "value": "Car parks",
-      "iconClass": "c-icon--car"
-    },
-    {
-      "id": "bus-stops",
-      "value": "Bus stops",
-      "iconClass": "c-icon--bus"
     },
     {
       "id": "cash-machines",
@@ -32,9 +27,14 @@
       "iconClass": "c-icon--money"
     },
     {
-      "id": "post-boxes",
-      "value": "Post boxes",
-      "iconClass": "c-icon--envelope"
+      "id": "bus-stops",
+      "value": "Bus stops",
+      "iconClass": "c-icon--bus"
+    },
+    {
+      "id": "disabled-parking",
+      "value": "Disabled parking",
+      "iconClass": "c-icon--wheelchair"
     }
   ],
   "globalNotice": {
