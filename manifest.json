@@ -1,0 +1,27 @@
+{
+  "short_name": "UOY Map",
+  "name": "University of York Campus Map",
+  "icons": [
+    {
+      "src": "/img/icon-map-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/img/icon-map-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0f3d4c",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#0f3d4c",
+
+  "version": "1.5"
+}
+
+
+<link rel="shortcut icon" href="https://www.york.ac.uk/static/1.5/img/favicon.ico">
+<link rel="icon" type="image/x-icon" href="https://www.york.ac.uk/static/1.5/img/favicon.ico">
