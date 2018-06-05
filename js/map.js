@@ -846,7 +846,8 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
                     icon: icon
                 });
                 marker.setPosition(userLatlng);
-                if (typeof(map) != "undefined") map.panTo(userLatlng);
+                //disable until further investigation
+                //if (typeof(map) != "undefined") map.panTo(userLatlng);
             }
 
             function onError(msg) {
