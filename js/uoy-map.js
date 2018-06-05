@@ -163,7 +163,12 @@ const uoy_map = (function(){
                 popup.setMap(_gmap);
             }
 
-            // hide the popup/poi items below selected zoom levels on smaller screens
+            // show/hide the popup/poi items on init
+            _gmap.addListener('tilesloaded', function(){
+                poi_builder.hidePopupItemsOnMobileZoom(_gmap)
+            });
+
+            // show/hide the popup/poi items below selected zoom levels on smaller screens
             _gmap.addListener('zoom_changed', function(){
                 poi_builder.hidePopupItemsOnMobileZoom(_gmap)
             });
@@ -172,7 +177,7 @@ const uoy_map = (function(){
 
     const init = function(options) {
         // load the campus map configuration data
-        $.getJSON( "/mapconfig.json", function( data ) {
+        $.getJSON( "mapconfig.json", function( data ) {
             if(data) {
                 _mapConfigData = data;
 
