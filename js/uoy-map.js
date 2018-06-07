@@ -101,37 +101,40 @@ const uoy_map = (function(){
 
     // External functions
     const addGlobalNotice = function(options) {
-        // merge passed in options into defaults
-        $.extend(_defaultOptions, options);
+        // check to see if we actually have an object
+        if(typeof options !== 'undefined') {
+            // merge passed in options into defaults
+            $.extend(_defaultOptions, options);
 
-        let $placementEl = $(_defaultOptions.placeBeforeElement),
-            title = stringChecker(_defaultOptions.title) ? stringReplace(_noticeTitle, [_defaultOptions.title]) : '';
+            let $placementEl = $(_defaultOptions.placeBeforeElement),
+                title = stringChecker(_defaultOptions.title) ? stringReplace(_noticeTitle, [_defaultOptions.title]) : '';
 
-        let outputHTML = stringReplace(_noticeHTML, [
-            _defaultOptions.noticeModifierClasses,
-            title,
-            _defaultOptions.description
-        ]);
+            let outputHTML = stringReplace(_noticeHTML, [
+                _defaultOptions.noticeModifierClasses,
+                title,
+                _defaultOptions.description
+            ]);
 
-        if(_defaultOptions.closeable) {
+            if (_defaultOptions.closeable) {
 
-            // add in the close button to the html
-            outputHTML = outputHTML.replace('{x}', _closeBtnHTML);
+                // add in the close button to the html
+                outputHTML = outputHTML.replace('{x}', _closeBtnHTML);
 
-            // check if the element has already been closed and set by a cookie
-            if(getCookie(_cookieName) === 'closed' ){
-                return; // prevents the global notice being written
-            } else {
-                $('div[class=wrapper]').on('click', '.js-alert-close', function (e) {
-                    e.preventDefault();
-                    $('.c-global-notice').hide();
-                    // set a cookie to stash the closure status
-                    setCookie(_cookieName, 'closed', null);
-                });
+                // check if the element has already been closed and set by a cookie
+                if (getCookie(_cookieName) === 'closed') {
+                    return; // prevents the global notice being written
+                } else {
+                    $('div[class=wrapper]').on('click', '.js-alert-close', function (e) {
+                        e.preventDefault();
+                        $('.c-global-notice').hide();
+                        // set a cookie to stash the closure status
+                        setCookie(_cookieName, 'closed', null);
+                    });
+                }
             }
-        }
 
-        $placementEl.before(outputHTML);
+            $placementEl.before(outputHTML);
+        }
     };
 
     const plotPOIItems = function (poiArr) {

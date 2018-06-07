@@ -71,14 +71,15 @@ const poi_builder = (function(){
     function getPopupClass() {
         return Popup;
     }
-    function hidePopupItemsOnMobileZoom(gmap, zoomLimit) {
+    function hidePopupItemsOnMobileZoom(gmap, zoomLimitSmall, zoomLimitLarge) {
         let zoomLevel = gmap.getZoom(),
             smallScreen = window.matchMedia("(max-width: 40em)").matches;
 
         // used for older browsers that don't support default parameters
-        zoomLimit = typeof zoomLimit !== 'undefined' ? zoomLimit : 14;
+        zoomLimitSmall = typeof zoomLimitSmall !== 'undefined' ? zoomLimitSmall : 14;
+        zoomLimitLarge = typeof zoomLimitLarge !== 'undefined' ? zoomLimitLarge : 15;
 
-        togglePoiItems(smallScreen && zoomLevel >= zoomLimit || !smallScreen);
+        togglePoiItems(smallScreen && zoomLevel >= zoomLimitSmall || !smallScreen && zoomLevel >= zoomLimitLarge);
     }
 
     function togglePoiItems(visible) {

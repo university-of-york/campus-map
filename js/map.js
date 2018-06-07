@@ -130,8 +130,13 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
                 subcategory: subCategory,
                 shortdesc: shortdesc,
                 longdesc: longdesc,
-                content: '<h4>' + title + '</h4>' + shortdesc + '<p><a class="si-content-more-link">More information</a></p>'
+                content: '<h4>' + title + '</h4>' + shortdesc
             };
+            // don't add the 'more information' link if there's no long desc
+            if(longdesc !== 'undefined' && longdesc !== "") {
+                location.content += '<p><a class="si-content-more-link">More information</a></p>';
+            }
+
             event.feature.marker = createInfoWindow(location);
             // Send marker event to GA
             addAnalyticsEvent('Select marker', title);
@@ -423,13 +428,6 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
             marker.setVisible(false);
 
             return marker;
-
-            //console.log(marker.position, location.latlng);
-            // move viewport to correct location and zoom
-
-            // map.setZoom(marker.zoom);
-            // map.panTo(marker.position);
-
         }
 
         function createInfoPanel(location) {
@@ -454,9 +452,7 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
 
                 // Send panel interaction event to GA
                 addAnalyticsEvent('Panel interaction', location.subtitle.split(',')[0] + ' (show location)');
-
             });
-
         }
 
         // Check whether there is a location hash,
