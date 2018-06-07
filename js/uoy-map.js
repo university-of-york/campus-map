@@ -1,4 +1,5 @@
 const uoy_map = (function(){
+"use strict";
 
     var _mapConfigData = {};
     const _cookieName = 'global-notice-status';
@@ -25,7 +26,7 @@ const uoy_map = (function(){
     function stringReplace(template, replaceArr) {
 
         for(let i = 0; i < replaceArr.length; i++) {
-            placeholder = "{" + i.toString() + "}";
+            let placeholder = "{" + i.toString() + "}";
             template = template.replace(placeholder, replaceArr[i]);
         }
 
