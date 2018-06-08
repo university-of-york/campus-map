@@ -171,7 +171,7 @@ const uoy_map = (function(){
 
             // show/hide the popup/poi items on init
             _gmap.addListener('tilesloaded', function(){
-                poi_builder.hidePopupItemsOnMobileZoom(_gmap)
+                poi_builder.hidePopupItemsOnMobileZoom(_gmap);
             });
 
             // show/hide the popup/poi items below selected zoom levels on smaller screens

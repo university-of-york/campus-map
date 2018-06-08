@@ -604,8 +604,13 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
             });
             google.maps.event.addListener(map, "idle", function () {
                 google.maps.event.trigger(map, 'resize');
-                // fit to campuses
-                //setBounds();
+            });
+            google.maps.event.addListener(map, 'tilesloaded', function(){
+
+                // show the various feedback and map location buttons
+                $('#control-feedback-div').removeClass('is-hidden');
+                $('#control-campus-buttons').removeClass('is-hidden');
+                $('#control-campus-div').removeClass('is-hidden');
             });
 
         } // end initMap
