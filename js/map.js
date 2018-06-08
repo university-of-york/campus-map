@@ -747,11 +747,8 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
                     map.panTo(location.latlng);
                 }
 
-                $autocompleteList.empty();
-
                 // Send query event to GA
                 addAnalyticsEvent('Search', selectedTitle + ' (query: ' + searchQueryText + ')', selectedIndex);
-
             };
 
             // Select all text when you click the input (much easier than deleting existing value)
@@ -783,7 +780,6 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
                     // Send click event to GA
                     addAnalyticsEvent('Click', e.latLng.lat() + ',' + e.latLng.lng());
                 }
-                $autocompleteList.empty();
             });
 
             var mapPanorama = map.getStreetView();
