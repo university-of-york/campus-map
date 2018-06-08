@@ -609,7 +609,17 @@ input[type=search] {
 }
 
 
-
+/* ========================================================================== */
+/* Global alert overlay */
+/* ========================================================================== */
+.c-alert--overlay {
+    position: absolute;
+    top: 20px;
+    z-index: 999;
+    transform: translatex(50%);
+    width: 50%;
+    opacity: 0.9;
+}
 
 
 

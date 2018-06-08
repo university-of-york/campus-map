@@ -846,12 +846,29 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
                 //if (typeof(map) != "undefined") map.panTo(userLatlng);
             }
 
-            function onError(msg) {
-                const message = "There has been a problem finding your location";
+            function onError(err) {
+                let message = "There has been a problem finding your location";
+                let showError = false;
+
+                if(err) {
+                    switch (err.code) {
+                        case 1: // "User denied geolocation prompt"
+                            message = err.message;
+                            showError = false;
+                            break;
+                        default:
+                            message = '';
+                            showError = false;
+                            break;
+                    }
+                }
+
                 if (window.location.hostname.indexOf('localhost') >= 0) {
+                    // don't show errors in popup on localhost
                     console.log(message);
                 } else {
-                    alert(message);
+                    //uoy_map.alertOverlay(message, true);
+                    // TODO: implement this once we have a better understanding of the error codes thrown back
                 }
             }
 

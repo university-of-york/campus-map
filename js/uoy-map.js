@@ -14,6 +14,8 @@ const uoy_map = (function(){
         noticeModifierClasses: '',
         closeable: false
     };
+    let mapAlert = $('#map-alert');
+    let mapAlertContent = mapAlert.children('.c-alert__content');
 
 
     // map variables
@@ -179,6 +181,23 @@ const uoy_map = (function(){
         }
     };
 
+    const alertOverlay = function(message, fadeOut) {
+
+        mapAlertContent.html(message);
+        mapAlert.removeClass('is-hidden');
+        mapAlert.fadeIn();
+
+        if(fadeOut) {
+            // gracefully hide the alert
+            setTimeout(function(){
+                mapAlert.fadeOut(500, function() {
+                    mapAlertContent.html('');
+                });
+
+                }, 4000);
+        }
+    };
+
     const init = function(options) {
         // load the campus map configuration data
         $.getJSON( "mapconfig.json", function( data ) {
@@ -199,6 +218,7 @@ const uoy_map = (function(){
         setGoogleMapObj: setMap,
         setPointsOfInterest: setPointsOfInterest,
         plotPOIItems: plotPOIItems,
+        alertOverlay: alertOverlay,
         init: init,
         getConfig: getConfig
     }
