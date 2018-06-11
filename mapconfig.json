@@ -1,5 +1,8 @@
 {
   "geoJSONFile": "https://york.funnelback.co.uk/s/search.html?collection=york-uni-campusmap&form=geojson&query=!padrenullquery&num_ranks=5000&MBL=800",
+  "globalMapOptions": {
+    "mapTitle" : "Campus map"
+  },
   "mapButtons":[
     {
       "id": "food-and-drink",

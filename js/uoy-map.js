@@ -100,6 +100,7 @@ const uoy_map = (function(){
         }
     };
 
+
     // External functions
     const addGlobalNotice = function(options) {
         // check to see if we actually have an object
@@ -209,10 +210,20 @@ const uoy_map = (function(){
                 renderMapButtons();
 
                 // add the open day global notice
+                uoy_map.setGlobalOptions(_mapConfigData.globalMapOptions);
                 uoy_map.addGlobalNotice(_mapConfigData.globalNotice);
                 uoy_map.setPointsOfInterest(_mapConfigData.pointsOfInterest);
             }
         });
+    };
+
+    const setGlobalOptions = function(globalOptions) {
+
+        // Set the map title
+        if(globalOptions.mapTitle) {
+            let mapButtonContainer = document.getElementById('c-map-header-title');
+            mapButtonContainer.innerHTML = globalOptions.mapTitle;
+        }
     };
 
     return {
@@ -222,7 +233,8 @@ const uoy_map = (function(){
         plotPOIItems: plotPOIItems,
         alertOverlay: alertOverlay,
         init: init,
-        getConfig: getConfig
+        getConfig: getConfig,
+        setGlobalOptions: setGlobalOptions
     }
 })();
 window.uoy_map = uoy_map || {};
