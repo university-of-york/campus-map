@@ -6,7 +6,6 @@ const uoy_map = (function(){
     let _closeBtnHTML = '<button type="button" class="c-alert__close js-alert-close" aria-label="Close">&times;</button>';
     let _noticeHTML = '<div class="c-global-notice {0}">{x}{1}{2}</div>';
     let _noticeTitle = '<h2 class="c-global-notice__title">{0}</h2>';
-    let _closeBtn = '<button type="button" class="c-alert__close js-alert-close" aria-label="Close">&times;</button>'
     let _defaultOptions = {
         placeBeforeElement: '.c-map-header',
         title: '',
@@ -133,6 +132,9 @@ const uoy_map = (function(){
                         setCookie(_cookieName, 'closed', null);
                     });
                 }
+            } else {
+                // don't show the close button, replace the html marker with empty space
+                outputHTML = outputHTML.replace('{x}', '');
             }
 
             $placementEl.before(outputHTML);

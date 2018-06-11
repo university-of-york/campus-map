@@ -19,6 +19,8 @@ const poi_builder = (function(){
             this.anchor.classList.add(_classNameIsHidden);
             this.anchor.appendChild(pixelOffset);
 
+            this.anchor.style.zIndex = "1";
+
             this.stopEventPropagation();
         };
         // NOTE: google.maps.OverlayView is only defined once the Maps API has
@@ -26,7 +28,7 @@ const poi_builder = (function(){
         Popup.prototype = Object.create(google.maps.OverlayView.prototype);
         /** Called when the popup is added to the map. */
         Popup.prototype.onAdd = function () {
-            this.getPanes().floatPane.appendChild(this.anchor);
+            this.getPanes().mapPane.appendChild(this.anchor);
         };
 
         /** Called when the popup is removed from the map. */

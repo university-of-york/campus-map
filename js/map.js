@@ -198,13 +198,13 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
                     };
                     return {
                         icon: icon,
-                        optimized: false
+                        optimized: false,
+                        zIndex: 999
                     };
                 });
                 // Send facilities event to GA
                 addAnalyticsEvent('Show facilities', selectableCategory);
             }
-
         }
 
         function DeleteMarkers() {
