@@ -189,7 +189,7 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
             });
         }
 
-        function DeleteMarkers() {
+        function deleteMarkers() {
             //Loop through all the markers and remove
             //console.log(markers);
             for (var i = 0; i < markers.length; i++) {
@@ -202,7 +202,7 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
             markers = [];
         }
 
-        function DeleteIcons() {
+        function deleteIcons() {
             // uncheck feature buttons
             $('.c-btn--selectable').prop('checked', false);
             //remove svg feature markers
@@ -226,8 +226,8 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
             var controlResetUI = $("#control-reset-ui");
             controlResetUI.click(function () {
                 setBounds();
-                DeleteMarkers();
-                DeleteIcons();
+                deleteMarkers();
+                deleteIcons();
                 toggleDrawer('close');
                 // remove hash from url
                 //	window.location.hash = '';
@@ -360,7 +360,7 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
             } else {
                 content = location.content;
             }
-            DeleteMarkers();
+            deleteMarkers();
             var marker = new google.maps.Marker({
                 position: location.latlng,
                 map: map,
@@ -719,7 +719,7 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
                     //zoom: parseInt(selectedFeature[0].properties.zoom, 10) || 16
                 };
 
-                DeleteMarkers();
+                deleteMarkers();
 
                 // Drop pin and infoWindow on map
                 if (location.category === "Room") {
