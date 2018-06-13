@@ -50,28 +50,28 @@
   "pointsOfInterest" : [
     {
       "title": "Piazza Building",
-      "lat": 53.9476135,
-      "lon": -1.0280116
+      "lat": 53.947752,
+      "lon": -1.027946
     },
     {
       "title": "Ron Cooke Hub",
-      "lat": 53.947226,
-      "lon": -1.0297289
+      "lat": 53.947281,
+      "lon": -1.029856
     },
     {
       "title": "Spring Lane Building",
-      "lat": 53.9476566,
-      "lon": -1.0511597
+      "lat": 53.947562,
+      "lon": -1.051297
     },
     {
       "title": "Central Hall",
-      "lat": 53.9469181,
-      "lon": -1.0529672
+      "lat": 53.947029,
+      "lon": -1.052917
     },
     {
       "title": "Exhibition Centre",
-      "lat": 53.9462674,
-      "lon": -1.0533276
+      "lat": 53.946170,
+      "lon": -1.053641
     }
   ]
 }
