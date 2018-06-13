@@ -90,6 +90,7 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
 
         };
 
+
         // load the map
         function loadMap() {
             return new google.maps.Map(document.getElementById('map'), {
@@ -124,7 +125,7 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
                 var selectableCategory = $s.attr("id");
                 var thisGroup = {};
 
-                Object.entries(markerGroups).forEach(function(keyValuePair, index){
+                Object.entries(markerGroups).forEach(function(keyValuePair){
                     if(keyValuePair[0] === selectableCategory) {
                         thisGroup = keyValuePair[1];
                     }
@@ -152,7 +153,7 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
                 addAnalyticsEvent('Show facilities', selectableCategory);
             }
 
-            $selectables.each(function (i, selectable) {
+            $selectables.each(function () {
                 var $selectable = $(this);
                 var selectableCategory = $selectable.attr("id");
                 // 'Clone' new GeoJSON file for each category
@@ -163,7 +164,7 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
                 });
             });
 
-            $selectables.click(function (e) {
+            $selectables.click(function () {
                 var $selectable = $(this),
                     selectableCategory = $selectable.attr("id");
 
@@ -201,13 +202,22 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
             markers = [];
         }
 
-        function DeleteIcons(category) {
+        function DeleteIcons() {
             // uncheck feature buttons
             $('.c-btn--selectable').prop('checked', false);
             //remove svg feature markers
             map.data.forEach(function (feature) {
                 map.data.remove(feature);
             });
+        }
+
+        // zoom to CE & CW (mobile), CE, CW and KM (desktop)
+        function setBounds() {
+            var bounds = new google.maps.LatLngBounds(
+                new google.maps.LatLng(53.943157, -1.058537),
+                new google.maps.LatLng(53.950877, -1.024085)
+            );
+            map.fitBounds(bounds);
         }
 
         function customCampusControl(map) {
@@ -259,32 +269,14 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
             //custom control - feedback button
             var controlFeedbackDiv = $("#control-feedback-div");
             var controlFeedbackUI = $("#control-feedback-ui");
-            var controlFeedbackText = $("#control-feedback-text");
+
             controlFeedbackUI.click(function () {
-                var $infoPanel = $('.infoPanel');
                 $('.infoPanel__content').html('<h3 class="infoPanel__feedbackTitle">Send us feedback about the campus map</h3><iframe src="https://uni_york.formstack.com/forms/campus_map_feedback" title="Campus map feedback" width="100%" height="600px"></iframe>');
                 openInfoPanel();
                 $(".closeInfoPanel").click(closeInfoPanel);
             });
             controlFeedbackDiv.index = 1;
             map.controls[google.maps.ControlPosition.TOP_LEFT].push(controlFeedbackDiv[0]);
-        }
-
-
-        // zoom to CE & CW (mobile), CE, CW and KM (desktop)
-        function setBounds() {
-            var bounds = new google.maps.LatLngBounds(
-                new google.maps.LatLng(53.943157, -1.058537),
-                new google.maps.LatLng(53.950877, -1.024085)
-            );
-            map.fitBounds(bounds);
-        }
-
-        function clickAnywherePanelClose() {
-            // click anywhere to close an InfoPanel
-            return google.maps.event.addListener(map, 'click', function () {
-                closeInfoPanel();
-            });
         }
 
         function closeInfoPanel() {
@@ -299,12 +291,6 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
             if ($infoPanel.length > 0) {
                 $infoPanel.addClass('is-open');
             }
-        }
-
-        function showPosition(position) {
-            var lat = position.coords.latitude;
-            var lng = position.coords.longitude;
-            return new google.maps.LatLng(lat, lng);
         }
 
         function snazzyOptions(opts) {
@@ -329,8 +315,7 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
                 },
                 callbacks: {
                     afterOpen: function () {
-                        $(".si-content-more-link").click(function (event) {
-                            var $infoPanel = $('.infoPanel');
+                        $(".si-content-more-link").click(function () {
                             var $infoPanelContent = $('.infoPanel__content');
                             var html = '<h3>' + opts.title + '</h3>';
                             if (opts.subtitle) html += '<h4>' + opts.subtitle + '</h4>';
@@ -342,7 +327,7 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
                             $(".closeInfoPanel").click(closeInfoPanel);
                             // Send popup interaction event to GA
                             addAnalyticsEvent('Popup interaction', opts.title + ' (more information)');
-                            $infoPanelContent.find('a').not('.locationMarker').click(function (e) {
+                            $infoPanelContent.find('a').not('.locationMarker').click(function () {
                                 var $this = $(this);
                                 // Send panel interaction event to GA
                                 addAnalyticsEvent('Panel interaction', $this.text() + '(' + $this.attr('href') + ')');
@@ -358,10 +343,6 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
         }
 
         function createInfoWindow(location) {
-            if (location.category != "Room") {
-                //affects hover popup
-                //closeInfoPanel();
-            }
             // Everything must have a title!
             if (!location.title) return false;
             var title = location.title;
@@ -798,8 +779,6 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
 
         $window.on('hashchange', checkHash);
 
-        $("#drawerStatusButton").click(toggleDrawer);
-
         // Open/Close the drawer
         // Can call with argument 'open' or 'close'
         function toggleDrawer(e) {
@@ -814,6 +793,8 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
                 $panel.addClass('is-open');
             }
         }
+
+        $("#drawerStatusButton").click(toggleDrawer);
 
         // Update placeholder text
         function searchPlaceholderText() {

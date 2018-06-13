@@ -246,7 +246,7 @@ const uoy_map = (function(){
         }
     };
 
-    const init = function(options) {
+    const init = function() {
         // load the campus map configuration data
         $.getJSON( "mapconfig.json", function( data ) {
             if(data) {
@@ -267,7 +267,9 @@ const uoy_map = (function(){
         // Set the map title
         if(globalOptions.mapTitle) {
             let mapButtonContainer = document.getElementById("c-map-header-title");
-            mapButtonContainer.innerHTML = globalOptions.mapTitle;
+            let mapTitleText = document.createTextNode(globalOptions.mapTitle);
+            mapButtonContainer.innerText = "";
+            mapButtonContainer.appendChild(mapTitleText);
         }
     };
 
