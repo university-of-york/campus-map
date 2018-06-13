@@ -8,26 +8,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Campus map, University of York</title>
     <meta name="description" content="Use our interactive campus map to find your way around the University of York">
-    <link rel="shortcut icon" href="https://www.york.ac.uk/static/1.5/img/favicon.ico">
-    <link rel="icon" type="image/x-icon" href="https://www.york.ac.uk/static/1.5/img/favicon.ico">
+    <link rel="shortcut icon" href="https://www.york.ac.uk/static/1.5.6/img/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="https://www.york.ac.uk/static/1.5.6/img/favicon.ico">
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="https://www.york.ac.uk/static/1.5/css/styles.min.css">
+    <link rel="stylesheet" href="https://use.typekit.net/dvj8rpp.css">
+    <link rel="stylesheet" href="https://www.york.ac.uk/static/1.5.6/css/styles.min.css">
     <link rel="stylesheet" href="css/snazzy-info-window.css">
     <link rel="stylesheet" href="css/map.css">
+
+    <!-- Note, these should be changed for the live version -->
     <script src="https://www.york.ac.uk/static/dev/js/modernizr.min.js"></script>
     <script src="https://www.york.ac.uk/static/dev/js/app.min.js"></script>
-
-    <!-- Typekit script -->
-    <script>
-        (function(d) {
-            var config = {
-                    kitId: 'dvj8rpp',
-                    scriptTimeout: 3000,
-                    async: true
-                },
-                h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
-        })(document);
-    </script>
 </head>
 
 <body>
@@ -38,13 +29,20 @@
 
 <a href="#Main-Content" class="o-skip-link">Skip to content</a>
 
+<div class="c-alert c-alert--warning c-alert--dismissable is-hidden c-alert--overlay" role="alert" id="map-alert">
+    <button type="button" class="c-alert__close js-alert-close" aria-label="Close">&times;</button>
+    <div class="c-alert__content">
+
+    </div>
+</div>
+
 <div class="wrapper">
 
 <header class="c-map-header" role="banner">
     <div class="o-wrapper o-wrapper--wide o-grid">
         <div class="o-grid__row">
           <div class="o-grid__box o-grid__box--quarter o-grid__box--third@medium is-hidden@tiny is-hidden@small">
-            <h1 class="c-map-header__title">Campus map</h1>
+            <h1 id="c-map-header-title" class="c-map-header__title">Campus map</h1>
             <nav class="c-utility-nav js-accessible-nav" role="navigation" aria-label="Utility navigation">
               <ul class="c-utility-nav__list" role="menubar" aria-hidden="false">
                 <li class="c-utility-nav__item" role="menuitem" aria-haspopup="false"><a class="c-utility-nav__link" href="https://www.york.ac.uk/about/maps/"><u>Maps and directions</u></a></li>
@@ -72,20 +70,20 @@
       </div>
     </header>
     <div id="map" class="map"></div>
-    <div id="control-feedback-div" class="control-div control-div-feedback">
+    <div id="control-feedback-div" class="control-div control-div-feedback is-hidden">
       <div id="control-feedback-ui" class="control-ui--feedback" title="Click to send feedback">
         <div id="control-feedback-text" class="control-text">
           <p>Feedback</p>
         </div>
       </div>
     </div>
-    <div id="control-campus-div" class="control-div control-div-centre">
-      <div id="control-reset-ui" class="control-ui" title="Click to reset the map">
+    <div id="control-campus-div" class="control-campus-div control-div control-div-centre is-hidden">
+      <div id="control-reset-ui" class="control-ui control-reset-ui" title="Click to reset the map">
         <div id="control-reset-text" class="control-text">
           <p> <span class="is-hidden@small is-hidden@medium- ipad-fix">Reset map </span> <i class="c-icon c-icon--lg c-icon--refresh"></i> </p>
         </div>
       </div>
-      <div class="control-campus-div--campus-buttons">
+      <div id="control-campus-buttons" class="control-campus-div--campus-buttons is-hidden">
         <p>
           Centre the map on
         </p>
