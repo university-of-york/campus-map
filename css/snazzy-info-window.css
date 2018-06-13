@@ -139,6 +139,9 @@
 .si-content {
   overflow: auto; }
 
+.si-content p {
+  margin: 0.5em 0; }
+
 .si-close-button {
   position: absolute;
   top: 0;
