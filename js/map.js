@@ -114,79 +114,25 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
             });
         }
 
-        //what to do when a marker is hovered over or clicked
-        function popupAction(event) {
-            var title = event.feature.getProperty("title");
-            var subTitle = event.feature.getProperty("subtitle");
-            var category = event.feature.getProperty("category");
-            var subCategory = event.feature.getProperty("subcategory");
-            var shortdesc = event.feature.getProperty("shortdesc") || "";
-            var longdesc = event.feature.getProperty("longdesc") || "";
-            var location = {
-                title: title,
-                subtitle: subTitle,
-                latlng: event.feature.getGeometry().get(),
-                category: category,
-                subcategory: subCategory,
-                shortdesc: shortdesc,
-                longdesc: longdesc,
-                content: '<h4>' + title + '</h4>' + shortdesc
-            };
-            // don't add the 'more information' link if there's no long desc
-            if(longdesc !== 'undefined' && longdesc !== "") {
-                location.content += '<p><a class="si-content-more-link">More information</a></p>';
-            }
-
-            event.feature.marker = createInfoWindow(location);
-            // Send marker event to GA
-            addAnalyticsEvent('Select marker', title);
-        }
-
         // add groups of markers based on selectable categories
         function addMarkers() {
             // Make arrays of markers for each category
             var markerGroups = {};
             var markerFeatures = {};
 
-            $selectables.each(function (i, selectable) {
-                var $selectable = $(this);
-                var selectableCategory = $selectable.attr("id");
-                // 'Clone' new GeoJSON file for each category
-                markerGroups[selectableCategory] = JSON.parse(JSON.stringify(cachedGeoJson));
-                markerGroups[selectableCategory].features = $.grep(cachedGeoJson.features, function (feature) {
-                    var featureCategory = feature.properties.category.toLowerCase().replace(/\s+/g, '-');
-                    return featureCategory === selectableCategory;
-                });
-            });
-
-            $selectables.click(function (e) {
-                var $selectable = $(this),
-                    selectableCategory = $selectable.attr("id");
-
-                if ($selectable.is(':checked')) {
-                    ShowMarkers($selectable);
-                } else {
-                    $.each(markerFeatures[selectableCategory], function (i, feature) {
-                        map.data.remove(feature);
-                    });
-                    // Send facilities event to GA
-                    addAnalyticsEvent('Hide facilities', selectableCategory);
-                }
-            });
-
-            // If there are any selectables selected on load, show the icons on the map
-            // This happens when navigating away, then back
-            $selectables.each(function (i, v) {
-                var $v = $(v);
-                if ($v.prop("checked") === true) {
-                    ShowMarkers($v);
-                }
-            });
-
-            function ShowMarkers($s) {
+            function showMarkers($s) {
                 var selectableCategory = $s.attr("id");
-                var thisGroup = markerGroups[selectableCategory];
+                var thisGroup = {};
+
+                Object.entries(markerGroups).forEach(function(keyValuePair, index){
+                    if(keyValuePair[0] === selectableCategory) {
+                        thisGroup = keyValuePair[1];
+                    }
+                });
+
+                // add the geoJson to the markerFeatures object
                 markerFeatures[selectableCategory] = map.data.addGeoJson(thisGroup);
+
                 map.data.addListener('click', popupAction);
                 map.data.addListener('mouseover', popupAction);
                 map.data.setStyle(function (feature) {
@@ -205,6 +151,41 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
                 // Send facilities event to GA
                 addAnalyticsEvent('Show facilities', selectableCategory);
             }
+
+            $selectables.each(function (i, selectable) {
+                var $selectable = $(this);
+                var selectableCategory = $selectable.attr("id");
+                // 'Clone' new GeoJSON file for each category
+                markerGroups[selectableCategory] = JSON.parse(JSON.stringify(cachedGeoJson));
+                markerGroups[selectableCategory].features = $.grep(cachedGeoJson.features, function (feature) {
+                    var featureCategory = feature.properties.category.toLowerCase().replace(/\s+/g, '-');
+                    return featureCategory === selectableCategory;
+                });
+            });
+
+            $selectables.click(function (e) {
+                var $selectable = $(this),
+                    selectableCategory = $selectable.attr("id");
+
+                if ($selectable.is(':checked')) {
+                    showMarkers($selectable);
+                } else {
+                    $.each(markerFeatures[selectableCategory], function (i, feature) {
+                        map.data.remove(feature);
+                    });
+                    // Send facilities event to GA
+                    addAnalyticsEvent('Hide facilities', selectableCategory);
+                }
+            });
+
+            // If there are any selectables selected on load, show the icons on the map
+            // This happens when navigating away, then back
+            $selectables.each(function (i, v) {
+                var $v = $(v);
+                if ($v.prop("checked") === true) {
+                    showMarkers($v);
+                }
+            });
         }
 
         function DeleteMarkers() {
@@ -455,6 +436,30 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
             });
         }
 
+        //what to do when a marker is hovered over or clicked
+        function popupAction(event) {
+            var location = {
+                title: event.feature.getProperty("title"),
+                subtitle: event.feature.getProperty("subtitle"),
+                latlng: event.feature.getGeometry().get(),
+                category: event.feature.getProperty("category"),
+                subcategory: event.feature.getProperty("subcategory"),
+                shortdesc: event.feature.getProperty("shortdesc") || "",
+                longdesc: event.feature.getProperty("longdesc") || "",
+                content: ""
+            };
+            location.content = "<h4>" + location.title + "</h4>" + location.shortdesc;
+
+            // don't add the 'more information' link if there's no long desc
+            if(location.longdesc !== "") {
+                location.content += '<p><a class="si-content-more-link">More information</a></p>';
+            }
+
+            event.feature.marker = createInfoWindow(location);
+            // Send marker event to GA
+            addAnalyticsEvent('Select marker', location.title);
+        }
+
         // Check whether there is a location hash,
         // and drop pin/open info panel for relevant location
         function checkHash() {
@@ -487,7 +492,7 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
             } else {
                 createInfoWindow(location);
                 // move viewport to correct location and zoom - not working
-                map.setZoom(location.zoom);
+                //map.setZoom(location.zoom);
                 map.panTo(location.latlng);
             }
         }
@@ -730,7 +735,7 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
                     shortdesc: selectedFeature[0].properties.shortdesc || false,
                     longdesc: selectedFeature[0].properties.longdesc || false,
                     content: content,
-                    zoom: parseInt(selectedFeature[0].properties.zoom, 10) || 16
+                    //zoom: parseInt(selectedFeature[0].properties.zoom, 10) || 16
                 };
 
                 DeleteMarkers();
@@ -743,7 +748,7 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
                     closeInfoPanel();
                     createInfoWindow(location);
                     // move viewport to correct location and zoom - not working
-                    map.setZoom(location.zoom);
+                    //map.setZoom(location.zoom);
                     map.panTo(location.latlng);
                 }
 

@@ -73,16 +73,6 @@ const poi_builder = (function(){
     function getPopupClass() {
         return Popup;
     }
-    function hidePopupItemsOnMobileZoom(gmap, zoomLimitSmall, zoomLimitLarge) {
-        let zoomLevel = gmap.getZoom(),
-            smallScreen = window.matchMedia("(max-width: 40em)").matches;
-
-        // used for older browsers that don't support default parameters
-        zoomLimitSmall = typeof zoomLimitSmall !== 'undefined' ? zoomLimitSmall : 14;
-        zoomLimitLarge = typeof zoomLimitLarge !== 'undefined' ? zoomLimitLarge : 15;
-
-        togglePoiItems(smallScreen && zoomLevel >= zoomLimitSmall || !smallScreen && zoomLevel >= zoomLimitLarge);
-    }
 
     function togglePoiItems(visible) {
         let $poiItems = $('.' + _classNameItem);
@@ -92,6 +82,17 @@ const poi_builder = (function(){
         } else {
             $poiItems.removeClass(_classNameIsHidden);
         }
+    }
+
+    function hidePopupItemsOnMobileZoom(gmap, zoomLimitSmall, zoomLimitLarge) {
+        let zoomLevel = gmap.getZoom(),
+            smallScreen = window.matchMedia("(max-width: 40em)").matches;
+
+        // used for older browsers that don't support default parameters
+        zoomLimitSmall = typeof zoomLimitSmall !== 'undefined' ? zoomLimitSmall : 14;
+        zoomLimitLarge = typeof zoomLimitLarge !== 'undefined' ? zoomLimitLarge : 15;
+
+        togglePoiItems(smallScreen && zoomLevel >= zoomLimitSmall || !smallScreen && zoomLevel >= zoomLimitLarge);
     }
 
     return {
