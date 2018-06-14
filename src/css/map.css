@@ -176,10 +176,7 @@ body {
     top: 0px;
 }
 
-#control-reset-ui {
-    margin-left: auto;
-    margin-right: auto;
-}
+
 
 .control-campus-div--campus-buttons {
     background-color:rgba(240,242,233,0.8);
@@ -198,17 +195,11 @@ body {
 
 }
 
-
-
-#control-campus-div .control-ui {
-    border: 1px solid #caccb8;
-}
-
 @media (max-width: 767px){
     .control-campus-div--campus-buttons {
         display: none;
     }
-    #control-campus-div {
+    .control-campus-div {
         margin-right: .75rem;
     }
     .c-map-header {
@@ -236,14 +227,20 @@ body {
     padding: .2rem;
 }
 
-
 .control-text{
   padding: .5em;
   user-select: none;
   cursor: pointer;
 }
 
+.control-campus-div .control-ui {
+    border: 1px solid #caccb8;
+}
 
+.control-reset-ui {
+    margin-left: auto;
+    margin-right: auto;
+}
 
 .control-ui--feedback {
   background-color: #a23479; /*#00546e*/
@@ -272,15 +269,15 @@ body {
 
 .c-btn--selectable__label {
   background-color: #0f3d4c;
-  border-bottom: 1px solid #26505d !important;
-  border-right: 1px solid #26505d !important;
+  border-bottom: 1px solid #26505d;
+  border-right: 1px solid #26505d;
   color: #fff;
   cursor: pointer;
   font-size: 1rem;
   font-weight: normal;
   line-height: 1.4;
   margin: 0;
-  padding: .5rem 0  !important;;
+  padding: .5rem 0;
   text-align: center;
   transition: 0s;
   user-select: none;
@@ -299,7 +296,7 @@ body {
 .c-btn--selectable__label,
 .c-btn--selectable__label:first-of-type,
 .c-btn--selectable__label:last-of-type {
-  border-radius: 0 !important;
+  border-radius: 0;
 }
 
 
@@ -570,3 +567,66 @@ input[type=search] {
   }
 
 }
+
+/* ========================================================================== */
+/* Special, permanent points of interest markers */
+/* ========================================================================== */
+
+/* The location pointed to by the popup tip. */
+.o-poi-item {
+    height: 0;
+    position: absolute;
+    /* The max width of the info window. */
+    width: 200px;
+}
+.o-poi-item.is-hidden {
+    visibility: hidden;
+}
+/* The bubble is anchored above the tip. */
+.o-poi-item--anchor {
+    position: absolute;
+    width: 100%;
+    /*bottom: !* TIP_HEIGHT= *! 8px;*/
+    bottom: 0;
+    left: 0;
+}
+/* The popup bubble itself. */
+.o-poi-item--content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    background-color: #00697A;
+    color: #fff;
+    padding: 5px;
+    overflow-y: auto;
+    max-height: 60px;
+    text-transform: uppercase;
+    font-size: 10px;
+    font-family: museo-sans,Helvetica,Arial,sans-serif;
+}
+
+
+/* ========================================================================== */
+/* Global alert overlay */
+/* ========================================================================== */
+.c-alert--overlay {
+    position: absolute;
+    top: 20px;
+    z-index: 999;
+    transform: translatex(50%);
+    width: 50%;
+    opacity: 0.9;
+}
+
+
+
+
+
+
+
+
+
+
+
+
