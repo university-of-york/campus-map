@@ -1,9 +1,9 @@
-require.config({
-  paths: {
-    'SnazzyInfoWindow': 'snazzy-info-window'
-  }
-});
-require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE, FUSE, SnazzyInfoWindow) {
+// requirejs.config({
+//   paths: {
+//     'SnazzyInfoWindow': 'snazzy-info-window'
+//   }
+// });
+requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
 
     $(function () {
 
@@ -87,7 +87,6 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
                 });
             }
             ga(gaTracker + '.send', 'event', 'Map', action, label, value);
-
         };
 
 
@@ -122,8 +121,8 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
             var markerFeatures = {};
 
             function showMarkers($s) {
-                var selectableCategory = $s.attr("id");
-                var thisGroup = {};
+                let selectableCategory = $s.attr("id");
+                let thisGroup = {};
 
                 Object.entries(markerGroups).forEach(function(keyValuePair){
                     if(keyValuePair[0] === selectableCategory) {
@@ -133,6 +132,8 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
 
                 // add the geoJson to the markerFeatures object
                 markerFeatures[selectableCategory] = map.data.addGeoJson(thisGroup);
+
+
 
                 map.data.addListener('click', popupAction);
                 map.data.addListener('mouseover', popupAction);

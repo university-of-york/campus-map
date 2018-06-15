@@ -1,3 +1,5 @@
+const mapJson = require("../mapconfig.json");
+
 const uoy_map = (function(){
 "use strict";
 
@@ -138,7 +140,7 @@ const uoy_map = (function(){
             return; // prevents the global notice being written
         }
 
-        $("div[class='wrapper]").on("click", ".js-alert-close", function (e) {
+        $("div[class='wrapper']").on("click", ".js-alert-close", function (e) {
             e.preventDefault();
             $(".c-global-notice").hide();
             // set a cookie to stash the closure status
@@ -247,19 +249,14 @@ const uoy_map = (function(){
     };
 
     const init = function() {
-        // load the campus map configuration data
-        $.getJSON( "mapconfig.json", function( data ) {
-            if(data) {
-                _mapConfigData = data;
+        _mapConfigData = mapJson;
 
-                renderMapButtons();
+        renderMapButtons();
 
-                // add the open day global notice
-                uoy_map.setGlobalOptions(_mapConfigData.globalMapOptions);
-                uoy_map.addGlobalNotice(_mapConfigData.globalNotice);
-                uoy_map.setPointsOfInterest(_mapConfigData.pointsOfInterest);
-            }
-        });
+        // add the open day global notice
+        uoy_map.setGlobalOptions(_mapConfigData.globalMapOptions);
+        uoy_map.addGlobalNotice(_mapConfigData.globalNotice);
+        uoy_map.setPointsOfInterest(_mapConfigData.pointsOfInterest);
     };
 
     const setGlobalOptions = function(globalOptions) {
