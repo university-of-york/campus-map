@@ -398,7 +398,8 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
             if (location.subtitle !== false) html += '<h4>' + location.subtitle + '</h4>';
             if (location.shortdesc !== false) html += '<p>' + location.shortdesc + '</p>';
             if (location.longdesc !== false) html += '<p>' + location.longdesc + '</p>';
-            if (location.latlng !== '0,0') html += '<p><a class="locationMarker"><i class="c-icon c-icon--map-marker" aria-hidden="true"></i></a>&nbsp;<a class="locationMarker">' + location.subtitle.split(',')[0] + '</a></p>';
+            //if (location.latlng !== '0,0') html += '<p><a class="locationMarker"><i class="c-icon c-icon--map-marker" aria-hidden="true"></i></a>&nbsp;<a class="locationMarker">' + location.subtitle.split(',')[0] + '</a></p>';
+            if (location.latlng !== '0,0') html += '<p><a class="locationMarker"><i class="c-icon c-icon--map-marker" aria-hidden="true"></i></a>&nbsp;<a class="locationMarker">' + location.subtitle.replace(/\b(, Campus West|, Campus East|, King's Manor)\b/gi, '') + '</a></p>';
             $('.infoPanel__content').html(html);
             openInfoPanel();
             $(".closeInfoPanel").click(closeInfoPanel);
@@ -413,7 +414,8 @@ require(["app/autocomplete", "fuse", "SnazzyInfoWindow"], function(AUTOCOMPLETE,
                 map.panTo(location.latlng);
 
                 // Send panel interaction event to GA
-                addAnalyticsEvent('Panel interaction', location.subtitle.split(',')[0] + ' (show location)');
+                //addAnalyticsEvent('Panel interaction', location.subtitle.split(',')[0] + ' (show location)');
+                addAnalyticsEvent('Panel interaction', location.subtitle.replace(/\b(, Campus West|, Campus East|, King's Manor)\b/gi, '') + ' (show location)');
             });
         }
 
