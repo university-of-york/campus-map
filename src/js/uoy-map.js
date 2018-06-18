@@ -9,7 +9,7 @@ const uoy_map = (function(){
     let _noticeHTML = "<div class=\"c-global-notice {0}\">{x}{1}{2}</div>";
     let _noticeTitle = "<h2 class=\"c-global-notice__title\">{0}</h2>";
     let _defaultOptions = {
-        placeBeforeElement: ".c-map-header",
+        placeBeforeElement: ".wrapper",
         title: "",
         description: "",
         noticeModifierClasses: "",
@@ -134,15 +134,17 @@ const uoy_map = (function(){
 
     const setGlobalNoticeCookie = function() {
 
+        let globalNoticeEl = $(".c-global-notice");
+
         // check if the element has already been closed and set by a cookie
         if (getCookie(_cookieName) === "closed") {
-            $(".c-global-notice").hide();
+            globalNoticeEl.hide();
             return; // prevents the global notice being written
         }
 
-        $("div[class='wrapper']").on("click", ".js-alert-close", function (e) {
+        globalNoticeEl.on("click", ".js-alert-close", function (e) {
             e.preventDefault();
-            $(".c-global-notice").hide();
+            globalNoticeEl.hide();
             // set a cookie to stash the closure status
             setCookie(_cookieName, "closed", null);
         });
