@@ -396,10 +396,12 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
         function createInfoPanel(location) {
             var $infoPanel = $('.infoPanel');
             var html = '<h3>' + location.title + '</h3>';
+            var locationLinkText = location.subtitle.replace(/\b(, Campus West|, Campus East|, King's Manor)\b/gi, ''); //location.subtitle.split(',')[0]
             if (location.subtitle !== false) html += '<h4>' + location.subtitle + '</h4>';
             if (location.shortdesc !== false) html += '<p>' + location.shortdesc + '</p>';
             if (location.longdesc !== false) html += '<p>' + location.longdesc + '</p>';
-            if (location.latlng !== '0,0') html += '<p><a class="locationMarker"><i class="c-icon c-icon--map-marker" aria-hidden="true"></i></a>&nbsp;<a class="locationMarker">' + location.subtitle.split(',')[0] + '</a></p>';
+            if (location.latlng !== '0,0') html += '<p><a class="locationMarker"><i class="c-icon c-icon--map-marker" aria-hidden="true"></i></a>&nbsp;<a class="locationMarker">' + locationLinkText + '</a></p>';
+
             $('.infoPanel__content').html(html);
             openInfoPanel();
             $(".closeInfoPanel").click(closeInfoPanel);
@@ -414,7 +416,7 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                 map.panTo(location.latlng);
 
                 // Send panel interaction event to GA
-                addAnalyticsEvent('Panel interaction', location.subtitle.split(',')[0] + ' (show location)');
+                addAnalyticsEvent('Panel interaction', locationLinkText + ' (show location)');
             });
         }
 
