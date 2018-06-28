@@ -345,6 +345,11 @@ body {
   text-decoration: underline;
 }
 
+.si-content small {
+    font-size: 0.75em;
+    line-height: 1.3;
+    display: block;
+}
 
 /* == ADD TO BASE.SCSS ====================================================== */
 
