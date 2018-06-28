@@ -10,7 +10,7 @@
 "iconClass": "c-icon--info-circle"
 },
 {
-"id": "view-accommodation",
+"id": "rooms-to-view",
 "value": "Rooms to view",
 "iconClass": "c-icon--bed"
 },
