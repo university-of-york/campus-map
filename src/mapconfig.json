@@ -43,7 +43,7 @@
   "globalNotice": {
     "placeBeforeElement": ".wrapper",
     "title": "",
-    "description": "Here for Open Day? We've got an <a href=\"https://www.york.ac.uk/map/open-day\">Open Day Map</a> just for you",
+    "description": "Here for Open Day? We've got an <a href=\"https://www.york.ac.uk/map/openday\">Open Day Map</a> just for you",
     "noticeModifierClasses": "c-global-notice--highlighted",
     "closeable": true
   },
