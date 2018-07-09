@@ -1,8 +1,4 @@
-// requirejs.config({
-//   paths: {
-//     'SnazzyInfoWindow': 'snazzy-info-window'
-//   }
-// });
+
 requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
 
     $(function () {
@@ -396,7 +392,7 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
         function createInfoPanel(location) {
             var $infoPanel = $('.infoPanel');
             var html = '<h3>' + location.title + '</h3>';
-            var locationLinkText = location.subtitle.replace(/\b(, Campus West|, Campus East|, King's Manor)\b/gi, ''); //location.subtitle.split(',')[0]
+            var locationLinkText = location.subtitle.replace(/\b(, Campus West|, Campus East|, King's Manor)\b/gi, '');
             if (location.subtitle !== false) html += '<h4>' + location.subtitle + '</h4>';
             if (location.shortdesc !== false) html += '<p>' + location.shortdesc + '</p>';
             if (location.longdesc !== false) html += '<p>' + location.longdesc + '</p>';
@@ -451,7 +447,7 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
             if (thisHash === '') return false;
             // Search GeoJSON for matching location
             var selectedFeature = $.grep(cachedGeoJson.features, function (feature) {
-                return makeHash(feature.properties.title) === thisHash;
+                return makeHash(feature.properties.locationid) === thisHash;
             });
             if (selectedFeature.length === 0) return false;
             //return selectedFeature;
@@ -468,7 +464,8 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                 shortdesc: selectedFeature[0].properties.shortdesc || false,
                 longdesc: selectedFeature[0].properties.longdesc || false,
                 content: content,
-                zoom: parseInt(selectedFeature[0].properties.zoom, 10) || 16
+                zoom: parseInt(selectedFeature[0].properties.zoom, 10) || 16,
+                locationid: selectedFeature[0].properties.locationid
             };
             // Drop pin and infoWindow on map
             if (location.category === "Room") {
@@ -661,7 +658,7 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                         // Add title, subtitle, link fields
                         fuseResult[i].item.title = feature.item.properties.title;
                         fuseResult[i].item.subtitle = feature.item.properties.subtitle;
-                        fuseResult[i].item.link = "#" + makeHash(feature.item.properties.title);
+                        fuseResult[i].item.link = "#" + makeHash(feature.item.properties.locationid);
                         if (i === fuseResult.length - 1) onComplete(fuseResult);
                     });
 
