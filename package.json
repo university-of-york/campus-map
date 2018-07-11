@@ -2,7 +2,7 @@
   "dependencies": {
     "fuse.js": "3.2.1",
     "jquery": "3.3.1",
-    "semantic-release": "15.6.0",
+    "semantic-release": "15.7.0",
     "webpack": "4.15.1",
     "zepto": "1.2.0"
   },
