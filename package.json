@@ -3,7 +3,7 @@
     "fuse.js": "3.2.1",
     "jquery": "3.3.1",
     "semantic-release": "15.7.0",
-    "webpack": "4.15.1",
+    "webpack": "4.16.0",
     "zepto": "1.2.0"
   },
   "scripts": {
