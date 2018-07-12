@@ -195,6 +195,10 @@ const uoy_map = (function(){
         // if an array of points of interest isn't passed in, use the default _poiArr
         poiArr = poiArr ? poiArr : _poiArr;
 
+        if(!poiArr || poiArr.length === 0) {
+            return;
+        }
+
         // plot the map points
         if((_gmap && _gmap != null) && (poi_builder)) {
 

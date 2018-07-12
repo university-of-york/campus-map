@@ -821,6 +821,8 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
             navigator.geolocation.watchPosition(onSuccess, onError, watchOptions);
 
             function onSuccess(position) {
+                var marker = marker || undefined;
+                
                 var userLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 var icon = {
                     url: 'img/markers/pin.svg',
