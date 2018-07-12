@@ -5,6 +5,9 @@ const path = require("path");
 require('./css/snazzy-info-window.css');
 require('./css/map.css');
 
+// load polysfills and shims
+require("babel-polyfill");
+
 // load main app files
 require("./js/pointofinterest");
 require("./js/uoy-map");

@@ -23,6 +23,9 @@ module.exports = {
         new CopyWebpackPlugin([
             {
                 from:'./src/img',to:'img'
+            },
+            {
+                from:'./src/manifest.json', to:'./'
             }
         ]),
     ],
@@ -48,6 +51,16 @@ module.exports = {
                         },
                 }]
             },
+            {
+                test: /\.js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        cacheDirectory: true
+                    }
+                }
+            }
         ]
     }
 };
