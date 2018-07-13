@@ -1,88 +1,86 @@
-// requirejs.config({
-//   paths: {
-//     'SnazzyInfoWindow': 'snazzy-info-window'
-//   }
-// });
-requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
+
+requirejs(['app/autocomplete', 'fuse'], function(AUTOCOMPLETE, FUSE) {
+
+    "use strict";
 
     $(function () {
 
         // defaults
-        var GeoJSONFile = uoy_map.getConfig().geoJSONFile; // loads the geoJson file from the mapconfig.json file
-        var cachedGeoJson = {};
-        var map;
-        var maxZoom = 18,
+        const GeoJSONFile = UOY_MAP.getConfig().geoJSONFile; // loads the geoJson file from the mapconfig.json file
+        let cachedGeoJson = {};
+        let map;
+        let maxZoom = 18,
             minZoom = 8,
             defaultZoom = 14;
-        var heslington = {
+        let heslington = {
             lat: 53.9504,
             lng: -1.0660
         };
-        var west = {
+        let west = {
             lat: 53.9447,
             lng: -1.0501
         };
-        var east = {
+        let east = {
             lat: 53.9473,
             lng: -1.0316
         };
-        var kingsmanor = {
+        let kingsmanor = {
             lat: 53.9623,
             lng: -1.0868
         };
         // Google maps style that roughly matches our tiles
-        var mapStyle = [{
-            "featureType": "landscape.man_made",
-            "elementType": "geometry.fill",
-            "stylers": [
+        let mapStyle = [{
+            'featureType': 'landscape.man_made',
+            'elementType': 'geometry.fill',
+            'stylers': [
                 {
-                    "color": "#eeeeee"
+                    'color': '#eeeeee'
                 }
             ]
         },
             {
-                "featureType": "landscape.natural",
-                "elementType": "geometry.fill",
-                "stylers": [
+                'featureType': 'landscape.natural',
+                'elementType': 'geometry.fill',
+                'stylers': [
                     {
-                        "color": "#E7ECB1"
+                        'color': '#E7ECB1'
                     }
                 ]
             },
             {
-                "featureType": "water",
-                "elementType": "geometry.fill",
-                "stylers": [
+                'featureType': 'water',
+                'elementType': 'geometry.fill',
+                'stylers': [
                     {
-                        "color": "#7599a2"
+                        'color': '#7599a2'
                     }
                 ]
             },
             {
-                "featureType": "poi",
-                "stylers": [
+                'featureType': 'poi',
+                'stylers': [
                     {
-                        "visibility": "off"
+                        'visibility': 'off'
                     }
                 ]
             }];
-        var markers = [];
-        var $window = $(window);
-        var $panel = $('.panel');
-        var $icon = $('.c-icon', '#drawerStatusButton');
-        var $selectables = $(".c-btn--selectable");
+        let markers = [];
+        let $window = $(window);
+        let $panel = $('.panel');
+        let $icon = $('.c-icon', '#drawerStatusButton');
+        let $selectables = $('.c-btn--selectable');
 
         // Placeholder for the name of the tracker that Tag Manager loads
-        var gaTracker = false;
+        let gaTracker = false;
 
         // Add an event to Google Analytics
-        var addAnalyticsEvent = function (action, label, value) {
+        const addAnalyticsEvent = function (action, label, value) {
             // Analytics hasn't loaded yet
             if (typeof ga === 'undefined') return false;
             if (gaTracker === false) {
                 // Get the name of the tracker that Tag Manager loads
                 ga(function () {
-                    var trackers = ga.getAll();
+                    let trackers = ga.getAll();
                     gaTracker = trackers[0].get('name');
                 });
             }
@@ -108,7 +106,7 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                 },
                 fullscreenControl: false,
                 disableDefaultUI: true,
-                gestureHandling: "greedy",
+                gestureHandling: 'greedy',
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 styles: mapStyle
             });
@@ -117,11 +115,11 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
         // add groups of markers based on selectable categories
         function addMarkers() {
             // Make arrays of markers for each category
-            var markerGroups = {};
-            var markerFeatures = {};
+            let markerGroups = {};
+            let markerFeatures = {};
 
             function showMarkers($s) {
-                let selectableCategory = $s.attr("id");
+                let selectableCategory = $s.attr('id');
                 let thisGroup = {};
 
                 Object.entries(markerGroups).forEach(function(keyValuePair){
@@ -138,8 +136,8 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                 map.data.addListener('click', popupAction);
                 map.data.addListener('mouseover', popupAction);
                 map.data.setStyle(function (feature) {
-                    var featureCategory = feature.getProperty('category').toLowerCase().replace(/\s+/g, '-');
-                    var icon = {
+                    let featureCategory = feature.getProperty('category').toLowerCase().replace(/\s+/g, '-');
+                    let icon = {
                         url: 'img/markers/' + featureCategory + '.svg',
                         anchor: new google.maps.Point(10, 10),
                         scaledSize: new google.maps.Size(22, 22)
@@ -155,19 +153,19 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
             }
 
             $selectables.each(function () {
-                var $selectable = $(this);
-                var selectableCategory = $selectable.attr("id");
+                let $selectable = $(this);
+                let selectableCategory = $selectable.attr('id');
                 // 'Clone' new GeoJSON file for each category
                 markerGroups[selectableCategory] = JSON.parse(JSON.stringify(cachedGeoJson));
                 markerGroups[selectableCategory].features = $.grep(cachedGeoJson.features, function (feature) {
-                    var featureCategory = feature.properties.category.toLowerCase().replace(/\s+/g, '-');
+                    let featureCategory = feature.properties.category.toLowerCase().replace(/\s+/g, '-');
                     return featureCategory === selectableCategory;
                 });
             });
 
             $selectables.click(function () {
-                var $selectable = $(this),
-                    selectableCategory = $selectable.attr("id");
+                let $selectable = $(this),
+                    selectableCategory = $selectable.attr('id');
 
                 if ($selectable.is(':checked')) {
                     showMarkers($selectable);
@@ -183,8 +181,8 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
             // If there are any selectables selected on load, show the icons on the map
             // This happens when navigating away, then back
             $selectables.each(function (i, v) {
-                var $v = $(v);
-                if ($v.prop("checked") === true) {
+                let $v = $(v);
+                if ($v.prop('checked') === true) {
                     showMarkers($v);
                 }
             });
@@ -193,7 +191,7 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
         function deleteMarkers() {
             //Loop through all the markers and remove
             //console.log(markers);
-            for (var i = 0; i < markers.length; i++) {
+            for (let i = 0; i < markers.length; i++) {
                 markers[i].setMap(null);
                 // Remove snazzy window
                 if (markers[i].snazzy) {
@@ -214,7 +212,7 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
 
         // zoom to CE & CW (mobile), CE, CW and KM (desktop)
         function setBounds() {
-            var bounds = new google.maps.LatLngBounds(
+            let bounds = new google.maps.LatLngBounds(
                 new google.maps.LatLng(53.943157, -1.058537),
                 new google.maps.LatLng(53.950877, -1.024085)
             );
@@ -222,9 +220,9 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
         }
 
         function customCampusControl(map) {
-            var controlCampusDiv = $("#control-campus-div");
+            let controlCampusDiv = $('#control-campus-div');
             //custom control - reset button
-            var controlResetUI = $("#control-reset-ui");
+            let controlResetUI = $('#control-reset-ui');
             controlResetUI.click(function () {
                 setBounds();
                 deleteMarkers();
@@ -232,7 +230,7 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                 toggleDrawer('close');
                 // remove hash from url
                 //	window.location.hash = '';
-                var loc = window.location.href,
+                let loc = window.location.href,
                     index = loc.indexOf('#');
                 if (index > 0) {
                     window.location = loc.substring(0, index);
@@ -241,21 +239,21 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                 addAnalyticsEvent('Reset', '');
             });
             //custom control - campus buttons
-            var controlEastUI = $("#control-east-ui");
+            let controlEastUI = $('#control-east-ui');
             controlEastUI.click(function () {
                 map.setCenter(east);
                 map.setZoom(16);
                 // Send centre on event to GA
                 addAnalyticsEvent('Centre on', 'Campus East');
             });
-            var controlWestUI = $("#control-west-ui");
+            let controlWestUI = $('#control-west-ui');
             controlWestUI.click(function () {
                 map.setCenter(west);
                 map.setZoom(16);
                 // Send centre on event to GA
                 addAnalyticsEvent('Centre on', 'Campus West');
             });
-            var controlKingsManorUI = $("#control-km-ui");
+            let controlKingsManorUI = $('#control-km-ui');
             controlKingsManorUI.click(function () {
                 map.setCenter(kingsmanor);
                 map.setZoom(18);
@@ -268,27 +266,27 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
 
         function customFeedbackControl(map) {
             //custom control - feedback button
-            var controlFeedbackDiv = $("#control-feedback-div");
-            var controlFeedbackUI = $("#control-feedback-ui");
+            let controlFeedbackDiv = $('#control-feedback-div');
+            let controlFeedbackUI = $('#control-feedback-ui');
 
             controlFeedbackUI.click(function () {
-                $('.infoPanel__content').html('<h3 class="infoPanel__feedbackTitle">Send us feedback about the campus map</h3><iframe src="https://uni_york.formstack.com/forms/campus_map_feedback" title="Campus map feedback" width="100%" height="600px"></iframe>');
+                $('.infoPanel__content').html('<h3 class=\'infoPanel__feedbackTitle\'>Send us feedback about the campus map</h3><iframe src=\'https://uni_york.formstack.com/forms/campus_map_feedback\' title=\'Campus map feedback\' width=\'100%\' height=\'600px\'></iframe>');
                 openInfoPanel();
-                $(".closeInfoPanel").click(closeInfoPanel);
+                $('.closeInfoPanel').click(closeInfoPanel);
             });
             controlFeedbackDiv.index = 1;
             map.controls[google.maps.ControlPosition.TOP_LEFT].push(controlFeedbackDiv[0]);
         }
 
         function closeInfoPanel() {
-            var $infoPanel = $('.infoPanel.is-open');
+            let $infoPanel = $('.infoPanel.is-open');
             if ($infoPanel.length > 0) {
                 $infoPanel.removeClass('is-open');
             }
         }
 
         function openInfoPanel() {
-            var $infoPanel = $('.infoPanel').not('.is-open');
+            let $infoPanel = $('.infoPanel').not('.is-open');
             if ($infoPanel.length > 0) {
                 $infoPanel.addClass('is-open');
             }
@@ -316,20 +314,20 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                 },
                 callbacks: {
                     afterOpen: function () {
-                        $(".si-content-more-link").click(function () {
-                            var $infoPanelContent = $('.infoPanel__content');
-                            var html = '<h3>' + opts.title + '</h3>';
+                        $('.si-content-more-link').click(function () {
+                            let $infoPanelContent = $('.infoPanel__content');
+                            let html = '<h3>' + opts.title + '</h3>';
                             if (opts.subtitle) html += '<h4>' + opts.subtitle + '</h4>';
                             if (opts.shortdesc) html += '<p>' + opts.shortdesc + '</p>';
                             if (opts.longdesc) html += '<p>' + opts.longdesc + '</p>';
                             $infoPanelContent.html(html);
                             openInfoPanel();
                             toggleDrawer('close');
-                            $(".closeInfoPanel").click(closeInfoPanel);
+                            $('.closeInfoPanel').click(closeInfoPanel);
                             // Send popup interaction event to GA
                             addAnalyticsEvent('Popup interaction', opts.title + ' (more information)');
                             $infoPanelContent.find('a').not('.locationMarker').click(function () {
-                                var $this = $(this);
+                                let $this = $(this);
                                 // Send panel interaction event to GA
                                 addAnalyticsEvent('Panel interaction', $this.text() + '(' + $this.attr('href') + ')');
                             });
@@ -346,15 +344,15 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
         function createInfoWindow(location) {
             // Everything must have a title!
             if (!location.title) return false;
-            var title = location.title;
-            var subTitle = location.subtitle || false;
-            var subCategory = location.subcategory || false;
-            var category = location.category || false;
-            var shortdesc = location.shortdesc || false;
-            var longdesc = location.longdesc || false;
-            var zoom = location.zoom || 16;
-            var content;
-            if (category === "Room") {
+            let title = location.title;
+            let subTitle = location.subtitle || false;
+            let subCategory = location.subcategory || false;
+            let category = location.category || false;
+            let shortdesc = location.shortdesc || false;
+            let longdesc = location.longdesc || false;
+            let zoom = location.zoom || 16;
+            let content;
+            if (category === 'Room') {
                 content = '<h4>' + title + '</h4>';
                 content += '<p>Approximate location only</p>';
                 content += '<p>Please allow yourself time to locate the room</p>';
@@ -362,7 +360,7 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                 content = location.content;
             }
             deleteMarkers();
-            var marker = new google.maps.Marker({
+            let marker = new google.maps.Marker({
                 position: location.latlng,
                 map: map,
                 title: title,
@@ -371,7 +369,7 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                 category: category,
                 zoom: zoom
             });
-            var thisOptions = snazzyOptions({
+            let thisOptions = snazzyOptions({
                 title: title,
                 subtitle: subTitle,
                 subCategory: subCategory,
@@ -381,7 +379,7 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                 longdesc: longdesc,
                 content: content
             });
-            var snazzy = new SnazzyInfoWindow(thisOptions);
+            let snazzy = new SnazzyInfoWindow(thisOptions);
             snazzy.open(map, marker);
             // Add the snazzy window to the marker (so can be removed)
             marker.snazzy = snazzy;
@@ -394,18 +392,19 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
         }
 
         function createInfoPanel(location) {
-            var $infoPanel = $('.infoPanel');
-            var html = '<h3>' + location.title + '</h3>';
-            var locationLinkText = location.subtitle.replace(/\b(, Campus West|, Campus East|, King's Manor)\b/gi, ''); //location.subtitle.split(',')[0]
-            if (location.subtitle !== false) html += '<h4>' + location.subtitle + '</h4>';
-            if (location.shortdesc !== false) html += '<p>' + location.shortdesc + '</p>';
-            if (location.longdesc !== false) html += '<p>' + location.longdesc + '</p>';
-            if (location.latlng !== '0,0') html += '<p><a class="locationMarker"><i class="c-icon c-icon--map-marker" aria-hidden="true"></i></a>&nbsp;<a class="locationMarker">' + locationLinkText + '</a></p>';
+            let $infoPanel = $('.infoPanel');
+            let html = '<h3>' + location.title + '</h3>';
+            let locationLinkText = location.subtitle.replace(/\b(, Campus West|, Campus East|, King's Manor)\b/gi, '');
+
+            html += (location.subtitle !== false) ? '<h4>' + location.subtitle + '</h4>' : '';
+            html += (location.shortdesc !== false) ? '<p>' + location.shortdesc + '</p>' : '';
+            html += (location.longdesc !== false) ? '<p>' + location.longdesc + '</p>' : '';
+            html += (location.latlng !== '0,0') ? '<p><a class=\'locationMarker\'><i class=\'c-icon c-icon--map-marker\' aria-hidden=\'true\'></i></a>&nbsp;<a class=\'locationMarker\'>' + locationLinkText + '</a></p>' : '';
 
             $('.infoPanel__content').html(html);
             openInfoPanel();
-            $(".closeInfoPanel").click(closeInfoPanel);
-            $(".locationMarker").click(function () {
+            $('.closeInfoPanel').click(closeInfoPanel);
+            $('.locationMarker').click(function () {
                 createInfoWindow(location);
                 //Close infoPanel on mobile
                 if ($infoPanel.outerWidth() === $window.width()) {
@@ -422,21 +421,21 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
 
         //what to do when a marker is hovered over or clicked
         function popupAction(event) {
-            var location = {
-                title: event.feature.getProperty("title"),
-                subtitle: event.feature.getProperty("subtitle"),
+            let location = {
+                title: event.feature.getProperty('title'),
+                subtitle: event.feature.getProperty('subtitle'),
                 latlng: event.feature.getGeometry().get(),
-                category: event.feature.getProperty("category"),
-                subcategory: event.feature.getProperty("subcategory"),
-                shortdesc: event.feature.getProperty("shortdesc") || "",
-                longdesc: event.feature.getProperty("longdesc") || "",
-                content: ""
+                category: event.feature.getProperty('category'),
+                subcategory: event.feature.getProperty('subcategory'),
+                shortdesc: event.feature.getProperty('shortdesc') || '',
+                longdesc: event.feature.getProperty('longdesc') || '',
+                content: ''
             };
-            location.content = "<h4>" + location.title + "</h4>" + location.shortdesc;
+            location.content = '<h4>' + location.title + '</h4>' + location.shortdesc;
 
             // don't add the 'more information' link if there's no long desc
-            if(location.longdesc !== "") {
-                location.content += '<p><a class="si-content-more-link">More information</a></p>';
+            if(location.longdesc !== '') {
+                location.content += '<p><a class=\'si-content-more-link\'>More information</a></p>';
             }
 
             event.feature.marker = createInfoWindow(location);
@@ -447,20 +446,25 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
         // Check whether there is a location hash,
         // and drop pin/open info panel for relevant location
         function checkHash() {
-            var thisHash = document.location.hash.substr(1);
-            if (thisHash === '') return false;
+            let thisHash = document.location.hash.substr(1);
+            let content;
+            if (thisHash === '') {
+                return false;
+            }
+
             // Search GeoJSON for matching location
-            var selectedFeature = $.grep(cachedGeoJson.features, function (feature) {
+            let selectedFeature = $.grep(cachedGeoJson.features, function (feature) {
                 return makeHash(feature.properties.title) === thisHash;
             });
-            if (selectedFeature.length === 0) return false;
-            //return selectedFeature;
-            if (selectedFeature[0].properties.longdesc === undefined) {
-                content = '<h4>' + selectedFeature[0].properties.title + '</h4>';
-            } else {
-                content = '<h4>' + selectedFeature[0].properties.title + '</h4>' + '<p><a class="si-content-more-link">More information</a></p>';
+            if (selectedFeature.length === 0) {
+                return false;
             }
-            var location = {
+
+            content = '<h4>' + selectedFeature[0].properties.title + '</h4>';
+            if (selectedFeature[0].properties.longdesc !== undefined) {
+                content += '<p><a class=\'si-content-more-link\'>More information</a></p>';
+            }
+            let location = {
                 title: selectedFeature[0].properties.title,
                 subtitle: selectedFeature[0].properties.subtitle,
                 category: selectedFeature[0].properties.category,
@@ -471,12 +475,10 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                 zoom: parseInt(selectedFeature[0].properties.zoom, 10) || 16
             };
             // Drop pin and infoWindow on map
-            if (location.category === "Room") {
+            if (location.category === 'Room') {
                 createInfoPanel(location);
             } else {
                 createInfoWindow(location);
-                // move viewport to correct location and zoom - not working
-                //map.setZoom(location.zoom);
                 map.panTo(location.latlng);
             }
         }
@@ -487,7 +489,7 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
             // Replace all spaces with '-'
             // Remove all non-word or non-- chars ([^a-zA-Z0-9_-])
             // Encode as URI, just in case
-            return encodeURI(str.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9_-]/g, ""));
+            return encodeURI(str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, ''));
         }
 
         // initialise the map
@@ -498,8 +500,8 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
 
             // pass the map object into our global uoy_map object for its use(s)
             try {
-                uoy_map.setGoogleMapObj(map);
-                uoy_map.plotPOIItems();
+                UOY_MAP.setGoogleMapObj(map);
+                UOY_MAP.plotPOIItems();
             } catch (e) {
                 console.log(e);
             }
@@ -508,14 +510,13 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
             setBounds();
 
             // overlay our tiles
-
             function CoordMapType(tileSize) {
                 this.tileSize = tileSize;
             }
 
             // WHat tiles do we have available?
             // e.g. zoom 13, x from 4069-4073, y from 2630-2633
-            var limits = {
+            let limits = {
                 13: {xMin: 4069, xMax: 4073, yMin: 2630, yMax: 2633},
                 14: {xMin: 8139, xMax: 8146, yMin: 5260, yMax: 5266},
                 15: {xMin: 16279, xMax: 16292, yMin: 10520, yMax: 10533},
@@ -525,7 +526,7 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
             };
 
             CoordMapType.prototype.getTile = function (coord, zoom, ownerDocument) {
-                var span = ownerDocument.createElement('span');
+                let span = ownerDocument.createElement('span');
                 //if (1 == 1) return ownerDocument.createElement('span');
                 // Find out if it's outside our limits
                 if (!limits[zoom]) return span;
@@ -533,9 +534,9 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                 if (coord.x < limits[zoom].xMin) return span;
                 if (coord.y > limits[zoom].yMax) return span;
                 if (coord.y < limits[zoom].yMin) return span;
-                var tile = ownerDocument.createElement('img');
+                let tile = ownerDocument.createElement('img');
 
-                tile.src = "https://www.york.ac.uk/static/maptiles/" + zoom + "/" + coord.x + "/" + coord.y + ".png";
+                tile.src = 'https://www.york.ac.uk/static/maptiles/' + zoom + '/' + coord.x + '/' + coord.y + '.png';
                 return tile;
             };
 
@@ -550,8 +551,8 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                 cachedGeoJson = data; //save the geojson in case we want to update its values
                 // Filter features that have contain certain terms
                 cachedGeoJson.features = $.grep(data.features, function (feature) {
-                    var title = feature.properties.title;
-                    var filterPhrases = [
+                    let title = feature.properties.title;
+                    let filterPhrases = [
                         'DELETE',
                         'REMOVE',
                         'DOES NOT EXIST',
@@ -560,9 +561,9 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                         'NOW A KITCHEN',
                         'USE248X'
                     ];
-                    var r = -1;
+                    let r = -1;
                     $.each(filterPhrases, function (i, phrase) {
-                        var phraseIndex = title.indexOf(phrase);
+                        let phraseIndex = title.indexOf(phrase);
                         if (phraseIndex > -1) {
                             r = phraseIndex;
                             return false;
@@ -591,7 +592,7 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
             }).fail(function (err) {
                 console.log('The map data failed to load', err);
             });
-            google.maps.event.addListener(map, "idle", function () {
+            google.maps.event.addListener(map, 'idle', function () {
                 google.maps.event.trigger(map, 'resize');
             });
             google.maps.event.addListener(map, 'tilesloaded', function(){
@@ -609,9 +610,9 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
         // Initialise search functionality
         function initSearch() {
 
-            var $searchForm = $('#map-search-form');
-            var $searchQuery = $('#map-search-query');
-            var fuseOptions = {
+            let $searchForm = $('#map-search-form');
+            let $searchQuery = $('#map-search-query');
+            let fuseOptions = {
                 keys: [{
                     name: 'properties.title',
                     weight: 0.6
@@ -629,22 +630,22 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                 //location:0,
                 minMatchCharLength: 3
             };
-            var noSearchCategories = [
+            let noSearchCategories = [
                 'Post boxes',
                 'Printers',
                 'Bus stops',
                 'Study spaces'
             ];
-            var searchGeoJson = JSON.parse(JSON.stringify(cachedGeoJson));
+            let searchGeoJson = JSON.parse(JSON.stringify(cachedGeoJson));
             searchGeoJson.features = $.grep(cachedGeoJson.features, function (feature) {
                 return $.inArray(feature.properties.category, noSearchCategories) === -1;
             });
 
-            var fuse = new FUSE(searchGeoJson.features, fuseOptions);
+            let fuse = new FUSE(searchGeoJson.features, fuseOptions);
             new AUTOCOMPLETE({
                 input: $('#map-search-query'),
                 results: function (searchTerm, onComplete) {
-                    var fuseResult = fuse.search(searchTerm);
+                    let fuseResult = fuse.search(searchTerm);
 
                     if (fuseResult.length === 0) {
                         // Send 'no results' event to GA
@@ -661,25 +662,24 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                         // Add title, subtitle, link fields
                         fuseResult[i].item.title = feature.item.properties.title;
                         fuseResult[i].item.subtitle = feature.item.properties.subtitle;
-                        fuseResult[i].item.link = "#" + makeHash(feature.item.properties.title);
+                        fuseResult[i].item.link = '#' + makeHash(feature.item.properties.title);
                         if (i === fuseResult.length - 1) onComplete(fuseResult);
                     });
-
                 },
                 followLinks: true
             });
 
             // Submit the form using the is-selected item
-            var submitForm = function () {
-                var $autocompleteItems = $('.c-autocomplete__item', $autocompleteList);
-                var selectedItem = $autocompleteItems.filter('.is-selected');
-                var selectedLink = selectedItem.children('.c-autocomplete__link');
-                var selectedTitle = selectedLink.children('.c-autocomplete__title').text();
-                var selectedSubtitle = selectedLink.children('.c-autocomplete__subtitle').text();
-                var selectedHash = selectedLink.attr("href");
-                var searchQueryText = $searchQuery.val();
+            let submitForm = function () {
+                let $autocompleteItems = $('.c-autocomplete__item', $autocompleteList);
+                let selectedItem = $autocompleteItems.filter('.is-selected');
+                let selectedLink = selectedItem.children('.c-autocomplete__link');
+                let selectedTitle = selectedLink.children('.c-autocomplete__title').text();
+                let selectedSubtitle = selectedLink.children('.c-autocomplete__subtitle').text();
+                let selectedHash = selectedLink.attr('href');
+                let searchQueryText = $searchQuery.val();
 
-                var selectedIndex = $autocompleteItems.index(selectedItem) + 1;
+                let selectedIndex = $autocompleteItems.index(selectedItem) + 1;
 
                 if (selectedItem.length === 0) return false;
 
@@ -694,7 +694,7 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                 }
 
                 // Get rest of details from cachedGeoJson
-                var selectedFeature = $.grep(cachedGeoJson.features, function (feature) {
+                let selectedFeature = $.grep(cachedGeoJson.features, function (feature) {
                     return feature.properties.title === selectedTitle;
                 });
 
@@ -708,9 +708,9 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                 if (selectedFeature[0].properties.longdesc === undefined) {
                     content = '<h4>' + selectedTitle + '</h4>';
                 } else {
-                    content = '<h4>' + selectedTitle + '</h4>' + '<p><a class="si-content-more-link">More information</a></p>';
+                    content = '<h4>' + selectedTitle + '</h4><p><a class=\'si-content-more-link\'>More information</a></p>';
                 }
-                var location = {
+                let location = {
                     title: selectedTitle,
                     subtitle: selectedSubtitle,
                     latlng: new google.maps.LatLng(parseFloat(selectedFeature[0].geometry.coordinates[1]), parseFloat(selectedFeature[0].geometry.coordinates[0])),
@@ -725,7 +725,7 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                 deleteMarkers();
 
                 // Drop pin and infoWindow on map
-                if (location.category === "Room") {
+                if (location.category === 'Room') {
                     //console.log(selectedFeature[0].geometry);
                     createInfoPanel(location);
                 } else {
@@ -744,8 +744,8 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
             // Also re-searches if there is content
             // TODO: move this to pattern lib
             $searchQuery.on('focus click', function (e) {
-                var $this = $(this);
-                var searchTerm = $searchQuery.val();
+                let $this = $(this);
+                let searchTerm = $searchQuery.val();
                 $this.select();
                 if (searchTerm != '') {
                     // run the search
@@ -761,7 +761,7 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
 
             // Clicking on map closes autocomplete
             map.addListener('click', function (e) {
-                var searchTerm = $searchQuery.val();
+                let searchTerm = $searchQuery.val();
                 if (searchTerm !== '') {
                     // Send 'no selection' event to GA
                     addAnalyticsEvent('Search', 'No selection (query: ' + searchTerm + ')');
@@ -771,9 +771,9 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                 }
             });
 
-            var mapPanorama = map.getStreetView();
-            mapPanorama.addListener("visible_changed", function () {
-                var pos = mapPanorama.getPosition();
+            let mapPanorama = map.getStreetView();
+            mapPanorama.addListener('visible_changed', function () {
+                let pos = mapPanorama.getPosition();
                 // Send click event to GA
                 addAnalyticsEvent('Show StreetView', pos.lat() + ',' + pos.lng());
             });
@@ -785,7 +785,7 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
         // Open/Close the drawer
         // Can call with argument 'open' or 'close'
         function toggleDrawer(e) {
-            var overwrite;
+            let overwrite;
             if (e === 'open') overwrite = 'open';
             if (e === 'close') overwrite = 'close';
             if ($panel.hasClass('is-open') || overwrite === 'close') {
@@ -797,17 +797,17 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
             }
         }
 
-        $("#drawerStatusButton").click(toggleDrawer);
+        $('#drawerStatusButton').click(toggleDrawer);
 
         // Update placeholder text
         function searchPlaceholderText() {
-            var placeholderText;
+            let placeholderText;
             if ($window.width() < 1024) {
-                placeholderText = "Search the map";
+                placeholderText = 'Search the map';
             } else {
-                placeholderText = "Search for buildings, departments and rooms";
+                placeholderText = 'Search for buildings, departments and rooms';
             }
-            $("input").attr("placeholder", placeholderText);
+            $('input').attr('placeholder', placeholderText);
         }
 
         searchPlaceholderText();
@@ -821,30 +821,30 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
             navigator.geolocation.watchPosition(onSuccess, onError, watchOptions);
 
             function onSuccess(position) {
-                var marker = marker || undefined;
-                
-                var userLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                var icon = {
+                let marker = marker || undefined;
+
+                let userLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                let icon = {
                     url: 'img/markers/pin.svg',
                     scaledSize: new google.maps.Size(24, 32)
                 };
-                if (typeof(marker) != "undefined") marker.setMap(null);
+                if (typeof(marker) != 'undefined') marker.setMap(null);
                 marker = new google.maps.Marker({
                     map: map,
                     icon: icon
                 });
                 marker.setPosition(userLatlng);
                 //disable until further investigation
-                //if (typeof(map) != "undefined") map.panTo(userLatlng);
+                //if (typeof(map) != 'undefined') map.panTo(userLatlng);
             }
 
             function onError(err) {
-                let message = "There has been a problem finding your location";
+                let message = 'There has been a problem finding your location';
                 let showError = false;
 
                 if(err) {
                     switch (err.code) {
-                        case 1: // "User denied geolocation prompt"
+                        case 1: // 'User denied geolocation prompt'
                             message = err.message;
                             showError = false;
                             break;
@@ -859,12 +859,12 @@ requirejs(["app/autocomplete", "fuse"], function(AUTOCOMPLETE, FUSE) {
                     // don't show errors in popup on localhost
                     console.log(message);
                 } else {
-                    //uoy_map.alertOverlay(message, true);
+                    //UOY_MAP.alertOverlay(message, true);
                     // TODO: implement this once we have a better understanding of the error codes thrown back
                 }
             }
 
-            var watchOptions = {
+            let watchOptions = {
                 enableHighAccuracy: true,
                 timeout: 5000,
                 maximumAge: 0

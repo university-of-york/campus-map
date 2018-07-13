@@ -1,6 +1,6 @@
 const mapJson = require("../mapconfig.json");
 
-const uoy_map = (function(){
+const UOY_MAP = (function(){
 "use strict";
 
     let _mapConfigData = {};
@@ -20,8 +20,8 @@ const uoy_map = (function(){
 
 
     // map variables
-    var _gmap = null;
-    var _poiArr = [];
+    let _gmap = null;
+    let _poiArr = [];
 
     function stringChecker(inputStr) {
         return inputStr && inputStr.length > 0;
@@ -38,20 +38,20 @@ const uoy_map = (function(){
 
     // cookies - todo: needs abstracting
     function setCookie(cookieName, value, expires) {
-        var expiresStr = "";
+        let expiresStr = "";
         if(expires) {
-            var d = new Date();
+            let d = new Date();
             d.setTime(d.getTime() + (expires * 24 * 60 * 60 * 1000));
             expiresStr = "expires=" + d.toUTCString() + ";";
         }
         document.cookie = cookieName + "=" + value + ";" + expiresStr + "path=/";
     }
     function getCookie(cookieName) {
-        var name = cookieName + "=";
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(";");
-        for(var i = 0; i <ca.length; i++) {
-            var c = ca[i];
+        let name = cookieName + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(";");
+        for(let i = 0; i <ca.length; i++) {
+            let c = ca[i];
             while (c.charAt(0) === " ") {
                 c = c.substring(1);
             }
@@ -157,8 +157,8 @@ const uoy_map = (function(){
 
             _mapConfigData.mapButtons.forEach(function(btn) {
 
-                var newInput = createMapInput(btn.id, btn.value);
-                var newLabel = createMapLabel(btn.id, btn.iconClass, btn.value);
+                let newInput = createMapInput(btn.id, btn.value);
+                let newLabel = createMapLabel(btn.id, btn.iconClass, btn.value);
 
                 mapButtonContainer.appendChild(newInput);
                 mapButtonContainer.appendChild(newLabel);
@@ -200,12 +200,12 @@ const uoy_map = (function(){
         }
 
         // plot the map points
-        if((_gmap && _gmap != null) && (poi_builder)) {
+        if((_gmap && _gmap != null) && (POI_BUILDER)) {
 
             // now that the Google.map object is initialised, we need to create the Popup class
             // via the constructor
-            poi_builder.constructPopupClass();
-            let Popup = poi_builder.getPopupClass();
+            POI_BUILDER.constructPopupClass();
+            let Popup = POI_BUILDER.getPopupClass();
 
             // plot the markers on the map
             let count = 0;
@@ -227,12 +227,12 @@ const uoy_map = (function(){
 
             // show/hide the popup/poi items on init
             _gmap.addListener("tilesloaded", function(){
-                poi_builder.hidePopupItemsOnMobileZoom(_gmap);
+                POI_BUILDER.hidePopupItemsOnMobileZoom(_gmap);
             });
 
             // show/hide the popup/poi items below selected zoom levels on smaller screens
             _gmap.addListener("zoom_changed", function(){
-                poi_builder.hidePopupItemsOnMobileZoom(_gmap)
+                POI_BUILDER.hidePopupItemsOnMobileZoom(_gmap);
             });
         }
     };
@@ -260,9 +260,9 @@ const uoy_map = (function(){
         renderMapButtons();
 
         // add the open day global notice
-        uoy_map.setGlobalOptions(_mapConfigData.globalMapOptions);
-        uoy_map.addGlobalNotice(_mapConfigData.globalNotice);
-        uoy_map.setPointsOfInterest(_mapConfigData.pointsOfInterest);
+        UOY_MAP.setGlobalOptions(_mapConfigData.globalMapOptions);
+        UOY_MAP.addGlobalNotice(_mapConfigData.globalNotice);
+        UOY_MAP.setPointsOfInterest(_mapConfigData.pointsOfInterest);
     };
 
     const setGlobalOptions = function(globalOptions) {
@@ -287,4 +287,4 @@ const uoy_map = (function(){
         setGlobalOptions: setGlobalOptions
     }
 })();
-window.uoy_map = uoy_map || {};
+window.UOY_MAP = UOY_MAP || {};
