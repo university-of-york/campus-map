@@ -100,6 +100,6 @@ const POI_BUILDER = (function(){
         constructPopupClass: constructPopupClass,
         getPopupClass: getPopupClass,
         hidePopupItemsOnMobileZoom: hidePopupItemsOnMobileZoom
-    }
+    };
 })();
 window.POI_BUILDER = POI_BUILDER || {};

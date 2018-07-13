@@ -285,6 +285,6 @@ const UOY_MAP = (function(){
         init: init,
         getConfig: getConfig,
         setGlobalOptions: setGlobalOptions
-    }
+    };
 })();
 window.UOY_MAP = UOY_MAP || {};
