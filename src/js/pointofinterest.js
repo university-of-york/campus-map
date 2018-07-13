@@ -1,6 +1,6 @@
-const poi_builder = (function(){
+const POI_BUILDER = (function(){
 
-    var Popup = null; // null object container which will be populated once constructed.
+    let Popup = null; // null object container which will be populated once constructed.
     const _classNameAnchor = "o-poi-item--anchor",
         _classNameItem = "o-poi-item",
         _classNameIsHidden = "is-hidden";
@@ -40,9 +40,9 @@ const poi_builder = (function(){
 
         /** Called when the popup needs to draw itself. */
         Popup.prototype.draw = function () {
-            var divPosition = this.getProjection().fromLatLngToDivPixel(this.position);
+            let divPosition = this.getProjection().fromLatLngToDivPixel(this.position);
             // Hide the popup when it is far out of view.
-            var display =
+            let display =
                 Math.abs(divPosition.x) < 4000 && Math.abs(divPosition.y) < 4000 ?
                     "block" :
                     "none";
@@ -102,4 +102,4 @@ const poi_builder = (function(){
         hidePopupItemsOnMobileZoom: hidePopupItemsOnMobileZoom
     }
 })();
-window.poi_builder = poi_builder || {};
+window.POI_BUILDER = POI_BUILDER || {};
