@@ -288,11 +288,16 @@ body {
   border-right: 0;
 }
 
+.c-btn-group .c-btn:first-of-type.c-btn--medium,
+.c-btn-group .c-btn:first-of-type,
+.c-btn-group .c-btn:last-of-type.c-btn--medium,
+.c-btn-group .c-btn:last-of-type,
 .c-btn--selectable__label,
 .c-btn--selectable__label:first-of-type,
 .c-btn--selectable__label:last-of-type {
   border-radius: 0;
 }
+
 
 
 @media (min-width:768px) {
