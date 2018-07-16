@@ -196,7 +196,7 @@ const UOY_MAP = (function() {
         poiArr = poiArr || _poiArr;
 
         // plot the map points
-        if(poiArr.length > 0 && _gmap !== null && POI_BUILDER !== null) {
+        if(poiArr && poiArr.length > 0 && _gmap !== null && POI_BUILDER !== null) {
 
             // now that the Google.map object is initialised, we need to create the Popup class
             // via the constructor
@@ -251,6 +251,7 @@ const UOY_MAP = (function() {
 
     const init = function() {
         _mapConfigData = mapJson;
+        _poiArr = [];
 
         renderMapButtons();
 
