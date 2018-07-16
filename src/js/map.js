@@ -4,6 +4,7 @@ import MapMarkers from 'js/mapmarkers';
 import InfoWindows from "js/infowindows";
 import Utils from 'js/utils';
 import MapSearch from 'js/mapsearch';
+import MapTiles from 'js/maptiles';
 
 "use strict";
 
@@ -21,15 +22,16 @@ $(function () {
         lng: -1.0660
     };
     // Google maps style that roughly matches our tiles
-    let mapStyle = [{
-        'featureType': 'landscape.man_made',
-        'elementType': 'geometry.fill',
-        'stylers': [
-            {
-                'color': '#eeeeee'
-            }
-        ]
-    },
+    let mapStyle = [
+        {
+            'featureType': 'landscape.man_made',
+            'elementType': 'geometry.fill',
+            'stylers': [
+                {
+                    'color': '#eeeeee'
+                }
+            ]
+        },
         {
             'featureType': 'landscape.natural',
             'elementType': 'geometry.fill',
@@ -57,10 +59,6 @@ $(function () {
             ]
         }];
     let $window = $(window);
-
-
-
-
 
 
     // load the map
@@ -99,6 +97,7 @@ $(function () {
             UOY_MAP.setGoogleMapObj(map);
             UOY_MAP.plotPOIItems();
 
+            MapTiles.setMap(map);
             Utils.setMap(map);
             InfoWindows.setMap(map);
             CustomControls.setMap(map);
@@ -111,38 +110,8 @@ $(function () {
         // fit to campuses
         CustomControls.setBounds();
 
-        // overlay our tiles
-        function CoordMapType(tileSize) {
-            this.tileSize = tileSize;
-        }
-
-        // WHat tiles do we have available?
-        // e.g. zoom 13, x from 4069-4073, y from 2630-2633
-        let limits = {
-            13: {xMin: 4069, xMax: 4073, yMin: 2630, yMax: 2633},
-            14: {xMin: 8139, xMax: 8146, yMin: 5260, yMax: 5266},
-            15: {xMin: 16279, xMax: 16292, yMin: 10520, yMax: 10533},
-            16: {xMin: 32558, xMax: 32585, yMin: 21040, yMax: 21067},
-            17: {xMin: 65116, xMax: 65170, yMin: 42080, yMax: 42135},
-            18: {xMin: 130233, xMax: 130341, yMin: 84161, yMax: 84271}
-        };
-
-        CoordMapType.prototype.getTile = function (coord, zoom, ownerDocument) {
-            let span = ownerDocument.createElement('span');
-            //if (1 == 1) return ownerDocument.createElement('span');
-            // Find out if it's outside our limits
-            if (!limits[zoom]) return span;
-            if (coord.x > limits[zoom].xMax) return span;
-            if (coord.x < limits[zoom].xMin) return span;
-            if (coord.y > limits[zoom].yMax) return span;
-            if (coord.y < limits[zoom].yMin) return span;
-            let tile = ownerDocument.createElement('img');
-
-            tile.src = 'https://www.york.ac.uk/static/maptiles/' + zoom + '/' + coord.x + '/' + coord.y + '.png';
-            return tile;
-        };
-
-        map.overlayMapTypes.insertAt(0, new CoordMapType(new google.maps.Size(256, 256)));
+        // initialise our custom map tiles
+        MapTiles.init();
 
         // add custom controls
         CustomControls.customFeedbackControl();
@@ -215,7 +184,7 @@ $(function () {
 
     initMap();
 
-    $window.on('hashchange', Utils.checkHash());
+    $window.on('hashchange', Utils.checkHash);
 
     $('#drawerStatusButton').click(Utils.toggleDrawer);
 

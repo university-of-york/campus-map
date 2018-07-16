@@ -8,20 +8,22 @@ const InfoWindows = (function(){
     let _gmap = null;
 
     // Private methods
-    const locationMarker_ClickHandler = function(infoPanel, location, linkText) {
-        console.log('click handler fired');
+    const locationMarker_ClickHandler = function(options) {
+        let data = options.data;
 
-        createInfoWindow(location);
+        createInfoWindow(data.location);
+
         //Close infoPanel on mobile
-        if (infoPanel.outerWidth() === $(window).width()) {
+        if (data.infoPanel.outerWidth() === $(window).width()) {
             closeInfoPanel();
         }
+
         // Pan to location
-        _gmap.setZoom(location.zoom);
-        _gmap.panTo(location.latlng);
+        _gmap.setZoom(data.location.zoom);
+        _gmap.panTo(data.location.latlng);
 
         // Send panel interaction event to GA
-        MapAnalytics.addAnalyticsEvent('Panel interaction', linkText + ' (show location)');
+        MapAnalytics.addAnalyticsEvent('Panel interaction', data.linkText + ' (show location)');
     };
 
     // Setters
@@ -142,23 +144,13 @@ const InfoWindows = (function(){
         openInfoPanel();
 
         $('.closeInfoPanel').click(closeInfoPanel);
-        $('.locationMarker').click(locationMarker_ClickHandler($infoPanel, location, locationLinkText));
-
-        // $('.locationMarker').click(function(){
-        //     console.log('click handler fired');
-        //
-        //     createInfoWindow(location);
-        //     //Close infoPanel on mobile
-        //     if ($infoPanel.outerWidth() === $(window).width()) {
-        //         closeInfoPanel();
-        //     }
-        //     // Pan to location
-        //     _gmap.setZoom(location.zoom);
-        //     _gmap.panTo(location.latlng);
-        //
-        //     // Send panel interaction event to GA
-        //     MapAnalytics.addAnalyticsEvent('Panel interaction', locationLinkText + ' (show location)');
-        // });
+        $('.locationMarker').click({
+                infoPanel: $infoPanel,
+                location: location,
+                linkText: locationLinkText
+            },
+            locationMarker_ClickHandler
+        );
     };
 
     return {

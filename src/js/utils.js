@@ -1,6 +1,5 @@
 import MapAnalytics from 'js/analytics';
 import InfoWindows from 'js/infowindows';
-import MapMarkers from "js/mapmarkers";
 
 const Utils = (function(){
 
@@ -23,9 +22,9 @@ const Utils = (function(){
 
             $infoPanelContent.html(html);
 
-            MapMarkers.openInfoPanel();
+            InfoWindows.openInfoPanel();
             toggleDrawer('close');
-            $closeInfoPanel.click(MapMarkers.closeInfoPanel);
+            $closeInfoPanel.click(InfoWindows.closeInfoPanel);
 
             // Send popup interaction event to GA
             MapAnalytics.addAnalyticsEvent('Popup interaction', opts.title + ' (more information)');
@@ -141,7 +140,7 @@ const Utils = (function(){
                 left: '2px'
             },
             callbacks: {
-                afterOpen: snazzyOptionsAfterOpen_handler(opts),
+                afterOpen: () => { snazzyOptionsAfterOpen_handler(opts); },
                 afterClose: snazzyOptionsAfterClose_handler
             }
         };

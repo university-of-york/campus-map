@@ -47,11 +47,13 @@ const CustomControls = (function () {
         MapAnalytics.addAnalyticsEvent('Reset', '');
     }
 
-    function centerOnLocation(setCenter, zoom = 16, analyticsEventStr) {
-        _gmap.setCenter(setCenter);
-        _gmap.setZoom(zoom);
+    function centerOnLocation_ClickHandler(options) {
+        let data = options.data;
+
+        _gmap.setCenter(data.setCenter);
+        _gmap.setZoom(data.zoom);
         // Send centre on event to GA
-        MapAnalytics.addAnalyticsEvent('Centre on', analyticsEventStr);
+        MapAnalytics.addAnalyticsEvent('Centre on', data.analyticsEventStr);
     }
 
     function deleteIcons() {
@@ -83,9 +85,24 @@ const CustomControls = (function () {
 
         //custom control - campus buttons
         _controlResetUI.click(resetUI);
-        _controlEastUI.click(centerOnLocation(_east, 16, 'Campus East'));
-        _controlWestUI.click(centerOnLocation(_west, 16, 'Campus West'));
-        _controlKingsManorUI.click(centerOnLocation(_kingsmanor, 18, 'King\'s Manor'));
+
+        _controlEastUI.click({
+            setCenter: _east,
+            zoom: 16,
+            analyticsEventStr: 'Campus East'
+        }, centerOnLocation_ClickHandler);
+
+        _controlWestUI.click({
+            setCenter: _west,
+            zoom: 16,
+            analyticsEventStr: 'Campus West'
+        }, centerOnLocation_ClickHandler);
+
+        _controlKingsManorUI.click({
+            setCenter: _kingsmanor,
+            zoom: 18,
+            analyticsEventStr: 'King\'s Manor'
+        }, centerOnLocation_ClickHandler);
 
         _controlCampusDiv.index = 1;
         _gmap.controls[google.maps.ControlPosition.TOP_RIGHT].push(_controlCampusDiv[0]);
@@ -103,8 +120,6 @@ const CustomControls = (function () {
         _controlFeedbackDiv.index = 1;
         _gmap.controls[google.maps.ControlPosition.TOP_LEFT].push(_controlFeedbackDiv[0]);
     };
-
-
 
     return {
         customCampusControl: customCampusControl,
