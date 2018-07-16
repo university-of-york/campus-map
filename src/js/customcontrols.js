@@ -3,7 +3,7 @@ import Utils from 'js/utils';
 import MapAnalytics from 'js/analytics';
 import InfoWindows from 'js/infowindows';
 
-const CustomControls = (function () {
+const CustomControls = (function() {
 
     let _controlCampusDiv = $('#control-campus-div');
     let _controlResetUI = $('#control-reset-ui');
@@ -31,7 +31,7 @@ const CustomControls = (function () {
         // uncheck feature buttons
         $('.c-btn--selectable').prop('checked', false);
         //remove svg feature markers
-        _gmap.data.forEach(function (feature) {
+        _gmap.data.forEach(function(feature) {
             _gmap.data.remove(feature);
         });
     }
@@ -111,7 +111,7 @@ const CustomControls = (function () {
     const customFeedbackControl = function() {
 
         //custom control - feedback button
-        _controlFeedbackUI.click(function () {
+        _controlFeedbackUI.click(function() {
             $('.infoPanel__content').html('<h3 class=\'infoPanel__feedbackTitle\'>Send us feedback about the campus map</h3><iframe src=\'https://uni_york.formstack.com/forms/campus_map_feedback\' title=\'Campus map feedback\' width=\'100%\' height=\'600px\'></iframe>');
             InfoWindows.openInfoPanel();
 

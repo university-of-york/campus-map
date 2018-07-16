@@ -8,7 +8,7 @@ import MapTiles from 'js/maptiles';
 
 'use strict';
 
-$(function () {
+$(function() {
 
     // defaults
     const GeoJSONFile = UOY_MAP.getConfig().geoJSONFile; // loads the geoJson file from the mapconfig.json file
@@ -121,7 +121,7 @@ $(function () {
         $.getJSON(GeoJSONFile).then(function(data) {
             cachedGeoJson = data; //save the geojson in case we want to update its values
             // Filter features that have contain certain terms
-            cachedGeoJson.features = $.grep(data.features, function (feature) {
+            cachedGeoJson.features = $.grep(data.features, function(feature) {
                 let title = feature.properties.title;
                 let filterPhrases = [
                     'DELETE',
@@ -168,7 +168,7 @@ $(function () {
 
             // For testing purposes
             // window.cachedGeoJson = cachedGeoJson;
-        }).fail(function (err) {
+        }).fail(function(err) {
             console.log('The map data failed to load', err);
         });
 

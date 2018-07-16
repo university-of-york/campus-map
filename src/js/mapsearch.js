@@ -44,12 +44,12 @@ const MapSearch = (function() {
         }
     };
 
-    const searchFormSubmitHandler = function (e) {
+    const searchFormSubmitHandler = function(e) {
         e.preventDefault();
         return false;
     };
 
-    const mapClickHandler = function (e) {
+    const mapClickHandler = function(e) {
         let searchTerm = $searchQuery.val();
         if (searchTerm !== '') {
             // Send 'no selection' event to GA
@@ -62,7 +62,7 @@ const MapSearch = (function() {
 
     const initMapPanorama = function() {
         let mapPanorama = _gmap.getStreetView();
-        mapPanorama.addListener('visible_changed', function () {
+        mapPanorama.addListener('visible_changed', function() {
             let pos = mapPanorama.getPosition();
             // Send click event to GA
             MapAnalytics.addAnalyticsEvent('Show StreetView', pos.lat() + ',' + pos.lng());
@@ -87,7 +87,7 @@ const MapSearch = (function() {
                     fuseResult.length = 10;
                 }
 
-                $.each(fuseResult, function (i, feature) {
+                $.each(fuseResult, function(i, feature) {
                     // Add title, subtitle, link fields
                     fuseResult[i].item.title = feature.item.properties.title;
                     fuseResult[i].item.subtitle = feature.item.properties.subtitle;
@@ -106,7 +106,7 @@ const MapSearch = (function() {
         let searchGeoJson = JSON.parse(JSON.stringify(_cachedGeoJson));
         let fuse;
 
-        searchGeoJson.features = $.grep(_cachedGeoJson.features, function (feature) {
+        searchGeoJson.features = $.grep(_cachedGeoJson.features, function(feature) {
             return $.inArray(feature.properties.category, _noSearchCategories) === -1;
         });
 
@@ -129,7 +129,7 @@ const MapSearch = (function() {
     }; // end initSearch
 
     // Setters
-    const setMap = function (map) {
+    const setMap = function(map) {
         _gmap = map;
     };
 

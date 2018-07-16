@@ -27,7 +27,7 @@ const MapMarkers = (function() {
 
         _gmap.data.addListener('click', InfoWindows.popupAction);
         _gmap.data.addListener('mouseover', InfoWindows.popupAction);
-        _gmap.data.setStyle(function (feature) {
+        _gmap.data.setStyle(function(feature) {
             let featureCategory = feature.getProperty('category').toLowerCase().replace(/\s+/g, '-');
             let icon = {
                 url: 'img/markers/' + featureCategory + '.svg',
@@ -67,25 +67,25 @@ const MapMarkers = (function() {
     const addMarkers = function() {
         // Make arrays of markers for each category
 
-        $selectables.each(function () {
+        $selectables.each(function() {
             let $selectable = $(this);
             let selectableCategory = $selectable.attr('id');
             // 'Clone' new GeoJSON file for each category
             _markerGroups[selectableCategory] = JSON.parse(JSON.stringify(_cachedGeoJson));
-            _markerGroups[selectableCategory].features = $.grep(_cachedGeoJson.features, function (feature) {
+            _markerGroups[selectableCategory].features = $.grep(_cachedGeoJson.features, function(feature) {
                 let featureCategory = feature.properties.category.toLowerCase().replace(/\s+/g, '-');
                 return featureCategory === selectableCategory;
             });
         });
 
-        $selectables.click(function () {
+        $selectables.click(function() {
             let $selectable = $(this),
                 selectableCategory = $selectable.attr('id');
 
             if ($selectable.is(':checked')) {
                 showMarkers($selectable);
             } else {
-                $.each(_markerFeatures[selectableCategory], function (i, feature) {
+                $.each(_markerFeatures[selectableCategory], function(i, feature) {
                     _gmap.data.remove(feature);
                 });
                 // Send facilities event to GA
@@ -95,7 +95,7 @@ const MapMarkers = (function() {
 
         // If there are any selectables selected on load, show the icons on the map
         // This happens when navigating away, then back
-        $selectables.each(function (i, v) {
+        $selectables.each(function(i, v) {
             let $v = $(v);
             if ($v.prop('checked') === true) {
                 showMarkers($v);

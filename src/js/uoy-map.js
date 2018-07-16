@@ -142,7 +142,7 @@ const UOY_MAP = (function() {
             return; // prevents the global notice being written
         }
 
-        globalNoticeEl.on('click', '.js-alert-close', function (e) {
+        globalNoticeEl.on('click', '.js-alert-close', function(e) {
             e.preventDefault();
             globalNoticeEl.hide();
             // set a cookie to stash the closure status
@@ -190,7 +190,7 @@ const UOY_MAP = (function() {
         setGlobalNoticeCookie();
     };
 
-    const plotPOIItems = function (poiArr) {
+    const plotPOIItems = function(poiArr) {
 
         // if an array of points of interest isn't passed in, use the default _poiArr
         poiArr = poiArr || _poiArr;

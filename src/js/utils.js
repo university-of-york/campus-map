@@ -27,7 +27,7 @@ const Utils = (function() {
     };
 
     const snazzyOptionsAfterOpenHandler = function(opts) {
-        $('.si-content-more-link').click(function () {
+        $('.si-content-more-link').click(function() {
             let $infoPanelContent = $('.infoPanel__content');
             let $closeInfoPanel = $('.closeInfoPanel');
             let html = '<h3>' + opts.title + '</h3>';
@@ -44,7 +44,7 @@ const Utils = (function() {
 
             // Send popup interaction event to GA
             MapAnalytics.addAnalyticsEvent('Popup interaction', opts.title + ' (more information)');
-            $infoPanelContent.find('a').not('.locationMarker').click(function () {
+            $infoPanelContent.find('a').not('.locationMarker').click(function() {
                 let $this = $(this);
                 // Send panel interaction event to GA
                 MapAnalytics.addAnalyticsEvent('Panel interaction', $this.text() + '(' + $this.attr('href') + ')');
@@ -64,7 +64,7 @@ const Utils = (function() {
         }
 
         // Search GeoJSON for matching location
-        let selectedFeature = $.grep(_cachedGeoJson.features, function (feature) {
+        let selectedFeature = $.grep(_cachedGeoJson.features, function(feature) {
             return makeHash(feature.properties.title) === thisHash;
         });
 
@@ -108,7 +108,7 @@ const Utils = (function() {
     };
 
     // Setters
-    const setMap = function (map) {
+    const setMap = function(map) {
         _gmap = map;
     };
 

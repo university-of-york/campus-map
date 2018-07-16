@@ -165,15 +165,15 @@ body {
 .control-div-feedback {
     z-index: 0;
     position: absolute;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
 }
 
 .control-div-centre {
     z-index: 0;
     position: absolute;
-    right: 0px;
-    top: 0px;
+    right: 0;
+    top: 0;
 }
 
 

@@ -15,7 +15,7 @@ const POI_BUILDER = (function() {
     }
 
     function constructPopupClass() {
-        Popup = function (position, content) {
+        Popup = function(position, content) {
             this.position = position;
 
             let pixelOffset = document.createElement('div');
@@ -36,19 +36,19 @@ const POI_BUILDER = (function() {
         // loaded. That is why Popup is defined inside initMap().
         Popup.prototype = Object.create(google.maps.OverlayView.prototype);
         /** Called when the popup is added to the map. */
-        Popup.prototype.onAdd = function () {
+        Popup.prototype.onAdd = function() {
             this.getPanes().mapPane.appendChild(this.anchor);
         };
 
         /** Called when the popup is removed from the map. */
-        Popup.prototype.onRemove = function () {
+        Popup.prototype.onRemove = function() {
             if (this.anchor.parentElement) {
                 this.anchor.parentElement.removeChild(this.anchor);
             }
         };
 
         /** Called when the popup needs to draw itself. */
-        Popup.prototype.draw = function () {
+        Popup.prototype.draw = function() {
             let divPosition = this.getProjection().fromLatLngToDivPixel(this.position);
             // Hide the popup when it is far out of view.
             let display = setDisplayType(divPosition);

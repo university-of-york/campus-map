@@ -1,4 +1,4 @@
-const Geolocation = (function () {
+const Geolocation = (function() {
 
     // Variable definitions
     const watchOptions = {
