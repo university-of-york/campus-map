@@ -6,7 +6,7 @@ import Utils from 'js/utils';
 import MapSearch from 'js/mapsearch';
 import MapTiles from 'js/maptiles';
 
-"use strict";
+'use strict';
 
 $(function () {
 
@@ -94,7 +94,7 @@ $(function () {
 
         // pass the map object into our global uoy_map object for its use(s)
         try {
-            UOY_MAP.setGoogleMapObj(map);
+            UOY_MAP.setMap(map);
             UOY_MAP.plotPOIItems();
 
             MapTiles.setMap(map);
@@ -118,7 +118,7 @@ $(function () {
         CustomControls.customCampusControl();
 
         // Load GeoJSON.
-        $.getJSON(GeoJSONFile).then(function (data) {
+        $.getJSON(GeoJSONFile).then(function(data) {
             cachedGeoJson = data; //save the geojson in case we want to update its values
             // Filter features that have contain certain terms
             cachedGeoJson.features = $.grep(data.features, function (feature) {
@@ -133,22 +133,25 @@ $(function () {
                     'USE248X'
                 ];
                 let r = -1;
-                $.each(filterPhrases, function (i, phrase) {
+                $.each(filterPhrases, function(i, phrase) {
                     let phraseIndex = title.indexOf(phrase);
                     if (phraseIndex > -1) {
                         r = phraseIndex;
                         return false;
                     }
                 });
-                if (r > -1) return true;
+                if (r > -1) {
+                    return true;
+                }
                 // Check lat and long to see if it's 0,0 (fake data)
                 if (feature.geometry.coordinates[0] === 0 || feature.geometry.coordinates[1] === 0) {
                     return true;
                 }
             }, true); // Change to false to invert the filter i.e. show 'bad' results
+
             // Update some wayward locations
-            $.each(cachedGeoJson.features, function (i, d) {
-                if (d.properties.codes == 'O/EXT/P-temp') {
+            $.each(cachedGeoJson.features, function(i, d) {
+                if (d.properties.codes === 'O/EXT/P-temp') {
                     cachedGeoJson.features[i].geometry.coordinates = [-1.051738, 53.9417839];
                     cachedGeoJson.features[i].properties.subtitle = 'Adjacent to Pavilion, Campus West';
                 }
@@ -169,10 +172,10 @@ $(function () {
             console.log('The map data failed to load', err);
         });
 
-        google.maps.event.addListener(map, 'idle', function () {
+        google.maps.event.addListener(map, 'idle', function() {
             google.maps.event.trigger(map, 'resize');
         });
-        google.maps.event.addListener(map, 'tilesloaded', function(){
+        google.maps.event.addListener(map, 'tilesloaded', function() {
 
             // show the various feedback and map location buttons
             $('#control-feedback-div').removeClass('is-hidden');

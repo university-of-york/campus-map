@@ -1,7 +1,7 @@
 import MapAnalytics from 'js/analytics';
 import Utils from 'js/utils';
 
-const MapSearch = (function(){
+const MapSearch = (function() {
 
     // Variable declaration
     let $searchForm = $('#map-search-form');
@@ -34,22 +34,22 @@ const MapSearch = (function(){
     ];
 
     // Private functions
-    const searchQuery_ClickHandler = function(e) {
+    const searchQueryClickHandler = function() {
         let $this = $(this);
         let searchTerm = $searchQuery.val();
         $this.select();
-        if (searchTerm != '') {
+        if (searchTerm !== '') {
             // run the search
             $this.trigger('keyup');
         }
     };
 
-    const searchForm_SubmitHandler = function (e) {
+    const searchFormSubmitHandler = function (e) {
         e.preventDefault();
         return false;
     };
 
-    const map_ClickHandler = function (e) {
+    const mapClickHandler = function (e) {
         let searchTerm = $searchQuery.val();
         if (searchTerm !== '') {
             // Send 'no selection' event to GA
@@ -71,10 +71,9 @@ const MapSearch = (function(){
 
     const initAutocomplete = function(fuseInstance) {
         const fuse = fuseInstance;
-
-        new window.AUTOCOMPLETE({
+        const autoComplete = new window.AUTOCOMPLETE({
             input: $('#map-search-query'),
-            results: function (searchTerm, onComplete) {
+            results: function(searchTerm, onComplete) {
                 let fuseResult = fuse.search(searchTerm);
 
                 if (fuseResult.length === 0) {
@@ -118,13 +117,13 @@ const MapSearch = (function(){
         // Select all text when you click the input (much easier than deleting existing value)
         // Also re-searches if there is content
         // TODO: move this to pattern lib
-        $searchQuery.on('focus click', searchQuery_ClickHandler);
+        $searchQuery.on('focus click', searchQueryClickHandler);
 
         // Prevent form submit
-        $searchForm.on('submit', searchForm_SubmitHandler);
+        $searchForm.on('submit', searchFormSubmitHandler);
 
         // Clicking on map closes autocomplete
-        _gmap.addListener('click', map_ClickHandler);
+        _gmap.addListener('click', mapClickHandler);
 
         initMapPanorama();
     }; // end initSearch
@@ -145,16 +144,12 @@ const MapSearch = (function(){
     const init = function(geoJson) {
         _cachedGeoJson = geoJson;
         initSearch();
-
-        $searchForm.on('submit', function(){
-            alert('form submitted buddy!');
-        });
     };
 
     return {
-        searchPlaceholderText: searchPlaceholderText,
-        init: init,
-        setMap: setMap
+        searchPlaceholderText,
+        init,
+        setMap
     };
 })();
 export default MapSearch;

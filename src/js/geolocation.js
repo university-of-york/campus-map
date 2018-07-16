@@ -12,14 +12,14 @@ const Geolocation = (function () {
 
     // Private functions
     function onSuccess(position) {
-        let marker = _marker || undefined;
+        let marker = _marker;
 
         let userLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         let icon = {
             url: 'img/markers/pin.svg',
             scaledSize: new google.maps.Size(24, 32)
         };
-        if (typeof(marker) != 'undefined') {
+        if (typeof(marker) !== 'undefined') {
             marker.setMap(null);
         }
         marker = new google.maps.Marker({
@@ -68,7 +68,7 @@ const Geolocation = (function () {
     };
 
     return {
-        init: init
+        init
     };
 })();
 export default Geolocation;

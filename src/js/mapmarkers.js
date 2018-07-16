@@ -1,7 +1,7 @@
 import InfoWindows from 'js/infowindows';
 import MapAnalytics from 'js/analytics';
 
-const MapMarkers = (function(){
+const MapMarkers = (function() {
 
     // Variable definitions
     let _gmap = null;
@@ -16,7 +16,7 @@ const MapMarkers = (function(){
         let selectableCategory = $s.attr('id');
         let thisGroup = {};
 
-        Object.entries(_markerGroups).forEach(function(keyValuePair){
+        Object.entries(_markerGroups).forEach(function(keyValuePair) {
             if(keyValuePair[0] === selectableCategory) {
                 thisGroup = keyValuePair[1];
             }
@@ -113,11 +113,11 @@ const MapMarkers = (function(){
 
 
     return {
-        deleteMarkers: deleteMarkers,
-        addMarkers: addMarkers,
-        setMap: setMap,
-        init: init,
-        addMarkerToCollection: addMarkerToCollection
+        deleteMarkers,
+        addMarkers,
+        setMap,
+        init,
+        addMarkerToCollection
     };
 })();
 export default MapMarkers;

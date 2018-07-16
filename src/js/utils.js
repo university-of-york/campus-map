@@ -1,7 +1,7 @@
 import MapAnalytics from 'js/analytics';
 import InfoWindows from 'js/infowindows';
 
-const Utils = (function(){
+const Utils = (function() {
 
     // Variable declaration
     let $panel = $('.panel');
@@ -10,7 +10,23 @@ const Utils = (function(){
     let _gmap = null;
 
     // Private functions
-    const snazzyOptionsAfterOpen_handler = function(opts) {
+    // Open/Close the drawer
+    // Can call with argument 'open' or 'close'
+    const toggleDrawer = function(e) {
+        let panelOpen = $panel.hasClass('is-open') || e === 'close',
+            iconRemoveClass = panelOpen ? 'c-icon--chevron-down' : 'c-icon--chevron-up',
+            iconAddClass = panelOpen ? 'c-icon--chevron-up' : 'c-icon--chevron-down';
+
+        $icon.removeClass(iconRemoveClass).addClass(iconAddClass);
+
+        if (panelOpen) {
+            $panel.removeClass('is-open');
+        } else {
+            $panel.addClass('is-open');
+        }
+    };
+
+    const snazzyOptionsAfterOpenHandler = function(opts) {
         $('.si-content-more-link').click(function () {
             let $infoPanelContent = $('.infoPanel__content');
             let $closeInfoPanel = $('.closeInfoPanel');
@@ -36,9 +52,44 @@ const Utils = (function(){
         });
     };
 
-    const snazzyOptionsAfterClose_handler = function() {
+    const snazzyOptionsAfterCloseHandler = function() {
         //affects hover popup
         //closeInfoPanel();
+    };
+
+    const buildSelectedFeature = function(thisHash) {
+        // Search GeoJSON for matching location
+        let selectedFeature = $.grep(_cachedGeoJson.features, function (feature) {
+            return makeHash(feature.properties.title) === thisHash;
+        });
+
+        return selectedFeature
+    };
+
+    const buildLocationObject = function(feature) {
+        return {
+            title: feature.properties.title,
+            subtitle: feature.properties.subtitle,
+            category: feature.properties.category,
+            latlng: new google.maps.LatLng(
+                parseFloat(feature.geometry.coordinates[1]),
+                parseFloat(feature.geometry.coordinates[0])
+            ),
+            shortdesc: feature.properties.shortdesc || false,
+            longdesc: feature.properties.longdesc || false,
+            content: '',
+            zoom: parseInt(feature.properties.zoom, 10) || 16
+        };
+    };
+
+    const recenterMap = function(isARoom, location) {
+        if (isARoom) {
+            InfoWindows.createInfoPanel(location);
+            return;
+        }
+
+        InfoWindows.createInfoWindow(location);
+        _gmap.panTo(location.latlng);
     };
 
     // Setters
@@ -57,39 +108,17 @@ const Utils = (function(){
         return encodeURI(str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, ''));
     };
 
-    // Open/Close the drawer
-    // Can call with argument 'open' or 'close'
-    const toggleDrawer = function(e) {
-        let overwrite;
-        if (e === 'open') overwrite = 'open';
-        if (e === 'close') overwrite = 'close';
-        if ($panel.hasClass('is-open') || overwrite === 'close') {
-            $icon.removeClass('c-icon--chevron-down').addClass('c-icon--chevron-up');
-            $panel.removeClass('is-open');
-        } else {
-            $icon.removeClass('c-icon--chevron-up').addClass('c-icon--chevron-down');
-            $panel.addClass('is-open');
-        }
-    };
-
     // Check whether there is a location hash,
     // and drop pin/open info panel for relevant location
     const checkHash = function() {
         let thisHash = document.location.hash.substr(1);
         let content;
-        let selectedFeature;
+        let selectedFeature = buildSelectedFeature(thisHash);
         let location;
 
-        if (thisHash === '' || _cachedGeoJson === undefined) {
-            return false;
-        }
-
-        // Search GeoJSON for matching location
-        selectedFeature = $.grep(_cachedGeoJson.features, function (feature) {
-            return makeHash(feature.properties.title) === thisHash;
-        });
-
-        if (selectedFeature.length === 0) {
+        if (thisHash === '' ||
+            _cachedGeoJson === null ||
+            selectedFeature.length === 0) {
             return false;
         }
 
@@ -97,27 +126,12 @@ const Utils = (function(){
         content += (selectedFeature[0].properties.longdesc !== undefined) ?
             '<p><a class=\'si-content-more-link\'>More information</a></p>' : '';
 
-        location = {
-            title: selectedFeature[0].properties.title,
-            subtitle: selectedFeature[0].properties.subtitle,
-            category: selectedFeature[0].properties.category,
-            latlng: new google.maps.LatLng(parseFloat(selectedFeature[0].geometry.coordinates[1]), parseFloat(selectedFeature[0].geometry.coordinates[0])),
-            shortdesc: selectedFeature[0].properties.shortdesc || false,
-            longdesc: selectedFeature[0].properties.longdesc || false,
-            content: content,
-            zoom: parseInt(selectedFeature[0].properties.zoom, 10) || 16
-        };
+        location = buildLocationObject(selectedFeature[0]);
+        location.content = content;
 
         // Drop pin and infoWindow on map
-        if (location.category === 'Room') {
-            InfoWindows.createInfoPanel(location);
-        } else {
-            InfoWindows.createInfoWindow(location);
-            _gmap.panTo(location.latlng);
-        }
+        recenterMap(location.category === 'Room', location);
     };
-
-
 
     const snazzyOptions = function(opts) {
         return {
@@ -140,8 +154,8 @@ const Utils = (function(){
                 left: '2px'
             },
             callbacks: {
-                afterOpen: () => { snazzyOptionsAfterOpen_handler(opts); },
-                afterClose: snazzyOptionsAfterClose_handler
+                afterOpen: () => { snazzyOptionsAfterOpenHandler(opts); },
+                afterClose: snazzyOptionsAfterCloseHandler
             }
         };
     };
@@ -151,12 +165,12 @@ const Utils = (function(){
     };
 
     return {
-        toggleDrawer: toggleDrawer,
-        snazzyOptions: snazzyOptions,
-        checkHash: checkHash,
-        makeHash: makeHash,
-        setMap: setMap,
-        init: init
+        toggleDrawer,
+        snazzyOptions,
+        checkHash,
+        makeHash,
+        setMap,
+        init
     };
 })();
 export default Utils;

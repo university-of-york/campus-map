@@ -27,6 +27,15 @@ const CustomControls = (function () {
     };
 
     // Private functions
+    function deleteIcons() {
+        // uncheck feature buttons
+        $('.c-btn--selectable').prop('checked', false);
+        //remove svg feature markers
+        _gmap.data.forEach(function (feature) {
+            _gmap.data.remove(feature);
+        });
+    }
+
     function removeWindowHash() {
         // remove hash from url
         let loc = window.location.href,
@@ -47,22 +56,13 @@ const CustomControls = (function () {
         MapAnalytics.addAnalyticsEvent('Reset', '');
     }
 
-    function centerOnLocation_ClickHandler(options) {
+    function centerOnLocationClickHandler(options) {
         let data = options.data;
 
         _gmap.setCenter(data.setCenter);
         _gmap.setZoom(data.zoom);
         // Send centre on event to GA
         MapAnalytics.addAnalyticsEvent('Centre on', data.analyticsEventStr);
-    }
-
-    function deleteIcons() {
-        // uncheck feature buttons
-        $('.c-btn--selectable').prop('checked', false);
-        //remove svg feature markers
-        _gmap.data.forEach(function (feature) {
-            _gmap.data.remove(feature);
-        });
     }
 
     // Setters
@@ -73,7 +73,7 @@ const CustomControls = (function () {
     // Public functions
 
     // zoom to CE & CW (mobile), CE, CW and KM (desktop)
-    const setBounds = function () {
+    const setBounds = function() {
         let bounds = new google.maps.LatLngBounds(
             new google.maps.LatLng(53.943157, -1.058537),
             new google.maps.LatLng(53.950877, -1.024085)
@@ -81,7 +81,7 @@ const CustomControls = (function () {
         _gmap.fitBounds(bounds);
     };
 
-    const customCampusControl = function () {
+    const customCampusControl = function() {
 
         //custom control - campus buttons
         _controlResetUI.click(resetUI);
@@ -90,19 +90,19 @@ const CustomControls = (function () {
             setCenter: _east,
             zoom: 16,
             analyticsEventStr: 'Campus East'
-        }, centerOnLocation_ClickHandler);
+        }, centerOnLocationClickHandler);
 
         _controlWestUI.click({
             setCenter: _west,
             zoom: 16,
             analyticsEventStr: 'Campus West'
-        }, centerOnLocation_ClickHandler);
+        }, centerOnLocationClickHandler);
 
         _controlKingsManorUI.click({
             setCenter: _kingsmanor,
             zoom: 18,
             analyticsEventStr: 'King\'s Manor'
-        }, centerOnLocation_ClickHandler);
+        }, centerOnLocationClickHandler);
 
         _controlCampusDiv.index = 1;
         _gmap.controls[google.maps.ControlPosition.TOP_RIGHT].push(_controlCampusDiv[0]);
@@ -122,10 +122,10 @@ const CustomControls = (function () {
     };
 
     return {
-        customCampusControl: customCampusControl,
-        customFeedbackControl: customFeedbackControl,
-        setMap: setMap,
-        setBounds: setBounds
+        customCampusControl,
+        customFeedbackControl,
+        setMap,
+        setBounds
     };
 })();
 export default CustomControls;

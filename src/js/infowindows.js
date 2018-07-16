@@ -2,13 +2,13 @@ import MapMarkers from 'js/mapmarkers';
 import Utils from 'js/utils';
 import MapAnalytics from 'js/analytics';
 
-const InfoWindows = (function(){
+const InfoWindows = (function() {
 
     // Variable declaration
     let _gmap = null;
 
     // Private methods
-    const locationMarker_ClickHandler = function(options) {
+    const locationMarkerClickHandler = function(options) {
         let data = options.data;
 
         createInfoWindow(data.location);
@@ -25,6 +25,24 @@ const InfoWindows = (function(){
         // Send panel interaction event to GA
         MapAnalytics.addAnalyticsEvent('Panel interaction', data.linkText + ' (show location)');
     };
+
+    function buildRoomHtml(isARoom, title, defaultContent) {
+        let content = '<h4>' + title + '</h4><p>Approximate location only</p><p>Please allow yourself time to locate the room</p>';
+
+        return isARoom ? content : defaultContent;
+    }
+
+    function buildInfoPanelHtml(location) {
+        let html = '<h3>' + location.title + '</h3>';
+        let locationLinkText = location.subtitle.replace(/\b(, Campus West|, Campus East|, King's Manor)\b/gi, '');
+
+        html += (location.subtitle !== false) ? '<h4>' + location.subtitle + '</h4>' : '';
+        html += (location.shortdesc !== false) ? '<p>' + location.shortdesc + '</p>' : '';
+        html += (location.longdesc !== false) ? '<p>' + location.longdesc + '</p>' : '';
+        html += (location.latlng !== '0,0') ? '<p><a class=\'locationMarker\'><i class=\'c-icon c-icon--map-marker\' aria-hidden=\'true\'></i></a>&nbsp;<a class=\'locationMarker\'>' + locationLinkText + '</a></p>' : '';
+
+        return html;
+    }
 
     // Setters
     const setMap = function(map) {
@@ -58,7 +76,6 @@ const InfoWindows = (function(){
         let shortdesc = location.shortdesc || false;
         let longdesc = location.longdesc || false;
         let zoom = location.zoom || 16;
-        let content;
         let marker = new google.maps.Marker({
             position: location.latlng,
             map: _gmap,
@@ -76,21 +93,12 @@ const InfoWindows = (function(){
             marker: marker,
             shortdesc: shortdesc,
             longdesc: longdesc,
-            content: ''
+            content: buildRoomHtml(category === 'Room', title, location.content)
         };
         let thisOptions;
         let snazzy;
 
-        if (category === 'Room') {
-            content = '<h4>' + title + '</h4>';
-            content += '<p>Approximate location only</p>';
-            content += '<p>Please allow yourself time to locate the room</p>';
-        } else {
-            content = location.content;
-        }
-
         MapMarkers.deleteMarkers();
-        snazzyMapOptions.content = content;
         thisOptions = Utils.snazzyOptions(snazzyMapOptions);
 
         // Set up the snazzy map element
@@ -132,13 +140,7 @@ const InfoWindows = (function(){
 
     const createInfoPanel = function(location) {
         let $infoPanel = $('.infoPanel');
-        let html = '<h3>' + location.title + '</h3>';
-        let locationLinkText = location.subtitle.replace(/\b(, Campus West|, Campus East|, King's Manor)\b/gi, '');
-
-        html += (location.subtitle !== false) ? '<h4>' + location.subtitle + '</h4>' : '';
-        html += (location.shortdesc !== false) ? '<p>' + location.shortdesc + '</p>' : '';
-        html += (location.longdesc !== false) ? '<p>' + location.longdesc + '</p>' : '';
-        html += (location.latlng !== '0,0') ? '<p><a class=\'locationMarker\'><i class=\'c-icon c-icon--map-marker\' aria-hidden=\'true\'></i></a>&nbsp;<a class=\'locationMarker\'>' + locationLinkText + '</a></p>' : '';
+        let html = buildInfoPanelHtml(location);
 
         $('.infoPanel__content').html(html);
         openInfoPanel();
@@ -149,17 +151,17 @@ const InfoWindows = (function(){
                 location: location,
                 linkText: locationLinkText
             },
-            locationMarker_ClickHandler
+            locationMarkerClickHandler
         );
     };
 
     return {
-        closeInfoPanel: closeInfoPanel,
-        openInfoPanel: openInfoPanel,
-        popupAction: popupAction,
-        createInfoWindow: createInfoWindow,
-        createInfoPanel: createInfoPanel,
-        setMap: setMap
+        closeInfoPanel,
+        openInfoPanel,
+        popupAction,
+        createInfoWindow,
+        createInfoPanel,
+        setMap
     };
 })();
 export default InfoWindows;

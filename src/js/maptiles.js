@@ -16,22 +16,26 @@ class CoordMapType {
 
     getTile(coord, zoom, ownerDocument) {
         let span = ownerDocument.createElement('span');
+        let tile;
+
         //if (1 == 1) return ownerDocument.createElement('span');
         // Find out if it's outside our limits
-        if (!this.limits[zoom]) return span;
-        if (coord.x > this.limits[zoom].xMax) return span;
-        if (coord.x < this.limits[zoom].xMin) return span;
-        if (coord.y > this.limits[zoom].yMax) return span;
-        if (coord.y < this.limits[zoom].yMin) return span;
-        let tile = ownerDocument.createElement('img');
+        if(!this.limits[zoom] ||
+            coord.x > this.limits[zoom].xMax ||
+            coord.x < this.limits[zoom].xMin ||
+            coord.y > this.limits[zoom].yMax ||
+            coord.y < this.limits[zoom].yMin) {
+            return span;
+        }
 
+        tile = ownerDocument.createElement('img');
         tile.src = this.tilePath + zoom + '/' + coord.x + '/' + coord.y + '.png';
         return tile;
-    };
+    }
 }
 
 
-const MapTiles = (function(){
+const MapTiles = (function() {
 
     // Variable Declaration
     let _gmap = null;
@@ -50,8 +54,8 @@ const MapTiles = (function(){
     };
 
     return {
-        setMap: setMap,
-        init: init
+        setMap,
+        init
     };
 })();
 export default MapTiles;
