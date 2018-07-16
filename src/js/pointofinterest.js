@@ -103,5 +103,5 @@ const POI_BUILDER = (function() {
         getPopupClass,
         hidePopupItemsOnMobileZoom
     };
-})();
+}());
 window.POI_BUILDER = POI_BUILDER || {};

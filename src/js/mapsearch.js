@@ -151,5 +151,5 @@ const MapSearch = (function() {
         init,
         setMap
     };
-})();
+}());
 export default MapSearch;

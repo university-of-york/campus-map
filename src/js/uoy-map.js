@@ -123,7 +123,7 @@ const UOY_MAP = (function() {
         newElement.id = id;
 
         if(classList && classList.length > 0) {
-            classList.forEach(function(cssClass){
+            classList.forEach(function(cssClass) {
                newElement.classList.add(cssClass);
             });
         }
@@ -193,14 +193,10 @@ const UOY_MAP = (function() {
     const plotPOIItems = function (poiArr) {
 
         // if an array of points of interest isn't passed in, use the default _poiArr
-        poiArr = poiArr ? poiArr : _poiArr;
-
-        if(!poiArr || poiArr.length === 0) {
-            return;
-        }
+        poiArr = poiArr || _poiArr;
 
         // plot the map points
-        if((_gmap && _gmap != null) && (POI_BUILDER)) {
+        if(poiArr.length > 0 && _gmap !== null && POI_BUILDER !== null) {
 
             // now that the Google.map object is initialised, we need to create the Popup class
             // via the constructor
@@ -209,7 +205,7 @@ const UOY_MAP = (function() {
 
             // plot the markers on the map
             let count = 0;
-            poiArr.forEach(function(pointObj){
+            poiArr.forEach(function(pointObj) {
                 let poiID = 'poi-id' + count,
                     poiElement = createGenericElement('div', poiID, ['o-poi-item--content'], pointObj.title);
 
@@ -226,12 +222,12 @@ const UOY_MAP = (function() {
             });
 
             // show/hide the popup/poi items on init
-            _gmap.addListener('tilesloaded', function(){
+            _gmap.addListener('tilesloaded', function() {
                 POI_BUILDER.hidePopupItemsOnMobileZoom(_gmap);
             });
 
             // show/hide the popup/poi items below selected zoom levels on smaller screens
-            _gmap.addListener('zoom_changed', function(){
+            _gmap.addListener('zoom_changed', function() {
                 POI_BUILDER.hidePopupItemsOnMobileZoom(_gmap);
             });
         }
@@ -245,12 +241,11 @@ const UOY_MAP = (function() {
 
         if(fadeOut) {
             // gracefully hide the alert
-            setTimeout(function(){
+            setTimeout(function() {
                 mapAlert.fadeOut(500, function() {
                     mapAlertContent.html('');
                 });
-
-                }, 4000);
+            }, 4000);
         }
     };
 
@@ -281,10 +276,10 @@ const UOY_MAP = (function() {
         setMap,
         setPointsOfInterest,
         plotPOIItems,
-        alertOverlay,
+        alertOverlay, //ready for future use
         init,
         getConfig,
         setGlobalOptions
     };
-})();
+}());
 window.UOY_MAP = UOY_MAP || {};

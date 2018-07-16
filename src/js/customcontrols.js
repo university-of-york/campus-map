@@ -127,5 +127,5 @@ const CustomControls = (function () {
         setMap,
         setBounds
     };
-})();
+}());
 export default CustomControls;

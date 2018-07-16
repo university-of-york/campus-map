@@ -163,5 +163,5 @@ const InfoWindows = (function() {
         createInfoPanel,
         setMap
     };
-})();
+}());
 export default InfoWindows;

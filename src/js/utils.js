@@ -58,12 +58,17 @@ const Utils = (function() {
     };
 
     const buildSelectedFeature = function(thisHash) {
+
+        if (_cachedGeoJson === null) {
+            return false;
+        }
+
         // Search GeoJSON for matching location
         let selectedFeature = $.grep(_cachedGeoJson.features, function (feature) {
             return makeHash(feature.properties.title) === thisHash;
         });
 
-        return selectedFeature
+        return selectedFeature;
     };
 
     const buildLocationObject = function(feature) {
@@ -82,8 +87,18 @@ const Utils = (function() {
         };
     };
 
-    const recenterMap = function(isARoom, location) {
-        if (isARoom) {
+    const buildLocationContent = function(feature) {
+        let content = '<h4>' + feature.properties.title + '</h4>';
+
+        if(typeof(feature.properties.longdesc) !== 'undefined') {
+            content += '<p><a class=\'si-content-more-link\'>More information</a></p>';
+        }
+
+        return content;
+    };
+
+    const recenterMap = function(location) {
+        if (location.category === 'Room') {
             InfoWindows.createInfoPanel(location);
             return;
         }
@@ -112,7 +127,6 @@ const Utils = (function() {
     // and drop pin/open info panel for relevant location
     const checkHash = function() {
         let thisHash = document.location.hash.substr(1);
-        let content;
         let selectedFeature = buildSelectedFeature(thisHash);
         let location;
 
@@ -122,15 +136,11 @@ const Utils = (function() {
             return false;
         }
 
-        content = '<h4>' + selectedFeature[0].properties.title + '</h4>';
-        content += (selectedFeature[0].properties.longdesc !== undefined) ?
-            '<p><a class=\'si-content-more-link\'>More information</a></p>' : '';
-
         location = buildLocationObject(selectedFeature[0]);
-        location.content = content;
+        location.content = buildLocationContent(selectedFeature[0]);
 
         // Drop pin and infoWindow on map
-        recenterMap(location.category === 'Room', location);
+        recenterMap(location);
     };
 
     const snazzyOptions = function(opts) {
@@ -172,5 +182,5 @@ const Utils = (function() {
         setMap,
         init
     };
-})();
+}());
 export default Utils;

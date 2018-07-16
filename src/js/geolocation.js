@@ -70,5 +70,5 @@ const Geolocation = (function () {
     return {
         init
     };
-})();
+}());
 export default Geolocation;

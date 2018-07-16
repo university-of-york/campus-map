@@ -119,5 +119,5 @@ const MapMarkers = (function() {
         init,
         addMarkerToCollection
     };
-})();
+}());
 export default MapMarkers;

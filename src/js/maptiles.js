@@ -57,5 +57,5 @@ const MapTiles = (function() {
         setMap,
         init
     };
-})();
+}());
 export default MapTiles;
