@@ -141,6 +141,7 @@ const InfoWindows = (function() {
     const createInfoPanel = function(location) {
         let $infoPanel = $('.infoPanel');
         let html = buildInfoPanelHtml(location);
+        let locationLinkText = location.subtitle.replace(/\b(, Campus West|, Campus East|, King's Manor)\b/gi, '');
 
         $('.infoPanel__content').html(html);
         openInfoPanel();
