@@ -1,5 +1,6 @@
 import MapAnalytics from 'js/analytics';
 import Utils from 'js/utils';
+import MapMarkers from "./mapmarkers";
 
 const MapSearch = (function() {
 
@@ -34,6 +35,36 @@ const MapSearch = (function() {
     ];
 
     // Private functions
+    const submitForm = function() {
+        let $autocompleteItems = $('.c-autocomplete__item');
+        let selectedItem = $autocompleteItems.filter('.is-selected');
+        let selectedLink = selectedItem.children('.c-autocomplete__link');
+        let selectedTitle = selectedLink.children('.c-autocomplete__title').text();
+        let selectedSubtitle = selectedLink.children('.c-autocomplete__subtitle').text();
+        let selectedHash = selectedLink.attr("href").replace('#', '');
+        let searchQueryText = $searchQuery.val();
+        let selectedIndex = $autocompleteItems.index(selectedItem) + 1;
+        let selectedFeature;
+        let location;
+
+        if (selectedItem.length === 0) {
+            return false;
+        }
+
+        // Add is-selected value to search query
+        $searchQuery.val(selectedTitle);
+        selectedFeature = Utils.buildSelectedFeature(selectedHash);
+        location = Utils.buildLocationObject(selectedFeature[0], selectedTitle, selectedSubtitle);
+        location.content = Utils.buildLocationContent(selectedFeature[0]);
+        MapMarkers.deleteMarkers();
+
+        // Drop pin and infoWindow on map
+        Utils.recenterMap(location);
+
+        // Send query event to GA
+        MapAnalytics.addAnalyticsEvent('Search', selectedTitle+' (query: '+searchQueryText+')', selectedIndex);
+    };
+
     const searchQueryClickHandler = function() {
         let $this = $(this);
         let searchTerm = $searchQuery.val();
@@ -46,6 +77,7 @@ const MapSearch = (function() {
 
     const searchFormSubmitHandler = function(e) {
         e.preventDefault();
+        submitForm();
         return false;
     };
 
@@ -97,7 +129,7 @@ const MapSearch = (function() {
                     }
                 });
             },
-            followLinks: true
+            followLinks: false
         });
     };
 

@@ -57,6 +57,41 @@ const Utils = (function() {
         //closeInfoPanel();
     };
 
+
+    // Setters
+    const setMap = function(map) {
+        _gmap = map;
+    };
+
+
+    // Public functions
+    const buildLocationObject = function(feature, title, subtitle) {
+        return {
+            title: title || feature.properties.title,
+            subtitle: subtitle || feature.properties.subtitle,
+            category: feature.properties.category,
+            latlng: new google.maps.LatLng(
+                parseFloat(feature.geometry.coordinates[1]),
+                parseFloat(feature.geometry.coordinates[0])
+            ),
+            shortdesc: feature.properties.shortdesc || false,
+            longdesc: feature.properties.longdesc || false,
+            content: '',
+            zoom: parseInt(feature.properties.zoom, 10) || 16
+        };
+    };
+
+    const buildLocationContent = function(feature, title) {
+        let titleToUse = title || feature.properties.title;
+        let content = '<h4>' + titleToUse + '</h4>';
+
+        if(typeof(feature.properties.longdesc) !== 'undefined') {
+            content += '<p><a class=\'si-content-more-link\'>More information</a></p>';
+        }
+
+        return content;
+    };
+
     const buildSelectedFeature = function(thisHash) {
 
         if (_cachedGeoJson === null) {
@@ -71,32 +106,6 @@ const Utils = (function() {
         return selectedFeature;
     };
 
-    const buildLocationObject = function(feature) {
-        return {
-            title: feature.properties.title,
-            subtitle: feature.properties.subtitle,
-            category: feature.properties.category,
-            latlng: new google.maps.LatLng(
-                parseFloat(feature.geometry.coordinates[1]),
-                parseFloat(feature.geometry.coordinates[0])
-            ),
-            shortdesc: feature.properties.shortdesc || false,
-            longdesc: feature.properties.longdesc || false,
-            content: '',
-            zoom: parseInt(feature.properties.zoom, 10) || 16
-        };
-    };
-
-    const buildLocationContent = function(feature) {
-        let content = '<h4>' + feature.properties.title + '</h4>';
-
-        if(typeof(feature.properties.longdesc) !== 'undefined') {
-            content += '<p><a class=\'si-content-more-link\'>More information</a></p>';
-        }
-
-        return content;
-    };
-
     const recenterMap = function(location) {
         if (location.category === 'Room') {
             InfoWindows.createInfoPanel(location);
@@ -106,13 +115,6 @@ const Utils = (function() {
         InfoWindows.createInfoWindow(location);
         _gmap.panTo(location.latlng);
     };
-
-    // Setters
-    const setMap = function(map) {
-        _gmap = map;
-    };
-
-    // Public functions
 
     // make a URL hash-friendly value from str
     const makeHash = function(str) {
@@ -175,6 +177,10 @@ const Utils = (function() {
     };
 
     return {
+        buildLocationObject,
+        buildLocationContent,
+        buildSelectedFeature,
+        recenterMap,
         toggleDrawer,
         snazzyOptions,
         checkHash,
