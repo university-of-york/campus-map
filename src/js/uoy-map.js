@@ -1,22 +1,22 @@
-const mapJson = require("../mapconfig.json");
+const mapJson = require('../mapconfig.json');
 
-const UOY_MAP = (function(){
-"use strict";
+const UOY_MAP = (function() {
+'use strict';
 
     let _mapConfigData = {};
-    const _cookieName = "global-notice-status";
-    let _closeBtnHTML = "<button type=\"button\" class=\"c-alert__close js-alert-close\" aria-label=\"Close\">&times;</button>";
-    let _noticeHTML = "<div class=\"c-global-notice {0}\">{x}{1}{2}</div>";
-    let _noticeTitle = "<h2 class=\"c-global-notice__title\">{0}</h2>";
+    const _cookieName = 'global-notice-status';
+    let _closeBtnHTML = '<button type=\'button\' class=\'c-alert__close js-alert-close\' aria-label=\'Close\'>&times;</button>';
+    let _noticeHTML = '<div class=\'c-global-notice {0}\'>{x}{1}{2}</div>';
+    let _noticeTitle = '<h2 class=\'c-global-notice__title\'>{0}</h2>';
     let _defaultOptions = {
-        placeBeforeElement: ".wrapper",
-        title: "",
-        description: "",
-        noticeModifierClasses: "",
+        placeBeforeElement: '.wrapper',
+        title: '',
+        description: '',
+        noticeModifierClasses: '',
         closeable: false
     };
-    let mapAlert = $("#map-alert");
-    let mapAlertContent = mapAlert.children(".c-alert__content");
+    let mapAlert = $('#map-alert');
+    let mapAlertContent = mapAlert.children('.c-alert__content');
 
 
     // map variables
@@ -29,7 +29,7 @@ const UOY_MAP = (function(){
     function stringReplace(template, replaceArr) {
 
         for(let i = 0; i < replaceArr.length; i++) {
-            let placeholder = "{" + i.toString() + "}";
+            let placeholder = '{' + i.toString() + '}';
             template = template.replace(placeholder, replaceArr[i]);
         }
 
@@ -38,28 +38,28 @@ const UOY_MAP = (function(){
 
     // cookies - todo: needs abstracting
     function setCookie(cookieName, value, expires) {
-        let expiresStr = "";
+        let expiresStr = '';
         if(expires) {
             let d = new Date();
             d.setTime(d.getTime() + (expires * 24 * 60 * 60 * 1000));
-            expiresStr = "expires=" + d.toUTCString() + ";";
+            expiresStr = 'expires=' + d.toUTCString() + ';';
         }
-        document.cookie = cookieName + "=" + value + ";" + expiresStr + "path=/";
+        document.cookie = cookieName + '=' + value + ';' + expiresStr + 'path=/';
     }
     function getCookie(cookieName) {
-        let name = cookieName + "=";
+        let name = cookieName + '=';
         let decodedCookie = decodeURIComponent(document.cookie);
-        let ca = decodedCookie.split(";");
-        for(let i = 0; i <ca.length; i++) {
+        let ca = decodedCookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
             let c = ca[i];
-            while (c.charAt(0) === " ") {
+            while (c.charAt(0) === ' ') {
                 c = c.substring(1);
             }
             if (c.indexOf(name) === 0) {
                 return c.substring(name.length, c.length);
             }
         }
-        return "";
+        return '';
     }
 
     // Setters
@@ -78,13 +78,13 @@ const UOY_MAP = (function(){
     // Private/internal functions
     const createMapInput = function(id, value) {
 
-        let newInput = document.createElement("input");
+        let newInput = document.createElement('input');
         newInput.id = id;
-        newInput.name = "mapButton";
+        newInput.name = 'mapButton';
         newInput.value = value;
-        newInput.classList.add("c-btn--selectable");
-        newInput.type = "checkbox";
-        newInput.placeholder = "";
+        newInput.classList.add('c-btn--selectable');
+        newInput.type = 'checkbox';
+        newInput.placeholder = '';
 
         return newInput;
     };
@@ -92,22 +92,22 @@ const UOY_MAP = (function(){
     const createMapLabel = function(idFor, iconClass, labelText) {
 
         // create the icon element
-        let newIcon = document.createElement("i");
-        newIcon.classList.add("c-icon");
-        newIcon.classList.add("c-icon--above");
+        let newIcon = document.createElement('i');
+        newIcon.classList.add('c-icon');
+        newIcon.classList.add('c-icon--above');
         newIcon.classList.add(iconClass);
 
         // create the text element
         let newText = document.createTextNode(labelText);
 
         // create the label element
-        let newLabel = document.createElement("label");
+        let newLabel = document.createElement('label');
         newLabel.htmlFor = idFor;
-        newLabel.setAttribute("role", "button");
-        newLabel.classList.add("c-btn");
-        newLabel.classList.add("c-btn--secondary");
-        newLabel.classList.add("c-btn--medium");
-        newLabel.classList.add("c-btn--selectable__label");
+        newLabel.setAttribute('role', 'button');
+        newLabel.classList.add('c-btn');
+        newLabel.classList.add('c-btn--secondary');
+        newLabel.classList.add('c-btn--medium');
+        newLabel.classList.add('c-btn--selectable__label');
 
         newLabel.appendChild(newIcon);
         newLabel.appendChild(newText);
@@ -123,7 +123,7 @@ const UOY_MAP = (function(){
         newElement.id = id;
 
         if(classList && classList.length > 0) {
-            classList.forEach(function(cssClass){
+            classList.forEach(function(cssClass) {
                newElement.classList.add(cssClass);
             });
         }
@@ -134,26 +134,26 @@ const UOY_MAP = (function(){
 
     const setGlobalNoticeCookie = function() {
 
-        let globalNoticeEl = $(".c-global-notice");
+        let globalNoticeEl = $('.c-global-notice');
 
         // check if the element has already been closed and set by a cookie
-        if (getCookie(_cookieName) === "closed") {
+        if (getCookie(_cookieName) === 'closed') {
             globalNoticeEl.hide();
             return; // prevents the global notice being written
         }
 
-        globalNoticeEl.on("click", ".js-alert-close", function (e) {
+        globalNoticeEl.on('click', '.js-alert-close', function(e) {
             e.preventDefault();
             globalNoticeEl.hide();
             // set a cookie to stash the closure status
-            setCookie(_cookieName, "closed", null);
+            setCookie(_cookieName, 'closed', null);
         });
     };
 
     const renderMapButtons = function() {
 
         if(_mapConfigData.mapButtons) {
-            let mapButtonContainer = document.getElementById("map-button-container");
+            let mapButtonContainer = document.getElementById('map-button-container');
 
             _mapConfigData.mapButtons.forEach(function(btn) {
 
@@ -170,7 +170,7 @@ const UOY_MAP = (function(){
     // External functions
     const addGlobalNotice = function(options) {
         // check to see if we actually have an object
-        if(typeof options === "undefined") {
+        if(typeof options === 'undefined') {
             return;
         }
 
@@ -178,29 +178,25 @@ const UOY_MAP = (function(){
         $.extend(_defaultOptions, options);
 
         let $placementEl = $(_defaultOptions.placeBeforeElement),
-            title = stringChecker(_defaultOptions.title) ? stringReplace(_noticeTitle, [_defaultOptions.title]) : "",
+            title = stringChecker(_defaultOptions.title) ? stringReplace(_noticeTitle, [_defaultOptions.title]) : '',
             outputHTML = stringReplace(_noticeHTML, [
                 _defaultOptions.noticeModifierClasses,
                 title,
                 _defaultOptions.description
             ]);
 
-        outputHTML = outputHTML.replace("{x}", _defaultOptions.closeable ? _closeBtnHTML : "");
+        outputHTML = outputHTML.replace('{x}', _defaultOptions.closeable ? _closeBtnHTML : '');
         $placementEl.before(outputHTML);
         setGlobalNoticeCookie();
     };
 
-    const plotPOIItems = function (poiArr) {
+    const plotPOIItems = function(poiArr) {
 
         // if an array of points of interest isn't passed in, use the default _poiArr
-        poiArr = poiArr ? poiArr : _poiArr;
-
-        if(!poiArr || poiArr.length === 0) {
-            return;
-        }
+        poiArr = poiArr || _poiArr;
 
         // plot the map points
-        if((_gmap && _gmap != null) && (POI_BUILDER)) {
+        if(poiArr && poiArr.length > 0 && _gmap !== null && POI_BUILDER !== null) {
 
             // now that the Google.map object is initialised, we need to create the Popup class
             // via the constructor
@@ -209,9 +205,9 @@ const UOY_MAP = (function(){
 
             // plot the markers on the map
             let count = 0;
-            poiArr.forEach(function(pointObj){
-                let poiID = "poi-id" + count,
-                    poiElement = createGenericElement("div", poiID, ["o-poi-item--content"], pointObj.title);
+            poiArr.forEach(function(pointObj) {
+                let poiID = 'poi-id' + count,
+                    poiElement = createGenericElement('div', poiID, ['o-poi-item--content'], pointObj.title);
 
                 // add the poi empty 'div' element to the document (it doesn't matter where)
                 document.body.appendChild(poiElement);
@@ -226,12 +222,12 @@ const UOY_MAP = (function(){
             });
 
             // show/hide the popup/poi items on init
-            _gmap.addListener("tilesloaded", function(){
+            _gmap.addListener('tilesloaded', function() {
                 POI_BUILDER.hidePopupItemsOnMobileZoom(_gmap);
             });
 
             // show/hide the popup/poi items below selected zoom levels on smaller screens
-            _gmap.addListener("zoom_changed", function(){
+            _gmap.addListener('zoom_changed', function() {
                 POI_BUILDER.hidePopupItemsOnMobileZoom(_gmap);
             });
         }
@@ -240,22 +236,22 @@ const UOY_MAP = (function(){
     const alertOverlay = function(message, fadeOut) {
 
         mapAlertContent.html(message);
-        mapAlert.removeClass("is-hidden");
+        mapAlert.removeClass('is-hidden');
         mapAlert.fadeIn();
 
         if(fadeOut) {
             // gracefully hide the alert
-            setTimeout(function(){
+            setTimeout(function() {
                 mapAlert.fadeOut(500, function() {
-                    mapAlertContent.html("");
+                    mapAlertContent.html('');
                 });
-
-                }, 4000);
+            }, 4000);
         }
     };
 
     const init = function() {
         _mapConfigData = mapJson;
+        _poiArr = [];
 
         renderMapButtons();
 
@@ -269,22 +265,22 @@ const UOY_MAP = (function(){
 
         // Set the map title
         if(globalOptions.mapTitle) {
-            let mapButtonContainer = document.getElementById("c-map-header-title");
+            let mapButtonContainer = document.getElementById('c-map-header-title');
             let mapTitleText = document.createTextNode(globalOptions.mapTitle);
-            mapButtonContainer.innerText = "";
+            mapButtonContainer.innerText = '';
             mapButtonContainer.appendChild(mapTitleText);
         }
     };
 
     return {
-        addGlobalNotice : addGlobalNotice,
-        setGoogleMapObj: setMap,
-        setPointsOfInterest: setPointsOfInterest,
-        plotPOIItems: plotPOIItems,
-        alertOverlay: alertOverlay,
-        init: init,
-        getConfig: getConfig,
-        setGlobalOptions: setGlobalOptions
-    }
-})();
+        addGlobalNotice,
+        setMap,
+        setPointsOfInterest,
+        plotPOIItems,
+        alertOverlay, //ready for future use
+        init,
+        getConfig,
+        setGlobalOptions
+    };
+}());
 window.UOY_MAP = UOY_MAP || {};

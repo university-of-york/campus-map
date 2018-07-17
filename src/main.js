@@ -10,6 +10,12 @@ require('babel-polyfill');
 require('./js/pointofinterest');
 require('./js/uoy-map');
 
+// load in Pattern Library things
+requirejs(['app/autocomplete', 'fuse'], function(AUTOCOMPLETE, FUSE) {
+    window.AUTOCOMPLETE = AUTOCOMPLETE;
+    window.FUSE = FUSE;
+});
+
 
 if (process.env.NODE_ENV !== 'production') {
     console.log('Development mode activated. Start the fans, please!');
