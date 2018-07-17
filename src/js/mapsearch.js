@@ -1,6 +1,6 @@
 import MapAnalytics from 'js/analytics';
 import Utils from 'js/utils';
-import MapMarkers from "./mapmarkers";
+import MapMarkers from './mapmarkers';
 
 const MapSearch = (function() {
 
@@ -41,7 +41,7 @@ const MapSearch = (function() {
         let selectedLink = selectedItem.children('.c-autocomplete__link');
         let selectedTitle = selectedLink.children('.c-autocomplete__title').text();
         let selectedSubtitle = selectedLink.children('.c-autocomplete__subtitle').text();
-        let selectedHash = selectedLink.attr("href").replace('#', '');
+        let selectedHash = selectedLink.attr('href').replace('#', '');
         let searchQueryText = $searchQuery.val();
         let selectedIndex = $autocompleteItems.index(selectedItem) + 1;
         let selectedFeature;
@@ -62,7 +62,7 @@ const MapSearch = (function() {
         Utils.recenterMap(location);
 
         // Send query event to GA
-        MapAnalytics.addAnalyticsEvent('Search', selectedTitle+' (query: '+searchQueryText+')', selectedIndex);
+        MapAnalytics.addAnalyticsEvent('Search', selectedTitle + ' (query: ' + searchQueryText + ')', selectedIndex);
     };
 
     const searchQueryClickHandler = function() {
