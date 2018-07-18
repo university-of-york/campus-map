@@ -35,7 +35,17 @@ const MapSearch = (function() {
     ];
 
     // Private functions
+    const updateWindowHash = function(selectedHash) {
+        // Update hash
+        // if (history.pushState) {
+        //     history.pushState(null, null, selectedHash);
+        // } else {
+            window.location.hash = selectedHash;
+        //}
+    };
+
     const submitForm = function() {
+        let $autocompleteList = $('.c-autocomplete__list');
         let $autocompleteItems = $('.c-autocomplete__item');
         let selectedItem = $autocompleteItems.filter('.is-selected');
         let selectedLink = selectedItem.children('.c-autocomplete__link');
@@ -53,10 +63,14 @@ const MapSearch = (function() {
 
         // Add is-selected value to search query
         $searchQuery.val(selectedTitle);
+        updateWindowHash(selectedHash);
         selectedFeature = Utils.buildSelectedFeature(selectedHash);
         location = Utils.buildLocationObject(selectedFeature[0], selectedTitle, selectedSubtitle);
         location.content = Utils.buildLocationContent(selectedFeature[0]);
         MapMarkers.deleteMarkers();
+
+        // Clear the search result list
+        $autocompleteList.empty();
 
         // Drop pin and infoWindow on map
         Utils.recenterMap(location);
