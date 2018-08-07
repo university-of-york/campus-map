@@ -1,5 +1,14 @@
 {
+  "name": "campus-map",
+  "description": "University of York Campus Map project",
+  "version": "1.0.0",
+  "author": "University of York Digital Team",
+  "license": "MIT",
   "dependencies": {
+    "@semantic-release/changelog": "^3.0.0",
+    "@semantic-release/git": "^7.0.1",
+    "@semantic-release/github": "^5.0.2",
+    "@semantic-release/release-notes-generator": "^7.0.0",
     "fuse.js": "3.2.1",
     "jquery": "3.3.1",
     "semantic-release": "15.9.5",
@@ -33,10 +42,5 @@
     "webpack-cli": "3.1.0",
     "webpack-dev-server": "3.1.5",
     "webpack-merge": "4.1.4"
-  },
-  "name": "campus-map",
-  "description": "University of York Campus Map project",
-  "version": "1.0.0",
-  "author": "University of York Digital Team",
-  "license": "MIT"
+  }
 }
