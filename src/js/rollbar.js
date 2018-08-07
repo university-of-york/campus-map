@@ -12,7 +12,7 @@ const Rollbar = (function() {
             client: {
                 javascript: {
                     source_map_enabled: true,
-                    code_version: "1.6.0",
+                    code_version: '1.6.0',
                     guess_uncaught_frames: true
                 }
             }
