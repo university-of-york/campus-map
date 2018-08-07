@@ -10,6 +10,9 @@ require('babel-polyfill');
 require('./js/pointofinterest');
 require('./js/uoy-map');
 
+// load Rollbar error reporting
+require('./js/rollbar');
+
 // load in Pattern Library things
 requirejs(['app/autocomplete', 'fuse'], function(AUTOCOMPLETE, FUSE) {
     window.AUTOCOMPLETE = AUTOCOMPLETE;
@@ -21,8 +24,12 @@ if (process.env.NODE_ENV !== 'production') {
     console.log('Development mode activated. Start the fans, please!');
 }
 
+
 // kick start the app (note, this loads as part of the Google Maps API callback)
 function initCampusMaps() {
+
+    // First, load up our Rollbar error reporting
+    ROLLBAR.init();
 
     // loads up any points of interest and global notices
     UOY_MAP.init();
