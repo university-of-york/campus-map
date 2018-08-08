@@ -125,6 +125,14 @@ const Utils = (function() {
         return encodeURI(str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, ''));
     };
 
+    const strReplace = function(input, strToFind, replaceValue) {
+        if(input && input !== "" && input.length > 0) {
+            return input.replace(strToFind, replaceValue);
+        }
+
+        return "";
+    };
+
     // Check whether there is a location hash,
     // and drop pin/open info panel for relevant location
     const checkHash = function() {
@@ -180,6 +188,7 @@ const Utils = (function() {
         buildLocationObject,
         buildLocationContent,
         buildSelectedFeature,
+        strReplace,
         recenterMap,
         toggleDrawer,
         snazzyOptions,
