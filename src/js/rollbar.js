@@ -8,7 +8,14 @@ const Rollbar = (function() {
         captureUncaught: true,
         captureUnhandledRejections: true,
         payload: {
-            environment: (process.env.NODE_ENV !== 'production') ? 'staging' : 'production'
+            environment: (process.env.NODE_ENV !== 'production') ? 'staging' : 'production',
+            client: {
+                javascript: {
+                    source_map_enabled: true,
+                    code_version: '1.6.0',
+                    guess_uncaught_frames: true
+                }
+            }
         }
     };
 

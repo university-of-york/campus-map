@@ -51,7 +51,7 @@ const MapSearch = (function() {
         let selectedLink = selectedItem.children('.c-autocomplete__link');
         let selectedTitle = selectedLink.children('.c-autocomplete__title').text();
         let selectedSubtitle = selectedLink.children('.c-autocomplete__subtitle').text();
-        let selectedHash = selectedLink.attr('href').replace('#', '');
+        let selectedHash = Utils.strReplace(selectedLink.attr('href'), '#', '');
         let searchQueryText = $searchQuery.val();
         let selectedIndex = $autocompleteItems.index(selectedItem) + 1;
         let selectedFeature;
