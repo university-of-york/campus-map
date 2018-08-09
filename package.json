@@ -11,7 +11,7 @@
     "@semantic-release/release-notes-generator": "7.0.0",
     "fuse.js": "3.2.1",
     "jquery": "3.3.1",
-    "semantic-release": "15.9.5",
+    "semantic-release": "15.9.6",
     "webpack": "4.16.5",
     "zepto": "1.2.0"
   },
