@@ -1,3 +1,12 @@
+## [1.2.4](https://github.com/university-of-york/campus-map/compare/v1.2.3...v1.2.4) (2018-08-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency semantic-release to v15.9.6 ([98f6b3c](https://github.com/university-of-york/campus-map/commit/98f6b3c))
+* add null reference checks to selected feature search ([5efca18](https://github.com/university-of-york/campus-map/commit/5efca18))
+* Codacy code improvements ([8309afd](https://github.com/university-of-york/campus-map/commit/8309afd))
+
 ## [1.2.3](https://github.com/university-of-york/campus-map/compare/v1.2.2...v1.2.3) (2018-08-08)
 
 
