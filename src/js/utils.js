@@ -94,7 +94,8 @@ const Utils = (function() {
 
     const buildSelectedFeature = function(thisHash) {
 
-        if (_cachedGeoJson === null) {
+        if (_cachedGeoJson === null ||
+        _cachedGeoJson.features === null) {
             return false;
         }
 
@@ -126,11 +127,11 @@ const Utils = (function() {
     };
 
     const strReplace = function(input, strToFind, replaceValue) {
-        if(input && input !== "" && input.length > 0) {
+        if(input && input !== '' && input.length > 0) {
             return input.replace(strToFind, replaceValue);
         }
 
-        return "";
+        return '';
     };
 
     // Check whether there is a location hash,

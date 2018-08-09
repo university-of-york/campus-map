@@ -16,7 +16,9 @@ const Rollbar = (function() {
                     guess_uncaught_frames: true
                 }
             }
-        }
+        },
+        ignoredMessages: ['(unknown): Script error.'],
+        hostWhiteList: ['york.ac.uk', 'localhost']
     };
 
     // Add an event to Google Analytics
