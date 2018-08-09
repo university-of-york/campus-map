@@ -94,7 +94,8 @@ const Utils = (function() {
 
     const buildSelectedFeature = function(thisHash) {
 
-        if (_cachedGeoJson === null) {
+        if (_cachedGeoJson === null ||
+        _cachedGeoJson.features === null) {
             return false;
         }
 
