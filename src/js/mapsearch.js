@@ -152,6 +152,11 @@ const MapSearch = (function() {
         let searchGeoJson = JSON.parse(JSON.stringify(_cachedGeoJson));
         let fuse;
 
+        if (_cachedGeoJson === null ||
+            _cachedGeoJson.features === null) {
+            return false;
+        }
+
         searchGeoJson.features = $.grep(_cachedGeoJson.features, function(feature) {
             return $.inArray(feature.properties.category, _noSearchCategories) === -1;
         });
