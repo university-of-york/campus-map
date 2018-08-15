@@ -120,6 +120,11 @@ $(function() {
         // Load GeoJSON.
         $.getJSON(GeoJSONFile).then(function(data) {
             cachedGeoJson = data; //save the geojson in case we want to update its values
+
+            if (data.features === null) {
+                return false;
+            }
+
             // Filter features that have contain certain terms
             cachedGeoJson.features = $.grep(data.features, function(feature) {
                 let title = feature.properties.title;
