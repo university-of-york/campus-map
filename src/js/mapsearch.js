@@ -152,8 +152,8 @@ const MapSearch = (function() {
         let searchGeoJson = JSON.parse(JSON.stringify(_cachedGeoJson));
         let fuse;
 
-        if (_cachedGeoJson === null ||
-            _cachedGeoJson.features === null) {
+        if(!Utils.isObjectReady(_cachedGeoJson) &&
+            !Utils.isObjectReady(_cachedGeoJson.features)) {
             return false;
         }
 
