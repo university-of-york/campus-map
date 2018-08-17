@@ -65,6 +65,17 @@ const Utils = (function() {
 
 
     // Public functions
+    const isObjectReady = function(obj) {
+
+        return typeof obj !== 'undefined';
+
+        // return (
+        //     obj === null ||
+        //     !obj ||
+        //     typeof obj === 'undefined'
+        // );
+    };
+
     const buildLocationObject = function(feature, title, subtitle) {
         return {
             title: title || feature.properties.title,
@@ -94,8 +105,8 @@ const Utils = (function() {
 
     const buildSelectedFeature = function(thisHash) {
 
-        if (_cachedGeoJson === null ||
-        _cachedGeoJson.features === null) {
+        if(!isObjectReady(_cachedGeoJson) &&
+            !isObjectReady(_cachedGeoJson.features)) {
             return false;
         }
 
@@ -186,6 +197,7 @@ const Utils = (function() {
     };
 
     return {
+        isObjectReady,
         buildLocationObject,
         buildLocationContent,
         buildSelectedFeature,

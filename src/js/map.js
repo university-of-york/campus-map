@@ -121,7 +121,7 @@ $(function() {
         $.getJSON(GeoJSONFile).then(function(data) {
             cachedGeoJson = data; //save the geojson in case we want to update its values
 
-            if (data.features === null) {
+            if(!Utils.isObjectReady(data.features)) {
                 return false;
             }
 
