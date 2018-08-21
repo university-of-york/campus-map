@@ -1,10 +1,10 @@
 (function (global, factory) {
-    if (typeof define === "function" && define.amd) {
+    if (typeof define === 'function' && define.amd) {
         define('SnazzyInfoWindow', ['module', 'exports'], factory);
-    } else if (typeof exports !== "undefined") {
+    } else if (typeof exports !== 'undefined') {
         factory(module, exports);
     } else {
-        var mod = {
+        let mod = {
             exports: {}
         };
         factory(mod, mod.exports);
@@ -13,23 +13,23 @@
 })(this, function (module, exports) {
     'use strict';
 
-    Object.defineProperty(exports, "__esModule", {
+    Object.defineProperty(exports, '__esModule', {
         value: true
     });
 
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
+            throw new TypeError('Cannot call a class as a function');
         }
     }
 
-    var _createClass = function () {
+    let _createClass = function () {
         function defineProperties(target, props) {
-            for (var i = 0; i < props.length; i++) {
-                var descriptor = props[i];
+            for (let i = 0; i < props.length; i++) {
+                let descriptor = props[i];
                 descriptor.enumerable = descriptor.enumerable || false;
                 descriptor.configurable = true;
-                if ("value" in descriptor) descriptor.writable = true;
+                if ('value' in descriptor) descriptor.writable = true;
                 Object.defineProperty(target, descriptor.key, descriptor);
             }
         }
@@ -43,15 +43,15 @@
 
     function _possibleConstructorReturn(self, call) {
         if (!self) {
-            throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+            throw new ReferenceError('this hasn\'t been initialised - super() hasn\'t been called');
         }
 
-        return call && (typeof call === "object" || typeof call === "function") ? call : self;
+        return call && (typeof call === 'object' || typeof call === 'function') ? call : self;
     }
 
     function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-            throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+        if (typeof superClass !== 'function' && superClass !== null) {
+            throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass);
         }
 
         subClass.prototype = Object.create(superClass && superClass.prototype, {
@@ -65,25 +65,25 @@
         if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
     }
 
-    var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+    let _typeof = typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol' ? function (obj) {
         return typeof obj;
     } : function (obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        return obj && typeof Symbol === 'function' && obj.constructor === Symbol && obj !== Symbol.prototype ? 'symbol' : typeof obj;
     };
 
     // Global variables
-    var _classPrefix = 'si-';
-    var _root2 = 1.41421356237;
-    var _inverseRoot2 = 0.7071067811865474;
-    var _eventPrefix = 'snazzy-info-window-';
-    var _defaultShadow = {
+    let _classPrefix = 'si-';
+    let _root2 = 1.41421356237;
+    let _inverseRoot2 = 0.7071067811865474;
+    let _eventPrefix = 'snazzy-info-window-';
+    let _defaultShadow = {
         h: '0px',
         v: '3px',
         blur: '6px',
         spread: '0px',
         color: '#000'
     };
-    var _defaultOptions = {
+    let _defaultOptions = {
         placement: 'top',
         pointer: true,
         openOnMarkerClick: true,
@@ -111,13 +111,13 @@
     // We need to safely merge options from the defaults. This will make
     // sure settings like edgeOffset are properly assigned.
     function mergeDefaultOptions(opts) {
-        var copy = {};
+        let copy = {};
         copyKeys(copy, _defaultOptions);
         copyKeys(copy, opts);
         Object.keys(_defaultOptions).forEach(function (key) {
-            var obj = _defaultOptions[key];
+            let obj = _defaultOptions[key];
             if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object') {
-                var objCopy = {};
+                let objCopy = {};
                 copyKeys(objCopy, obj);
                 copyKeys(objCopy, copy[key]);
                 copy[key] = objCopy;
@@ -129,11 +129,11 @@
     // Parse a css attribute into the numeric portion and the units
     function parseAttribute(attribute, defaultValue) {
         // 1em, 1.0em, 0.1em, .1em, 1.    em
-        var re = /^(-{0,1}\.{0,1}\d+(\.\d+)?)[\s|\.]*(\w*)$/;
+        let re = /^(-{0,1}\.{0,1}\d+(\.\d+)?)[\s|\.]*(\w*)$/;
         if (attribute && re.test(attribute)) {
-            var match = re.exec(attribute);
-            var number = match[1];
-            var units = match[3] || 'px';
+            let match = re.exec(attribute);
+            let number = match[1];
+            let units = match[3] || 'px';
             return { value: number * 1, units: units, original: attribute };
         }
         if (defaultValue) {
@@ -191,13 +191,13 @@
         return null;
     }
 
-    var SnazzyInfoWindow = function (_google$maps$OverlayV) {
+    let SnazzyInfoWindow = function (_google$maps$OverlayV) {
         _inherits(SnazzyInfoWindow, _google$maps$OverlayV);
 
         function SnazzyInfoWindow(opts) {
             _classCallCheck(this, SnazzyInfoWindow);
 
-            var _this = _possibleConstructorReturn(this, (SnazzyInfoWindow.__proto__ || Object.getPrototypeOf(SnazzyInfoWindow)).call(this, opts));
+            let _this = _possibleConstructorReturn(this, (SnazzyInfoWindow.__proto__ || Object.getPrototypeOf(SnazzyInfoWindow)).call(this, opts));
 
             // Private properties
             _this._html = null;
@@ -227,7 +227,7 @@
             }
 
             // Validate the placement option
-            var p = opts.placement || _this._opts.position;
+            let p = opts.placement || _this._opts.position;
             // The position variable was renamed to placement so we must type check
             if (typeof p === 'string' || p instanceof String) {
                 p = p.toLowerCase();
@@ -263,7 +263,7 @@
         _createClass(SnazzyInfoWindow, [{
             key: 'activateCallback',
             value: function activateCallback(callback) {
-                var lambda = this._callbacks[callback];
+                let lambda = this._callbacks[callback];
                 return lambda ? lambda.apply(this) : undefined;
             }
         }, {
@@ -296,7 +296,7 @@
         }, {
             key: 'open',
             value: function open() {
-                var result = this.activateCallback('beforeOpen');
+                let result = this.activateCallback('beforeOpen');
                 if (result !== undefined && !result) {
                     return;
                 }
@@ -309,7 +309,7 @@
         }, {
             key: 'close',
             value: function close() {
-                var result = this.activateCallback('beforeClose');
+                let result = this.activateCallback('beforeClose');
                 if (result !== undefined && !result) {
                     return;
                 }
@@ -362,7 +362,7 @@
                 }
 
                 // 1. Assign offset
-                var offset = this._opts.offset;
+                let offset = this._opts.offset;
                 if (offset) {
                     if (offset.left) {
                         this._html.wrapper.style.marginLeft = offset.left;
@@ -372,7 +372,7 @@
                     }
                 }
                 // 2. Set the background color
-                var bg = this._opts.backgroundColor;
+                let bg = this._opts.backgroundColor;
                 if (bg) {
                     this._html.contentWrapper.style.backgroundColor = bg;
                     if (this._opts.pointer) {
@@ -417,7 +417,7 @@
                 // 8. Border
                 if (this._opts.border) {
                     // Calculate the border width
-                    var bWidth = 0;
+                    let bWidth = 0;
                     if (this._opts.border.width !== undefined) {
                         bWidth = parseAttribute(this._opts.border.width, '0px');
                         this._html.contentWrapper.style.borderWidth = bWidth.value + bWidth.units;
@@ -427,19 +427,19 @@
 
                     if (this._opts.pointer) {
                         // Calculate the pointer length
-                        var pLength = Math.min(this._html.pointerBorder.offsetHeight, this._html.pointerBorder.offsetWidth);
+                        let pLength = Math.min(this._html.pointerBorder.offsetHeight, this._html.pointerBorder.offsetWidth);
                         pLength = parseAttribute(pLength + 'px', '0px');
 
-                        var triangleDiff = Math.round(bWidth.value * (_root2 - 1));
+                        let triangleDiff = Math.round(bWidth.value * (_root2 - 1));
                         triangleDiff = Math.min(triangleDiff, pLength.value);
 
                         this._html.pointerBg.style.borderWidth = pLength.value - triangleDiff + pLength.units;
 
-                        var reverseP = capitalizePlacement(oppositePlacement(this._opts.placement));
+                        let reverseP = capitalizePlacement(oppositePlacement(this._opts.placement));
                         this._html.pointerBg.style['margin' + reverseP] = triangleDiff + bWidth.units;
                         this._html.pointerBg.style[this._opts.placement] = -bWidth.value + bWidth.units;
                     }
-                    var color = this._opts.border.color;
+                    let color = this._opts.border.color;
                     if (color) {
                         this._html.contentWrapper.style.borderColor = color;
                         if (this._html.pointerBorder) {
@@ -450,27 +450,27 @@
                 // 9. Shadow
                 if (this._opts.shadow) {
                     // Check if any of the shadow settings have actually been set
-                    var shadow = this._opts.shadow;
-                    var isSet = function isSet(attribute) {
-                        var v = shadow[attribute];
+                    let shadow = this._opts.shadow;
+                    let isSet = function isSet(attribute) {
+                        let v = shadow[attribute];
                         return v !== undefined && v != null;
                     };
 
                     if (isSet('h') || isSet('v') || isSet('blur') || isSet('spread') || isSet('color')) {
-                        var hOffset = parseAttribute(shadow.h, _defaultShadow.h);
-                        var vOffset = parseAttribute(shadow.v, _defaultShadow.v);
-                        var blur = parseAttribute(shadow.blur, _defaultShadow.blur);
-                        var spread = parseAttribute(shadow.spread, _defaultShadow.spread);
-                        var _color = shadow.color || _defaultShadow.color;
-                        var formatBoxShadow = function formatBoxShadow(h, v) {
+                        let hOffset = parseAttribute(shadow.h, _defaultShadow.h);
+                        let vOffset = parseAttribute(shadow.v, _defaultShadow.v);
+                        let blur = parseAttribute(shadow.blur, _defaultShadow.blur);
+                        let spread = parseAttribute(shadow.spread, _defaultShadow.spread);
+                        let _color = shadow.color || _defaultShadow.color;
+                        let formatBoxShadow = function formatBoxShadow(h, v) {
                             return h + ' ' + v + ' ' + blur.original + ' ' + spread.original + ' ' + _color;
                         };
 
                         this._html.shadowFrame.style.boxShadow = formatBoxShadow(hOffset.original, vOffset.original);
 
                         // Correctly rotate the shadows before the css transform
-                        var hRotated = _inverseRoot2 * (hOffset.value - vOffset.value) + hOffset.units;
-                        var vRotated = _inverseRoot2 * (hOffset.value + vOffset.value) + vOffset.units;
+                        let hRotated = _inverseRoot2 * (hOffset.value - vOffset.value) + hOffset.units;
+                        let vRotated = _inverseRoot2 * (hOffset.value + vOffset.value) + vOffset.units;
                         this._html.shadowPointerInner.style.boxShadow = formatBoxShadow(hRotated, vRotated);
                     }
                     if (this._opts.shadow.opacity) {
@@ -478,7 +478,7 @@
                     }
                 }
 
-                var divPixel = this.getProjection().fromLatLngToDivPixel(this._position || this._marker.position);
+                let divPixel = this.getProjection().fromLatLngToDivPixel(this._position || this._marker.position);
                 if (divPixel) {
                     this._html.floatWrapper.style.top = Math.floor(divPixel.y) + 'px';
                     this._html.floatWrapper.style.left = Math.floor(divPixel.x) + 'px';
@@ -496,16 +496,16 @@
         }, {
             key: 'onAdd',
             value: function onAdd() {
-                var _this2 = this;
+                let _this2 = this;
 
                 if (this._html) {
                     return;
                 }
                 // Used for creating new elements
-                var applyCss = function applyCss(element, args) {
+                let applyCss = function applyCss(element, args) {
                     if (element && args) {
-                        for (var i = 0; i < args.length; i++) {
-                            var className = args[i];
+                        for (let i = 0; i < args.length; i++) {
+                            let className = args[i];
                             if (className) {
                                 if (element.className) {
                                     element.className += ' ';
@@ -515,12 +515,14 @@
                         }
                     }
                 };
-                var newElement = function newElement() {
-                    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                let newElement = function newElement() {
+                    let _len = arguments.length,
+                        args = Array(_len);
+                    for (let _key = 0; _key < _len; _key++) {
                         args[_key] = arguments[_key];
                     }
 
-                    var element = document.createElement('div');
+                    let element = document.createElement('div');
                     applyCss(element, args);
                     return element;
                 };
@@ -562,7 +564,7 @@
                 // 4. Create the close button
                 if (this._opts.showCloseButton) {
                     if (this._opts.closeButtonMarkup) {
-                        var d = document.createElement('div');
+                        let d = document.createElement('div');
                         setHTML(d, this._opts.closeButtonMarkup);
                         this._html.closeButton = d.firstChild;
                     } else {
@@ -594,7 +596,7 @@
                 this.getPanes().floatPane.appendChild(this._html.floatWrapper);
 
                 // Now add all the event listeners
-                var map = this.getMap();
+                let map = this.getMap();
                 this.clearListeners();
                 if (this._opts.closeOnMapClick) {
                     this.trackListener(google.maps.event.addListener(map, 'click', function () {
@@ -613,11 +615,11 @@
                     this._previousWidth = null;
                     this._previousHeight = null;
                     this.trackListener(google.maps.event.addListener(map, 'bounds_changed', function () {
-                        var d = map.getDiv();
-                        var ow = d.offsetWidth;
-                        var oh = d.offsetHeight;
-                        var pw = _this2._previousWidth;
-                        var ph = _this2._previousHeight;
+                        let d = map.getDiv();
+                        let ow = d.offsetWidth;
+                        let oh = d.offsetHeight;
+                        let pw = _this2._previousWidth;
+                        let ph = _this2._previousHeight;
                         if (pw === null || ph === null || pw !== ow || ph !== oh) {
                             _this2._previousWidth = ow;
                             _this2._previousHeight = oh;
@@ -644,7 +646,7 @@
                     }
 
                     // Stop the mouse event propagation
-                    var mouseEvents = ['click', 'dblclick', 'rightclick', 'contextmenu', 'drag', 'dragend', 'dragstart', 'mousedown', 'mouseout', 'mouseover', 'mouseup', 'touchstart', 'touchend', 'touchmove', 'wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll'];
+                    let mouseEvents = ['click', 'dblclick', 'rightclick', 'contextmenu', 'drag', 'dragend', 'dragstart', 'mousedown', 'mouseout', 'mouseover', 'mouseup', 'touchstart', 'touchend', 'touchmove', 'wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll'];
                     mouseEvents.forEach(function (event) {
                         _this2.trackListener(google.maps.event.addDomListener(_this2._html.wrapper, event, function (e) {
                             e.cancelBubble = true;
@@ -662,7 +664,7 @@
             value: function onRemove() {
                 this.activateCallback('close');
                 if (this._html) {
-                    var parent = this._html.floatWrapper.parentElement;
+                    let parent = this._html.floatWrapper.parentElement;
                     if (parent) {
                         parent.removeChild(this._html.floatWrapper);
                     }
@@ -674,8 +676,8 @@
         }, {
             key: 'getMapInnerBounds',
             value: function getMapInnerBounds() {
-                var mb = this.getMap().getDiv().getBoundingClientRect();
-                var mib = {
+                let mb = this.getMap().getDiv().getBoundingClientRect();
+                let mib = {
                     top: mb.top + this._opts.edgeOffset.top,
                     right: mb.right - this._opts.edgeOffset.right,
                     bottom: mb.bottom - this._opts.edgeOffset.bottom,
@@ -691,10 +693,10 @@
                 if (!this._opts.panOnOpen || !this._html) {
                     return;
                 }
-                var mib = this.getMapInnerBounds();
-                var wb = this._html.wrapper.getBoundingClientRect();
-                var dx = 0;
-                var dy = 0;
+                let mib = this.getMapInnerBounds();
+                let wb = this._html.wrapper.getBoundingClientRect();
+                let dx = 0;
+                let dy = 0;
                 if (mib.left >= wb.left) {
                     dx = wb.left - mib.left;
                 } else if (mib.right <= wb.right) {
@@ -715,9 +717,9 @@
                 if (!this._html) {
                     return;
                 }
-                var mib = this.getMapInnerBounds();
+                let mib = this.getMapInnerBounds();
                 // Handle the max width
-                var maxWidth = mib.width;
+                let maxWidth = mib.width;
                 if (this._opts.maxWidth !== undefined) {
                     maxWidth = Math.min(maxWidth, this._opts.maxWidth);
                 }
@@ -725,7 +727,7 @@
                 this._html.content.style.maxWidth = maxWidth + 'px';
 
                 // Handle the max height
-                var maxHeight = mib.height;
+                let maxHeight = mib.height;
                 if (this._opts.maxHeight !== undefined) {
                     maxHeight = Math.min(maxHeight, this._opts.maxHeight);
                 }

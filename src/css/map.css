@@ -165,15 +165,15 @@ body {
 .control-div-feedback {
     z-index: 0;
     position: absolute;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
 }
 
 .control-div-centre {
     z-index: 0;
     position: absolute;
-    right: 0px;
-    top: 0px;
+    right: 0;
+    top: 0;
 }
 
 
@@ -184,7 +184,6 @@ body {
     display: block;
     margin: .5rem;
     padding:  .25rem  0 .25rem .35rem;
-
 }
 
 .control-campus-div--campus-buttons p {
@@ -192,7 +191,6 @@ body {
     font-weight: bold;
     margin: 0;
     padding:0;
-
 }
 
 @media (max-width: 767px){
@@ -261,10 +259,7 @@ body {
     .ipad-fix {
         display: inline-block;
     }
-
 }
-
-
 
 
 .c-btn--selectable__label {
@@ -293,11 +288,16 @@ body {
   border-right: 0;
 }
 
+.c-btn-group .c-btn:first-of-type.c-btn--medium,
+.c-btn-group .c-btn:first-of-type,
+.c-btn-group .c-btn:last-of-type.c-btn--medium,
+.c-btn-group .c-btn:last-of-type,
 .c-btn--selectable__label,
 .c-btn--selectable__label:first-of-type,
 .c-btn--selectable__label:last-of-type {
   border-radius: 0;
 }
+
 
 
 @media (min-width:768px) {
@@ -321,11 +321,9 @@ body {
       padding: 0.5rem 0;
       width: 150px;
   }
-
   .control-ui {
     width: 8em;
   }
-
 }
 
 
@@ -419,7 +417,7 @@ input[type=search] {
   display: none;
   height: calc(100vh - 8.5rem);
   padding: 2rem 1rem;
-  width: 0%;
+  width: 0;
   position: absolute;
   left: 0;
   top: 5rem;
