@@ -1,3 +1,10 @@
+## [1.2.6](https://github.com/university-of-york/campus-map/compare/v1.2.5...v1.2.6) (2018-08-17)
+
+
+### Bug Fixes
+
+* add robust error checks for Rollbar issues ([48790dd](https://github.com/university-of-york/campus-map/commit/48790dd))
+
 ## [1.2.5](https://github.com/university-of-york/campus-map/compare/v1.2.4...v1.2.5) (2018-08-15)
 
 
