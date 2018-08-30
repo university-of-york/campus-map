@@ -1,3 +1,17 @@
+## [1.2.7](https://github.com/university-of-york/campus-map/compare/v1.2.6...v1.2.7) (2018-08-30)
+
+
+### Bug Fixes
+
+* **deps:** update dependency [@semantic-release](https://github.com/semantic-release)/git to v7.0.3 ([79db2eb](https://github.com/university-of-york/campus-map/commit/79db2eb))
+* **deps:** update dependency [@semantic-release](https://github.com/semantic-release)/github to v5.0.3 ([9eb9c0b](https://github.com/university-of-york/campus-map/commit/9eb9c0b))
+* **deps:** update dependency semantic-release to v15.9.12 ([d7e4f09](https://github.com/university-of-york/campus-map/commit/d7e4f09))
+* **deps:** update dependency semantic-release to v15.9.9 ([8580cd5](https://github.com/university-of-york/campus-map/commit/8580cd5))
+* **deps:** update dependency webpack to v4.17.0 ([54b2017](https://github.com/university-of-york/campus-map/commit/54b2017))
+* **deps:** update dependency webpack to v4.17.1 ([ed47675](https://github.com/university-of-york/campus-map/commit/ed47675))
+* remove unnecessary scopes from release rules ([f6f2e6a](https://github.com/university-of-york/campus-map/commit/f6f2e6a))
+* update Babel versions to enable build ([361a870](https://github.com/university-of-york/campus-map/commit/361a870))
+
 ## [1.2.6](https://github.com/university-of-york/campus-map/compare/v1.2.5...v1.2.6) (2018-08-17)
 
 
