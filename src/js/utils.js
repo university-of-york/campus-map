@@ -76,6 +76,15 @@ const Utils = (function() {
         // );
     };
 
+    // make a URL hash-friendly value from str
+    const makeHash = function(str) {
+        // Lower case
+        // Replace all spaces with '-'
+        // Remove all non-word or non-- chars ([^a-zA-Z0-9_-])
+        // Encode as URI, just in case
+        return encodeURI(str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, ''));
+    };
+
     const buildLocationObject = function(feature, title, subtitle) {
         return {
             title: title || feature.properties.title,
@@ -128,15 +137,6 @@ const Utils = (function() {
 
         InfoWindows.createInfoWindow(location);
         _gmap.panTo(location.latlng);
-    };
-
-    // make a URL hash-friendly value from str
-    const makeHash = function(str) {
-        // Lower case
-        // Replace all spaces with '-'
-        // Remove all non-word or non-- chars ([^a-zA-Z0-9_-])
-        // Encode as URI, just in case
-        return encodeURI(str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, ''));
     };
 
     const strReplace = function(input, strToFind, replaceValue) {
