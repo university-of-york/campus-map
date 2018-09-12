@@ -88,7 +88,8 @@ const Utils = (function() {
             shortdesc: feature.properties.shortdesc || false,
             longdesc: feature.properties.longdesc || false,
             content: '',
-            zoom: parseInt(feature.properties.zoom, 10) || 16
+            zoom: parseInt(feature.properties.zoom, 10) || 16,
+            locationid: feature.properties.locationid || title || feature.properties.title
         };
     };
 
@@ -112,7 +113,8 @@ const Utils = (function() {
 
         // Search GeoJSON for matching location
         let selectedFeature = $.grep(_cachedGeoJson.features, function(feature) {
-            return makeHash(feature.properties.title) === thisHash;
+            let locationId = feature.properties.locationid || feature.properties.title;
+            return makeHash(locationId) === thisHash;
         });
 
         return selectedFeature;
@@ -153,7 +155,8 @@ const Utils = (function() {
         let location;
 
         if (thisHash === '' ||
-            _cachedGeoJson === null ||
+            !Utils.isObjectReady(thisHash) ||
+            !Utils.isObjectReady(_cachedGeoJson) ||
             selectedFeature.length === 0) {
             return false;
         }
