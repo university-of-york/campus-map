@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/university-of-york/campus-map/compare/v1.2.7...v1.3.0) (2018-09-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency webpack to v4.18.0 ([a2bd610](https://github.com/university-of-york/campus-map/commit/a2bd610))
+* **deps:** update semantic-release monorepo ([72465e1](https://github.com/university-of-york/campus-map/commit/72465e1))
+* **deps:** update semantic-release monorepo ([67998e7](https://github.com/university-of-york/campus-map/commit/67998e7))
+* 'your location' map marker duplication ([d90076c](https://github.com/university-of-york/campus-map/commit/d90076c))
+* Codacy issue corrections ([041844e](https://github.com/university-of-york/campus-map/commit/041844e))
+* correct Codacy issues ([388d0e8](https://github.com/university-of-york/campus-map/commit/388d0e8))
+
 ## [1.2.7](https://github.com/university-of-york/campus-map/compare/v1.2.6...v1.2.7) (2018-08-30)
 
 
