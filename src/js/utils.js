@@ -82,6 +82,9 @@ const Utils = (function() {
         // Replace all spaces with '-'
         // Remove all non-word or non-- chars ([^a-zA-Z0-9_-])
         // Encode as URI, just in case
+        if(!isObjectReady(str)) {
+            return encodeURI('');
+        }
         return encodeURI(str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, ''));
     };
 
@@ -114,6 +117,8 @@ const Utils = (function() {
     };
 
     const buildSelectedFeature = function(thisHash) {
+        let useLocationId = thisHash.indexOf('locid') >= 0, // check for location id usage first
+            selectedFeature;
 
         if(!isObjectReady(_cachedGeoJson) &&
             !isObjectReady(_cachedGeoJson.features)) {
@@ -121,8 +126,9 @@ const Utils = (function() {
         }
 
         // Search GeoJSON for matching location
-        let selectedFeature = $.grep(_cachedGeoJson.features, function(feature) {
-            let locationId = feature.properties.locationid || feature.properties.title;
+        selectedFeature = $.grep(_cachedGeoJson.features, function(feature) {
+            // try location id usage first, fallback to title.
+            let locationId = useLocationId ? feature.properties.locationid : feature.properties.title;
             return makeHash(locationId) === thisHash;
         });
 
