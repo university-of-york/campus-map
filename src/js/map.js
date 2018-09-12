@@ -22,42 +22,7 @@ $(function() {
         lng: -1.0660
     };
     // Google maps style that roughly matches our tiles
-    let mapStyle = [
-        {
-            'featureType': 'landscape.man_made',
-            'elementType': 'geometry.fill',
-            'stylers': [
-                {
-                    'color': '#eeeeee'
-                }
-            ]
-        },
-        {
-            'featureType': 'landscape.natural',
-            'elementType': 'geometry.fill',
-            'stylers': [
-                {
-                    'color': '#E7ECB1'
-                }
-            ]
-        },
-        {
-            'featureType': 'water',
-            'elementType': 'geometry.fill',
-            'stylers': [
-                {
-                    'color': '#7599a2'
-                }
-            ]
-        },
-        {
-            'featureType': 'poi',
-            'stylers': [
-                {
-                    'visibility': 'off'
-                }
-            ]
-        }];
+    let mapStyle = UOY_MAP.getConfig().mapStyles;
     let $window = $(window);
 
 
