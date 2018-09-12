@@ -76,6 +76,15 @@ const Utils = (function() {
         // );
     };
 
+    // make a URL hash-friendly value from str
+    const makeHash = function(str) {
+        // Lower case
+        // Replace all spaces with '-'
+        // Remove all non-word or non-- chars ([^a-zA-Z0-9_-])
+        // Encode as URI, just in case
+        return encodeURI(str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, ''));
+    };
+
     const buildLocationObject = function(feature, title, subtitle) {
         return {
             title: title || feature.properties.title,
@@ -88,7 +97,8 @@ const Utils = (function() {
             shortdesc: feature.properties.shortdesc || false,
             longdesc: feature.properties.longdesc || false,
             content: '',
-            zoom: parseInt(feature.properties.zoom, 10) || 16
+            zoom: parseInt(feature.properties.zoom, 10) || 16,
+            locationid: feature.properties.locationid || title || feature.properties.title
         };
     };
 
@@ -112,7 +122,8 @@ const Utils = (function() {
 
         // Search GeoJSON for matching location
         let selectedFeature = $.grep(_cachedGeoJson.features, function(feature) {
-            return makeHash(feature.properties.title) === thisHash;
+            let locationId = feature.properties.locationid || feature.properties.title;
+            return makeHash(locationId) === thisHash;
         });
 
         return selectedFeature;
@@ -126,15 +137,6 @@ const Utils = (function() {
 
         InfoWindows.createInfoWindow(location);
         _gmap.panTo(location.latlng);
-    };
-
-    // make a URL hash-friendly value from str
-    const makeHash = function(str) {
-        // Lower case
-        // Replace all spaces with '-'
-        // Remove all non-word or non-- chars ([^a-zA-Z0-9_-])
-        // Encode as URI, just in case
-        return encodeURI(str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, ''));
     };
 
     const strReplace = function(input, strToFind, replaceValue) {
@@ -153,7 +155,8 @@ const Utils = (function() {
         let location;
 
         if (thisHash === '' ||
-            _cachedGeoJson === null ||
+            !Utils.isObjectReady(thisHash) ||
+            !Utils.isObjectReady(_cachedGeoJson) ||
             selectedFeature.length === 0) {
             return false;
         }

@@ -137,7 +137,7 @@ const MapSearch = (function() {
                     // Add title, subtitle, link fields
                     fuseResult[i].item.title = feature.item.properties.title;
                     fuseResult[i].item.subtitle = feature.item.properties.subtitle;
-                    fuseResult[i].item.link = '#' + Utils.makeHash(feature.item.properties.title);
+                    fuseResult[i].item.link = '#' + Utils.makeHash(feature.item.properties.locationid);
                     if (i === fuseResult.length - 1) {
                         onComplete(fuseResult);
                     }
