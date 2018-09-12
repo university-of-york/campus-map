@@ -126,33 +126,7 @@ $(function() {
             }
 
             // Filter features that have contain certain terms
-            cachedGeoJson.features = $.grep(data.features, function(feature) {
-                let title = feature.properties.title;
-                let filterPhrases = [
-                    'DELETE',
-                    'REMOVE',
-                    'DOES NOT EXIST',
-                    'no longer bookable',
-                    'NO LONGER BOOKABLE',
-                    'NOW A KITCHEN',
-                    'USE248X'
-                ];
-                let r = -1;
-                $.each(filterPhrases, function(i, phrase) {
-                    let phraseIndex = title.indexOf(phrase);
-                    if (phraseIndex > -1) {
-                        r = phraseIndex;
-                        return false;
-                    }
-                });
-                if (r > -1) {
-                    return true;
-                }
-                // Check lat and long to see if it's 0,0 (fake data)
-                if (feature.geometry.coordinates[0] === 0 || feature.geometry.coordinates[1] === 0) {
-                    return true;
-                }
-            }, true); // Change to false to invert the filter i.e. show 'bad' results
+            // NOTE: this feature has been moved to the custom_groovy file direct at Funnelback
 
             // Update some wayward locations
             $.each(cachedGeoJson.features, function(i, d) {
