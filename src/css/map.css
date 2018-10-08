@@ -299,6 +299,13 @@ body {
 }
 
 
+@media (max-width: 767px) {
+  .c-btn--selectable__label:first-of-type,
+  .c-btn-group .c-btn {
+     border-bottom: 1px solid rgba(255,255,255,.15);  /* colour as seen in devtools */ 
+  }
+}
+
 
 @media (min-width:768px) {
 
