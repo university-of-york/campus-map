@@ -528,7 +528,7 @@ input[type=search] {
   .c-btn--selectable__label {
       flex: 1 1 25%;
       font-size: .75em;
-      padding: 0;
+      padding: .5em;
   }
 
   .c-form {
