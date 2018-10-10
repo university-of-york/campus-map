@@ -24,7 +24,6 @@ if (process.env.NODE_ENV !== 'production') {
     console.log('Development mode activated. Start the fans, please!');
 }
 
-
 // kick start the app (note, this loads as part of the Google Maps API callback)
 function initCampusMaps() {
 

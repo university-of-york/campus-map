@@ -299,6 +299,13 @@ body {
 }
 
 
+@media (max-width: 767px) {
+  .c-btn--selectable__label:first-of-type,
+  .c-btn-group .c-btn {
+     border-bottom: 1px solid rgba(255,255,255,.15);  /* colour as seen in devtools */ 
+  }
+}
+
 
 @media (min-width:768px) {
 
@@ -521,7 +528,7 @@ input[type=search] {
   .c-btn--selectable__label {
       flex: 1 1 25%;
       font-size: .75em;
-      padding: 0;
+      padding: .5em;
   }
 
   .c-form {

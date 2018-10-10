@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/university-of-york/campus-map/compare/v1.3.0...v1.3.1) (2018-09-12)
+
+
+### Bug Fixes
+
+* add fallback for location title usage ([4c3f5c9](https://github.com/university-of-york/campus-map/commit/4c3f5c9))
+
 # [1.3.0](https://github.com/university-of-york/campus-map/compare/v1.2.7...v1.3.0) (2018-09-12)
 
 
