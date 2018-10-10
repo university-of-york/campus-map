@@ -56,19 +56,24 @@
       "iconClass": "c-icon--shopping-basket"
     },
     {
+      "id": "cash-machines",
+      "value": "Cash machines",
+      "iconClass": "c-icon--money"
+    },
+    {
       "id": "car-parks",
       "value": "Car parks",
       "iconClass": "c-icon--car"
     },
     {
+      "id": "disabled-parking",
+      "value": "Disabled parking",
+      "iconClass": "c-icon--wheelchair"
+    },
+    {
       "id": "bus-stops",
       "value": "Bus stops",
       "iconClass": "c-icon--bus"
-    },
-    {
-      "id": "cash-machines",
-      "value": "Cash machines",
-      "iconClass": "c-icon--money"
     },
     {
       "id": "post-boxes",
