@@ -8,6 +8,7 @@ const Utils = (function() {
     let $icon = $('.c-icon', '#drawerStatusButton');
     let _cachedGeoJson;
     let _gmap = null;
+    let _urlParams = {};
 
     // Private functions
     // Open/Close the drawer
@@ -56,6 +57,10 @@ const Utils = (function() {
         //affects hover popup
         //closeInfoPanel();
     };
+
+
+    // Getters
+    //
 
 
     // Setters
@@ -201,8 +206,33 @@ const Utils = (function() {
         };
     };
 
+    const getQuerystringValue = function(valueToFind) {
+        let returnValue = false;
+
+        //urlParams["mode"]
+        if(isObjectReady(_urlParams[valueToFind])) {
+            returnValue = _urlParams[valueToFind];
+        }
+
+        return returnValue;
+    };
+
     const init = function(geoJson) {
         _cachedGeoJson = geoJson;
+
+        // check for querystring values
+        (window.onpopstate = function() {
+            let match,
+                pl     = /\+/g,  // Regex for replacing addition symbol with a space
+                search = /([^&=]+)=?([^&]*)/g,
+                decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+                query  = window.location.search.substring(1);
+
+            _urlParams = {}; // reset the urlParams object
+            while (match = search.exec(query)) {
+                _urlParams[decode(match[1])] = decode(match[2]);
+            }
+        })();
     };
 
     return {
@@ -217,6 +247,7 @@ const Utils = (function() {
         checkHash,
         makeHash,
         setMap,
+        getQuerystringValue,
         init
     };
 }());
