@@ -1,5 +1,6 @@
 import InfoWindows from 'js/infowindows';
 import MapAnalytics from 'js/analytics';
+import Utils from "./utils";
 
 const MapMarkers = (function() {
 
@@ -9,6 +10,7 @@ const MapMarkers = (function() {
     let _markerFeatures = {};
     let _markers = [];
     let $selectables = $('.c-btn--selectable');
+    let $facilityAnchors = $('.c-anchor--facility');
     let _cachedGeoJson = {};
 
     // Private functions
@@ -43,6 +45,23 @@ const MapMarkers = (function() {
         // Send facilities event to GA
         MapAnalytics.addAnalyticsEvent('Show facilities', selectableCategory);
     }
+
+    // find the target checkbox and trigger the 'check' function
+    const triggerFacilitiesClick = function(facilityId) {
+        let selectable = $('#' + facilityId);
+
+        if(Utils.isObjectReady(selectable)) {
+            selectable.trigger('click');
+        }
+    };
+
+    const setAnchorLinks = function() {
+        $facilityAnchors.click(function(e) {
+            e.preventDefault();
+
+            triggerFacilitiesClick($this.data('selectable-id'));
+        })
+    };
 
     // Setters
     const setMap = function(map) {
@@ -103,12 +122,26 @@ const MapMarkers = (function() {
         });
     };
 
+    // show the set of facilities belonging to the selectable id passed in
+    const showFacilities = function(facilityId) {
+        triggerFacilitiesClick(facilityId);
+    };
+
     const addMarkerToCollection = function(newMarker) {
         _markers.push(newMarker);
     };
 
     const init = function(geoJson) {
         _cachedGeoJson = geoJson;
+        setAnchorLinks();
+
+        // if someone has visited via a facilities link, get it and show
+        // the relevant facilities.
+        const facilityId = Utils.getQuerystringValue('facility');
+
+        if(Utils.isObjectReady(facilityId)) {
+            showFacilities(facilityId);
+        }
     };
 
 
@@ -117,7 +150,8 @@ const MapMarkers = (function() {
         addMarkers,
         setMap,
         init,
-        addMarkerToCollection
+        addMarkerToCollection,
+        showFacilities
     };
 }());
 export default MapMarkers;

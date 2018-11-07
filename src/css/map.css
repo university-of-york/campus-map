@@ -276,6 +276,8 @@ body {
   text-align: center;
   transition: 0s;
   user-select: none;
+
+  position: relative;
 }
 
 .c-btn--selectable__label .c-icon {
@@ -299,11 +301,32 @@ body {
 }
 
 
+.c-anchor--facility {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.c-anchor--facility:active,
+.c-anchor--facility:focus {
+    border: none;
+    -moz-user-focus: ignore;
+    outline: none;
+}
+
+
 @media (max-width: 767px) {
   .c-btn--selectable__label:first-of-type,
   .c-btn-group .c-btn {
      border-bottom: 1px solid rgba(255,255,255,.15);  /* colour as seen in devtools */ 
   }
+
+    /* hide anchor on mobile */
+    .c-anchor--facility {
+        display: none;
+    }
 }
 
 
