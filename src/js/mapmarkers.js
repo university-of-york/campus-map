@@ -1,6 +1,6 @@
 import InfoWindows from 'js/infowindows';
 import MapAnalytics from 'js/analytics';
-import Utils from "./utils";
+import Utils from 'js/utils';
 
 const MapMarkers = (function() {
 
@@ -9,9 +9,9 @@ const MapMarkers = (function() {
     let _markerGroups = {};
     let _markerFeatures = {};
     let _markers = [];
+    let _cachedGeoJson = {};
     let $selectables = $('.c-btn--selectable');
     let $facilityAnchors = $('.c-anchor--facility');
-    let _cachedGeoJson = {};
 
     // Private functions
     function showMarkers($s) {
@@ -59,8 +59,8 @@ const MapMarkers = (function() {
         $facilityAnchors.click(function(e) {
             e.preventDefault();
 
-            triggerFacilitiesClick($this.data('selectable-id'));
-        })
+            triggerFacilitiesClick($(this).data('selectable-id'));
+        });
     };
 
     // Setters

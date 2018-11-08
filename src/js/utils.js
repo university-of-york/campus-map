@@ -11,6 +11,7 @@ const Utils = (function() {
     let _urlParams = {};
 
     // Private functions
+
     // Open/Close the drawer
     // Can call with argument 'open' or 'close'
     const toggleDrawer = function(e) {
@@ -56,6 +57,17 @@ const Utils = (function() {
     const snazzyOptionsAfterCloseHandler = function() {
         //affects hover popup
         //closeInfoPanel();
+    };
+
+    const getUrlParameterFallback = function(name) {
+        let regex,
+            results;
+
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        results = regex.exec(location.search);
+
+        return results === null ? false : decodeURIComponent(results[1].replace(/\+/g, ' '));
     };
 
 
@@ -207,14 +219,12 @@ const Utils = (function() {
     };
 
     const getQuerystringValue = function(valueToFind) {
-        let returnValue = false;
-
-        //urlParams["mode"]
-        if(isObjectReady(_urlParams[valueToFind])) {
-            returnValue = _urlParams[valueToFind];
+        if(_urlParams !== false) {
+            return  _urlParams.has(valueToFind) ? _urlParams.get(valueToFind) : false;
         }
 
-        return returnValue;
+        // use the fallback instead
+        return getUrlParameterFallback(valueToFind);
     };
 
     const init = function(geoJson) {
@@ -222,15 +232,11 @@ const Utils = (function() {
 
         // check for querystring values
         (window.onpopstate = function() {
-            let match,
-                pl     = /\+/g,  // Regex for replacing addition symbol with a space
-                search = /([^&=]+)=?([^&]*)/g,
-                decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
-                query  = window.location.search.substring(1);
 
-            _urlParams = {}; // reset the urlParams object
-            while (match = search.exec(query)) {
-                _urlParams[decode(match[1])] = decode(match[2]);
+            if(typeof URLSearchParams !== 'function') {
+                _urlParams = false;
+            } else {
+                _urlParams = new URLSearchParams(window.location.search);
             }
         })();
     };
