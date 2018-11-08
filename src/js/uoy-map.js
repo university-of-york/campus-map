@@ -100,6 +100,12 @@ const UOY_MAP = (function() {
         // create the text element
         let newText = document.createTextNode(labelText);
 
+        // create the anchor link to the facility
+        let newAnchor = document.createElement('a');
+        newAnchor.setAttribute('href', '/map?facility=' + idFor);
+        newAnchor.setAttribute('data-selectable-id', idFor);
+        newAnchor.classList.add('c-anchor--facility');
+
         // create the label element
         let newLabel = document.createElement('label');
         newLabel.htmlFor = idFor;
@@ -111,6 +117,10 @@ const UOY_MAP = (function() {
 
         newLabel.appendChild(newIcon);
         newLabel.appendChild(newText);
+
+        newLabel.appendChild(newAnchor);
+
+
 
         return newLabel;
     };

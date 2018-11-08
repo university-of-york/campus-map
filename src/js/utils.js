@@ -8,8 +8,10 @@ const Utils = (function() {
     let $icon = $('.c-icon', '#drawerStatusButton');
     let _cachedGeoJson;
     let _gmap = null;
+    let _urlParams = {};
 
     // Private functions
+
     // Open/Close the drawer
     // Can call with argument 'open' or 'close'
     const toggleDrawer = function(e) {
@@ -56,6 +58,21 @@ const Utils = (function() {
         //affects hover popup
         //closeInfoPanel();
     };
+
+    const getUrlParameterFallback = function(name) {
+        let regex,
+            results;
+
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        results = regex.exec(location.search);
+
+        return results === null ? false : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    };
+
+
+    // Getters
+    //
 
 
     // Setters
@@ -201,8 +218,27 @@ const Utils = (function() {
         };
     };
 
+    const getQuerystringValue = function(valueToFind) {
+        if(_urlParams !== false) {
+            return  _urlParams.has(valueToFind) ? _urlParams.get(valueToFind) : false;
+        }
+
+        // use the fallback instead
+        return getUrlParameterFallback(valueToFind);
+    };
+
     const init = function(geoJson) {
         _cachedGeoJson = geoJson;
+
+        // check for querystring values
+        (window.onpopstate = function() {
+
+            if(typeof URLSearchParams !== 'function') {
+                _urlParams = false;
+            } else {
+                _urlParams = new URLSearchParams(window.location.search);
+            }
+        })();
     };
 
     return {
@@ -217,6 +253,7 @@ const Utils = (function() {
         checkHash,
         makeHash,
         setMap,
+        getQuerystringValue,
         init
     };
 }());
