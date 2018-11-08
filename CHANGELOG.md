@@ -1,3 +1,22 @@
+# [1.4.0](https://github.com/university-of-york/campus-map/compare/v1.3.3...v1.4.0) (2018-11-08)
+
+
+### Bug Fixes
+
+* codacy code improvements ([68f7722](https://github.com/university-of-york/campus-map/commit/68f7722))
+* **deps:** update dependency [@semantic-release](https://github.com/semantic-release)/release-notes-generator to v7.1.3 ([7b6bb6e](https://github.com/university-of-york/campus-map/commit/7b6bb6e))
+* **deps:** update dependency fuse.js to v3.3.0 ([efa563d](https://github.com/university-of-york/campus-map/commit/efa563d))
+* **deps:** update dependency semantic-release to v15.10.5 ([ee99945](https://github.com/university-of-york/campus-map/commit/ee99945))
+* **deps:** update dependency semantic-release to v15.10.7 ([39273e8](https://github.com/university-of-york/campus-map/commit/39273e8))
+* **deps:** update dependency webpack to v4.22.0 ([9c4a961](https://github.com/university-of-york/campus-map/commit/9c4a961))
+* **deps:** update dependency webpack to v4.23.0 ([3f5b6b9](https://github.com/university-of-york/campus-map/commit/3f5b6b9))
+* **deps:** update dependency webpack to v4.23.1 ([3e58ea8](https://github.com/university-of-york/campus-map/commit/3e58ea8))
+* **deps:** update dependency webpack to v4.24.0 ([87cf9ce](https://github.com/university-of-york/campus-map/commit/87cf9ce))
+* **deps:** update dependency webpack to v4.25.0 ([2cf5106](https://github.com/university-of-york/campus-map/commit/2cf5106))
+* **deps:** update dependency webpack to v4.25.1 ([fa82618](https://github.com/university-of-york/campus-map/commit/fa82618))
+* **deps:** update semantic-release monorepo ([32ad829](https://github.com/university-of-york/campus-map/commit/32ad829))
+* **deps:** update semantic-release monorepo ([0fe60a7](https://github.com/university-of-york/campus-map/commit/0fe60a7))
+
 ## [1.3.3](https://github.com/university-of-york/campus-map/compare/v1.3.2...v1.3.3) (2018-10-18)
 
 
