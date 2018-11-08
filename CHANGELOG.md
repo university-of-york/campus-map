@@ -1,3 +1,17 @@
+## [1.3.2](https://github.com/university-of-york/campus-map/compare/v1.3.1...v1.3.2) (2018-10-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency semantic-release to v15.9.16 ([148e79a](https://github.com/university-of-york/campus-map/commit/148e79a))
+* **deps:** update dependency webpack to v4.18.1 ([279cad9](https://github.com/university-of-york/campus-map/commit/279cad9))
+* **deps:** update dependency webpack to v4.19.0 ([52211a3](https://github.com/university-of-york/campus-map/commit/52211a3))
+* **deps:** update dependency webpack to v4.19.1 ([9b4f3bc](https://github.com/university-of-york/campus-map/commit/9b4f3bc))
+* **deps:** update dependency webpack to v4.20.0 ([590f2c6](https://github.com/university-of-york/campus-map/commit/590f2c6))
+* **deps:** update dependency webpack to v4.20.1 ([dfd1caa](https://github.com/university-of-york/campus-map/commit/dfd1caa))
+* **deps:** update dependency webpack to v4.20.2 ([067df29](https://github.com/university-of-york/campus-map/commit/067df29))
+* **deps:** update semantic-release monorepo ([302b2b5](https://github.com/university-of-york/campus-map/commit/302b2b5))
+
 ## [1.3.1](https://github.com/university-of-york/campus-map/compare/v1.3.0...v1.3.1) (2018-09-12)
 
 
