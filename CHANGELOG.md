@@ -1,3 +1,13 @@
+## [1.3.3](https://github.com/university-of-york/campus-map/compare/v1.3.2...v1.3.3) (2018-10-18)
+
+
+### Bug Fixes
+
+* change release file to use plugin convention ([e5c23c0](https://github.com/university-of-york/campus-map/commit/e5c23c0))
+* **deps:** pin dependency [@semantic-release](https://github.com/semantic-release)/commit-analyzer to 6.1.0 ([bc9bd5a](https://github.com/university-of-york/campus-map/commit/bc9bd5a))
+* **deps:** update dependency webpack to v4.21.0 ([272f68c](https://github.com/university-of-york/campus-map/commit/272f68c))
+* **deps:** update semantic-release monorepo ([b1d74bc](https://github.com/university-of-york/campus-map/commit/b1d74bc))
+
 ## [1.3.2](https://github.com/university-of-york/campus-map/compare/v1.3.1...v1.3.2) (2018-10-10)
 
 
