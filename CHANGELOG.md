@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/university-of-york/campus-map/compare/v1.4.1...v1.4.2) (2018-12-07)
+
+
+### Bug Fixes
+
+* add redirect feature to renamed facilities ([ed8e060](https://github.com/university-of-york/campus-map/commit/ed8e060))
+
 ## [1.4.1](https://github.com/university-of-york/campus-map/compare/v1.4.0...v1.4.1) (2018-12-07)
 
 
