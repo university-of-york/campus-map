@@ -66,8 +66,8 @@
       "iconClass": "c-icon--car"
     },
     {
-      "id": "disabled-parking",
-      "value": "Disabled parking",
+      "id": "accessible-parking",
+      "value": "Accessible parking",
       "iconClass": "c-icon--wheelchair"
     },
     {
