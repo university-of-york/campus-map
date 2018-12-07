@@ -1,3 +1,22 @@
+## [1.4.1](https://github.com/university-of-york/campus-map/compare/v1.4.0...v1.4.1) (2018-12-07)
+
+
+### Bug Fixes
+
+* **deps:** update dependency [@semantic-release](https://github.com/semantic-release)/github to v5.2.4 ([73dde36](https://github.com/university-of-york/campus-map/commit/73dde36))
+* **deps:** update dependency [@semantic-release](https://github.com/semantic-release)/github to v5.2.5 ([a10e68e](https://github.com/university-of-york/campus-map/commit/a10e68e))
+* **deps:** update dependency semantic-release to v15.11.0 ([51f05a0](https://github.com/university-of-york/campus-map/commit/51f05a0))
+* **deps:** update dependency semantic-release to v15.12.0 ([97852ab](https://github.com/university-of-york/campus-map/commit/97852ab))
+* **deps:** update dependency semantic-release to v15.12.2 ([79e73f9](https://github.com/university-of-york/campus-map/commit/79e73f9))
+* **deps:** update dependency semantic-release to v15.12.3 ([4bfd9d5](https://github.com/university-of-york/campus-map/commit/4bfd9d5))
+* **deps:** update dependency semantic-release to v15.12.4 ([9a76bfd](https://github.com/university-of-york/campus-map/commit/9a76bfd))
+* **deps:** update dependency webpack to v4.26.0 ([e9ac6b3](https://github.com/university-of-york/campus-map/commit/e9ac6b3))
+* **deps:** update dependency webpack to v4.26.1 ([b027240](https://github.com/university-of-york/campus-map/commit/b027240))
+* **deps:** update dependency webpack to v4.27.0 ([0c1c185](https://github.com/university-of-york/campus-map/commit/0c1c185))
+* **deps:** update dependency webpack to v4.27.1 ([f9afda6](https://github.com/university-of-york/campus-map/commit/f9afda6))
+* update parking name to accessible from disabled ([31044d9](https://github.com/university-of-york/campus-map/commit/31044d9))
+* **deps:** update semantic-release monorepo ([2504457](https://github.com/university-of-york/campus-map/commit/2504457))
+
 # [1.4.0](https://github.com/university-of-york/campus-map/compare/v1.3.3...v1.4.0) (2018-11-08)
 
 
