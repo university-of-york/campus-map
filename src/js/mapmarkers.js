@@ -2,6 +2,8 @@ import InfoWindows from 'js/infowindows';
 import MapAnalytics from 'js/analytics';
 import Utils from 'js/utils';
 
+const _mapJson = require('../mapconfig.json');
+
 const MapMarkers = (function() {
 
     // Variable definitions
@@ -61,6 +63,21 @@ const MapMarkers = (function() {
 
             triggerFacilitiesClick($(this).data('selectable-id'));
         });
+    };
+
+    const getFacilityRedirect = function(facilityId) {
+
+        if(!Utils.isObjectReady(facilityId)) {
+            return facilityId;
+        }
+
+        Object.keys(_mapJson.facilityRedirects).forEach(function(key) {
+            if(key === facilityId) {
+                facilityId = _mapJson.facilityRedirects[key];
+            }
+        });
+
+        return facilityId;
     };
 
     // Setters
@@ -137,7 +154,11 @@ const MapMarkers = (function() {
 
         // if someone has visited via a facilities link, get it and show
         // the relevant facilities.
-        const facilityId = Utils.getQuerystringValue('facility');
+        let facilityId = Utils.getQuerystringValue('facility');
+
+        // check against the redirects that we're not trying to load a changed facility name
+        // e.g. 'disabled-parking' is now 'accessible-parking'
+        facilityId = getFacilityRedirect(facilityId);
 
         if(Utils.isObjectReady(facilityId)) {
             showFacilities(facilityId);
