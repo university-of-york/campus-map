@@ -81,6 +81,9 @@
       "iconClass": "c-icon--envelope"
     }
   ],
+  "facilityRedirects" : {
+    "disabled-parking" : "accessible-parking"
+  },
   "globalNotice__UNCOMMENT_TO_USE": {
     "placeBeforeElement": ".wrapper",
     "title": "",
