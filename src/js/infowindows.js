@@ -34,13 +34,16 @@ const InfoWindows = (function() {
 
     function buildInfoPanelHtml(location) {
         let html = '<h3>' + location.title + '</h3>';
-        let locationLinkText = location.subtitle.replace(/\b(, Campus West|, Campus East|, King's Manor)\b/gi, '');
+        let locationLinkText = location.subtitle ? location.subtitle.replace(/\b(, Campus West|, Campus East|, King's Manor)\b/gi, '') : false;
 
-        html += (location.subtitle !== false) ? '<h4>' + location.subtitle + '</h4>' : '';
+        if (locationLinkText !== false) {
+            html += (location.subtitle !== false) ? '<h4>' + location.subtitle + '</h4>' : '';
+        }
         html += (location.shortdesc !== false) ? '<p>' + location.shortdesc + '</p>' : '';
         html += (location.longdesc !== false) ? '<p>' + location.longdesc + '</p>' : '';
-        html += (location.latlng !== '0,0') ? '<p><a class=\'locationMarker\'><i class=\'c-icon c-icon--map-marker\' aria-hidden=\'true\'></i></a>&nbsp;<a class=\'locationMarker\'>' + locationLinkText + '</a></p>' : '';
-
+        if (locationLinkText !== false) {
+            html += (location.latlng !== '0,0') ? '<p><a class=\'locationMarker\'><i class=\'c-icon c-icon--map-marker\' aria-hidden=\'true\'></i></a>&nbsp;<a class=\'locationMarker\'>' + locationLinkText + '</a></p>' : '';
+        }
         return html;
     }
 
@@ -141,7 +144,7 @@ const InfoWindows = (function() {
     const createInfoPanel = function(location) {
         let $infoPanel = $('.infoPanel');
         let html = buildInfoPanelHtml(location);
-        let locationLinkText = location.subtitle.replace(/\b(, Campus West|, Campus East|, King's Manor)\b/gi, '');
+        let locationLinkText = location.subtitle ? location.subtitle.replace(/\b(, Campus West|, Campus East|, King's Manor)\b/gi, '') : false;
 
         $('.infoPanel__content').html(html);
         openInfoPanel();
