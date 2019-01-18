@@ -1,3 +1,3 @@
 # Campus Map
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1f6f2dde366d4bb9b5f0b8a865f9c06a)](https://www.codacy.com/app/university-of-york/campus-map?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=university-of-york/campus-map&amp;utm_campaign=Badge_Grade)
+
 [![Build Status](https://semaphoreci.com/api/v1/university-of-york/campus-map/branches/master/shields_badge.svg)](https://semaphoreci.com/university-of-york/campus-map)
