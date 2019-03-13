@@ -20,7 +20,7 @@ const UOY_MAP = (function() {
 
 
     // map variables
-    let _gmap = null;
+    let _map = null;
     let _poiArr = [];
 
     function stringChecker(inputStr) {
@@ -63,8 +63,8 @@ const UOY_MAP = (function() {
     }
 
     // Setters
-    function setMap(gMap) {
-        _gmap = gMap;
+    function setMap(map) {
+        _map = map;
     }
     function setPointsOfInterest(poiArr) {
         _poiArr = poiArr;
@@ -206,7 +206,7 @@ const UOY_MAP = (function() {
         poiArr = poiArr || _poiArr;
 
         // plot the map points
-        if(poiArr && poiArr.length > 0 && _gmap !== null && POI_BUILDER !== null) {
+        if(poiArr && poiArr.length > 0 && _map._gmap !== null && POI_BUILDER !== null) {
 
             // now that the Google.map object is initialised, we need to create the Popup class
             // via the constructor
@@ -226,19 +226,19 @@ const UOY_MAP = (function() {
                     new google.maps.LatLng({lat: pointObj.lat, lng: pointObj.lon}),
                     document.getElementById(poiID)
                 );
-                popup.setMap(_gmap);
+                popup.setMap(_map._gmap);
 
                 count += 1;
             });
 
             // show/hide the popup/poi items on init
-            _gmap.addListener('tilesloaded', function() {
-                POI_BUILDER.hidePopupItemsOnMobileZoom(_gmap);
+            _map._gmap.addListener('tilesloaded', function() {
+                POI_BUILDER.hidePopupItemsOnMobileZoom(_map._gmap);
             });
 
             // show/hide the popup/poi items below selected zoom levels on smaller screens
-            _gmap.addListener('zoom_changed', function() {
-                POI_BUILDER.hidePopupItemsOnMobileZoom(_gmap);
+            _map._gmap.addListener('zoom_changed', function() {
+                POI_BUILDER.hidePopupItemsOnMobileZoom(_map._gmap);
             });
         }
     };

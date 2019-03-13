@@ -7,7 +7,7 @@ const Utils = (function() {
     let $panel = $('.panel');
     let $icon = $('.c-icon', '#drawerStatusButton');
     let _cachedGeoJson;
-    let _gmap = null;
+    let _map = null;
     let _urlParams = {};
 
     // Private functions
@@ -77,7 +77,7 @@ const Utils = (function() {
 
     // Setters
     const setMap = function(map) {
-        _gmap = map;
+        _map = map;
     };
 
 
@@ -159,7 +159,7 @@ const Utils = (function() {
         }
 
         InfoWindows.createInfoWindow(location);
-        _gmap.panTo(location.latlng);
+        _map._gmap.panTo(location.latlng);
     };
 
     const strReplace = function(input, strToFind, replaceValue) {

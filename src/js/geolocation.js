@@ -8,28 +8,28 @@ const Geolocation = (function() {
         timeout: 5000,
         maximumAge: 0
     };
-    let _gmap = null;
+    let _map = null;
     let _marker;
     let _geoWatchEventId = -1;
 
 
     // Private functions
     function onSuccess(position) {
-        let userLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
-            icon = {
+        
+        _map.addMarker( {
+            position: {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+            },
+            icon: {
                 url: 'img/markers/pin.svg',
-                scaledSize: new google.maps.Size(24, 32)
-            };
+                size: {
+                    width: 24,
+                    height: 32,
+                },
+            },
+        } );
 
-        if (Utils.isObjectReady(_marker)) {
-            _marker.setMap(null);
-        }
-
-        _marker = new google.maps.Marker({
-            map: _gmap,
-            icon: icon
-        });
-        _marker.setPosition(userLatlng);
     }
 
     function onError(err) {
@@ -65,7 +65,7 @@ const Geolocation = (function() {
     }
 
     const init = function(map, marker) {
-        _gmap = map;
+        _map = map;
         _marker = marker;
 
         // Geolocation

@@ -7,7 +7,7 @@ const _mapJson = require('../mapconfig.json');
 const MapMarkers = (function() {
 
     // Variable definitions
-    let _gmap = null;
+    let _map = null;
     let _markerGroups = {};
     let _markerFeatures = {};
     let _markers = [];
@@ -27,11 +27,11 @@ const MapMarkers = (function() {
         });
 
         // add the geoJson to the markerFeatures object
-        _markerFeatures[selectableCategory] = _gmap.data.addGeoJson(thisGroup);
+        _markerFeatures[selectableCategory] = _map._gmap.data.addGeoJson(thisGroup);
 
-        _gmap.data.addListener('click', InfoWindows.popupAction);
-        _gmap.data.addListener('mouseover', InfoWindows.popupAction);
-        _gmap.data.setStyle(function(feature) {
+        _map._gmap.data.addListener('click', InfoWindows.popupAction);
+        _map._gmap.data.addListener('mouseover', InfoWindows.popupAction);
+        _map._gmap.data.setStyle(function(feature) {
             let featureCategory = feature.getProperty('category').toLowerCase().replace(/\s+/g, '-');
             let icon = {
                 url: 'img/markers/' + featureCategory + '.svg',
@@ -82,7 +82,7 @@ const MapMarkers = (function() {
 
     // Setters
     const setMap = function(map) {
-        _gmap = map;
+        _map = map;
     };
 
     // Public functions
@@ -122,7 +122,7 @@ const MapMarkers = (function() {
                 showMarkers($selectable);
             } else {
                 $.each(_markerFeatures[selectableCategory], function(i, feature) {
-                    _gmap.data.remove(feature);
+                    _map._gmap.data.remove(feature);
                 });
                 // Send facilities event to GA
                 MapAnalytics.addAnalyticsEvent('Hide facilities', selectableCategory);

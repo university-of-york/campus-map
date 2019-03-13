@@ -5,7 +5,7 @@ import MapAnalytics from 'js/analytics';
 const InfoWindows = (function() {
 
     // Variable declaration
-    let _gmap = null;
+    let _map = null;
 
     // Private methods
     const locationMarkerClickHandler = function(options) {
@@ -19,8 +19,8 @@ const InfoWindows = (function() {
         }
 
         // Pan to location
-        _gmap.setZoom(data.location.zoom);
-        _gmap.panTo(data.location.latlng);
+        _map._gmap.setZoom(data.location.zoom);
+        _map._gmap.panTo(data.location.latlng);
 
         // Send panel interaction event to GA
         MapAnalytics.addAnalyticsEvent('Panel interaction', data.linkText + ' (show location)');
@@ -46,7 +46,7 @@ const InfoWindows = (function() {
 
     // Setters
     const setMap = function(map) {
-        _gmap = map;
+        _map = map;
     };
 
     // Public methods
@@ -78,7 +78,7 @@ const InfoWindows = (function() {
         let zoom = location.zoom || 16;
         let marker = new google.maps.Marker({
             position: location.latlng,
-            map: _gmap,
+            map: _map._gmap,
             title: title,
             subtitle: subTitle,
             subCategory: subCategory,
@@ -103,7 +103,7 @@ const InfoWindows = (function() {
 
         // Set up the snazzy map element
         snazzy = new SnazzyInfoWindow(thisOptions);
-        snazzy.open(_gmap, marker);
+        snazzy.open(_map._gmap, marker);
 
         // Add the snazzy window to the marker (so can be removed)
         marker.snazzy = snazzy;

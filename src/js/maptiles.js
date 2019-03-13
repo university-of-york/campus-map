@@ -38,19 +38,19 @@ class CoordMapType {
 const MapTiles = (function() {
 
     // Variable Declaration
-    let _gmap = null;
+    let _map = null;
 
     // Private Functions
 
 
     // Setters
     const setMap = function(map) {
-        _gmap = map;
+        _map = map;
     };
 
     // Public Functions
     const init = function() {
-        _gmap.overlayMapTypes.insertAt(0, new CoordMapType(new google.maps.Size(256, 256)));
+        _map._gmap.overlayMapTypes.insertAt(0, new CoordMapType(new google.maps.Size(256, 256)));
     };
 
     return {

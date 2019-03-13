@@ -5,6 +5,7 @@ import InfoWindows from 'js/infowindows';
 import Utils from 'js/utils';
 import MapSearch from 'js/mapsearch';
 import MapTiles from 'js/maptiles';
+import MapInterface from 'js/mapinterface';
 
 'use strict';
 
@@ -27,6 +28,7 @@ $(function() {
 
 
     // load the map
+    // TODO: Move this over to the MapInterface class constructor
     function loadMap() {
         return new google.maps.Map(document.getElementById('map'), {
             zoom: defaultZoom,
@@ -55,7 +57,7 @@ $(function() {
     function initMap() {
 
         // load the map
-        map = loadMap();
+        map = new MapInterface( loadMap() );
 
         // pass the map object into our global uoy_map object for its use(s)
         try {
@@ -116,10 +118,10 @@ $(function() {
             console.log('The map data failed to load', err);
         });
 
-        google.maps.event.addListener(map, 'idle', function() {
-            google.maps.event.trigger(map, 'resize');
+        google.maps.event.addListener(map._gmap, 'idle', function() {
+            google.maps.event.trigger(map._gmap, 'resize');
         });
-        google.maps.event.addListener(map, 'tilesloaded', function() {
+        google.maps.event.addListener(map._gmap, 'tilesloaded', function() {
 
             // show the various feedback and map location buttons
             $('#control-feedback-div').removeClass('is-hidden');

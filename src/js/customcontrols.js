@@ -12,7 +12,7 @@ const CustomControls = (function() {
     let _controlKingsManorUI = $('#control-km-ui');
     let _controlFeedbackDiv = $('#control-feedback-div');
     let _controlFeedbackUI = $('#control-feedback-ui');
-    let _gmap = null;
+    let _map = null;
     let _west = {
         lat: 53.9447,
         lng: -1.0501
@@ -31,8 +31,8 @@ const CustomControls = (function() {
         // uncheck feature buttons
         $('.c-btn--selectable').prop('checked', false);
         //remove svg feature markers
-        _gmap.data.forEach(function(feature) {
-            _gmap.data.remove(feature);
+        _map._gmap.data.forEach(function(feature) {
+            _map._gmap.data.remove(feature);
         });
     }
 
@@ -59,15 +59,15 @@ const CustomControls = (function() {
     function centerOnLocationClickHandler(options) {
         let data = options.data;
 
-        _gmap.setCenter(data.setCenter);
-        _gmap.setZoom(data.zoom);
+        _map._gmap.setCenter(data.setCenter);
+        _map._gmap.setZoom(data.zoom);
         // Send centre on event to GA
         MapAnalytics.addAnalyticsEvent('Centre on', data.analyticsEventStr);
     }
 
     // Setters
-    function setMap(gMap) {
-        _gmap = gMap;
+    function setMap(map) {
+        _map = map;
     }
 
     // Public functions
@@ -78,7 +78,7 @@ const CustomControls = (function() {
             new google.maps.LatLng(53.943157, -1.058537),
             new google.maps.LatLng(53.950877, -1.024085)
         );
-        _gmap.fitBounds(bounds);
+        _map._gmap.fitBounds(bounds);
     };
 
     const customCampusControl = function() {
@@ -105,7 +105,7 @@ const CustomControls = (function() {
         }, centerOnLocationClickHandler);
 
         _controlCampusDiv.index = 1;
-        _gmap.controls[google.maps.ControlPosition.TOP_RIGHT].push(_controlCampusDiv[0]);
+        _map._gmap.controls[google.maps.ControlPosition.TOP_RIGHT].push(_controlCampusDiv[0]);
     };
 
     const customFeedbackControl = function() {
@@ -118,7 +118,7 @@ const CustomControls = (function() {
             $('.closeInfoPanel').click(InfoWindows.closeInfoPanel);
         });
         _controlFeedbackDiv.index = 1;
-        _gmap.controls[google.maps.ControlPosition.TOP_LEFT].push(_controlFeedbackDiv[0]);
+        _map._gmap.controls[google.maps.ControlPosition.TOP_LEFT].push(_controlFeedbackDiv[0]);
     };
 
     return {

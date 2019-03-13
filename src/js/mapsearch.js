@@ -8,7 +8,7 @@ const MapSearch = (function() {
     let $searchForm = $('#map-search-form');
     let $searchQuery = $('#map-search-query');
     let _cachedGeoJson;
-    let _gmap = null;
+    let _map = null;
     let _fuseOptions = {
         keys: [{
             name: 'properties.title',
@@ -107,7 +107,7 @@ const MapSearch = (function() {
     };
 
     const initMapPanorama = function() {
-        let mapPanorama = _gmap.getStreetView();
+        let mapPanorama = _map._gmap.getStreetView();
         mapPanorama.addListener('visible_changed', function() {
             let pos = mapPanorama.getPosition();
             // Send click event to GA
@@ -174,14 +174,14 @@ const MapSearch = (function() {
         $searchForm.on('submit', searchFormSubmitHandler);
 
         // Clicking on map closes autocomplete
-        _gmap.addListener('click', mapClickHandler);
+        _map._gmap.addListener('click', mapClickHandler);
 
         initMapPanorama();
     }; // end initSearch
 
     // Setters
     const setMap = function(map) {
-        _gmap = map;
+        _map = map;
     };
 
     // Public functions
