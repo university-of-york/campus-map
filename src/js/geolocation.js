@@ -1,39 +1,41 @@
-import Utils from './utils';
-
 const Geolocation = (function() {
 
     // Variable definitions
     const watchOptions = {
         enableHighAccuracy: true,
         timeout: 5000,
-        maximumAge: 0
+        maximumAge: 1000
     };
     let _map = null;
-    let _marker;
+    let _marker = null;
     let _geoWatchEventId = -1;
 
 
     // Private functions
     function onSuccess(position) {
-        
-        _map.addMarker( {
-            position: {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-            },
-            icon: {
-                url: 'img/markers/pin.svg',
-                size: {
+
+        // Create the marker if it doesn't already exist...
+        if( _marker === null )
+        {
+            _marker = _map.addMarker( {
+                position: [ position.coords.longitude , position.coords.latitude ],
+                icon: {            
+                    url: "img/markers/pin.svg",
                     width: 24,
                     height: 32,
                 },
-            },
-        } );
-
+                popup: '<p>You are here</p>',
+            } );
+        }
+        // ...otherwise just update its position
+        else
+        {
+            _map.setMarkerPosition( _marker , [ position.coords.longitude , position.coords.latitude ] );
+        }
     }
 
     function onError(err) {
-        let message = 'There has been a problem finding your location';
+        let message = "There has been a problem finding your location";
         let showError = false;
 
         if(err) {
@@ -43,7 +45,7 @@ const Geolocation = (function() {
                     showError = false;
                     break;
                 default:
-                    message = '';
+                    message = "";
                     showError = false;
                     break;
             }
@@ -55,7 +57,7 @@ const Geolocation = (function() {
             navigator.geolocation.clearWatch(_geoWatchEventId);
         }
 
-        if (window.location.hostname.indexOf('localhost') >= 0) {
+        if (window.location.hostname.indexOf("localhost") >= 0) {
             // don't show errors in popup on localhost
             console.log(message);
         } else {
@@ -64,12 +66,14 @@ const Geolocation = (function() {
         }
     }
 
-    const init = function(map, marker) {
-        _map = map;
-        _marker = marker;
-
-        // Geolocation
+    const init = function(map) {
+        // Test for geolocation first
         if (navigator.geolocation) {
+            
+            // Assign map object
+            _map = map;
+            
+            // Set up listener for position changes
             _geoWatchEventId = navigator.geolocation.watchPosition(onSuccess, onError, watchOptions);
         }
     };

@@ -1,45 +1,36 @@
 {
   "geoJSONFile": "https://york.funnelback.co.uk/s/search.html?collection=york-uni-campusmap&form=geojson&query=!padrenullquery&num_ranks=5000&MBL=800",
   "globalMapOptions": {
-    "mapTitle" : "Campus map"
+    "mapTitle" : "Campus map",
+    "maxZoom" : 18,
+    "minZoom" : 10,
+    "defaultZoom" : 14,
+    "defaultCentre" : [ -1.041227 , 53.947017 ],
+    "defaultBounds" : [
+        [ -1.058537 , 53.943157 ],
+        [ -1.024085 , 53.950877 ]
+    ],
+    "style" : "mapbox://styles/mapbox/basic-v9",
+    "mapboxAccessToken" : "pk.eyJ1IjoibmNrcHJzbiIsImEiOiJjanQ0ZG44dmwwMmRzM3lwdDl3eng4eGRxIn0.r98YwrRKQtBihLFwagEjNA"
   },
-  "mapStyles": [
-    {
-      "featureType": "landscape.man_made",
-      "elementType": "geometry.fill",
-      "stylers": [
-        {
-          "color": "#eeeeee"
-        }
-      ]
-    },
-    {
-      "featureType": "landscape.natural",
-      "elementType": "geometry.fill",
-      "stylers": [
-        {
-          "color": "#E7ECB1"
-        }
-      ]
-    },
-    {
-      "featureType": "water",
-      "elementType": "geometry.fill",
-      "stylers": [
-        {
-          "color": "#7599a2"
-        }
-      ]
-    },
-    {
-      "featureType": "poi",
-      "stylers": [
-        {
-          "visibility": "off"
-        }
-      ]
-    }],
-  "mapButtons":[
+  "sites": {
+      "west" : {
+          "label" : "Campus East",
+          "position" : [ -1.0501 , 53.9447 ],
+          "zoom" : 16          
+      },
+      "east" : {
+          "label" : "Campus West",
+          "position" : [ -1.0316 , 53.9473 ],
+          "zoom" : 16
+      },
+      "kingsmanor" : {
+          "label" : "King's Manor",
+          "position" : [ -1.0868 , 53.9623 ],
+          "zoom" : 18
+      }
+  },
+  "facilities":[
     {
       "id": "food-and-drink",
       "value": "Food and drink",

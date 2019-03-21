@@ -1,23 +1,20 @@
 
 // load css files
-require('./css/snazzy-info-window.css');
+// require('./css/snazzy-info-window.css');
 require('./css/map.css');
 
 // load polysfills and shims
 require('@babel/polyfill');
 
 // load main app files
-require('./js/pointofinterest');
-require('./js/uoy-map');
-
-// load Rollbar error reporting
-require('./js/rollbar');
+// require('./js/pointofinterest');
+// require('./js/uoy-map');
 
 // load in Pattern Library things
-requirejs(['app/autocomplete', 'fuse'], function(AUTOCOMPLETE, FUSE) {
-    window.AUTOCOMPLETE = AUTOCOMPLETE;
-    window.FUSE = FUSE;
-});
+// requirejs(['app/autocomplete', 'fuse'], function(AUTOCOMPLETE, FUSE) {
+//     window.AUTOCOMPLETE = AUTOCOMPLETE;
+//     window.FUSE = FUSE;
+// });
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -25,15 +22,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // kick start the app (note, this loads as part of the Google Maps API callback)
+// TODO: Set event listener to launch when ready
 function initCampusMaps() {
 
-    // First, load up our Rollbar error reporting
-    ROLLBAR.init();
-
     // loads up any points of interest and global notices
-    UOY_MAP.init();
+    // UOY_MAP.init();
 
     require('./js/map');
-    window.SnazzyInfoWindow = require('./js/snazzy-info-window');
 }
 window.initCampusMaps = initCampusMaps;

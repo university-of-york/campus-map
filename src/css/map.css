@@ -28,8 +28,14 @@ body {
   }
 }
 
-.map {
+/* Map wrapper to contain the map's div + its controls + info panel */
+.map-wrapper {
   flex: 1 1 auto;
+  position:relative;
+}
+
+.map {
+  height:100%;
 }
 
 /*prevent safari styling on text input*/
@@ -103,6 +109,7 @@ body {
   background-color: #fff;
   min-height: 3.5rem;
   position: fixed;
+  z-index:2; /* Above map controls */
   padding: 0;
   width: 100%;
 }
@@ -325,7 +332,7 @@ body {
 
     /* hide anchor on mobile */
     .c-anchor--facility {
-        display: none;
+        /* display: none; */
     }
 }
 
@@ -445,12 +452,13 @@ input[type=search] {
   background-color: rgba(15,61,76,0.9);
   color: #fff;
   display: none;
-  height: calc(100vh - 8.5rem);
   padding: 2rem 1rem;
   width: 0;
   position: absolute;
+  z-index:2; /* Above map overlays */
   left: 0;
-  top: 5rem;
+  top: 0;
+  bottom: 0;
   overflow-y: auto;
 }
 .infoPanel.is-open {
@@ -481,6 +489,30 @@ input[type=search] {
   right:13px;
 }
 
+/* infoPanel hide/reveal animation */
+
+@media ( min-width:768px )
+{
+    .infoPanel
+    {
+        display:block;
+        
+        pointer-events:none;
+        opacity:0;
+        transform:translateX( -20% );
+
+        transition:opacity 50ms ease , transform 50ms ease;
+    }
+  
+    .infoPanel.is-open
+    {
+        pointer-events:auto;
+        opacity:1;
+        transform:none;
+
+        transition:opacity 100ms ease , transform 100ms ease;
+    }
+}
 
 /*remove border from formstack iframe*/
 .infoPanel__content iframe {
@@ -504,43 +536,10 @@ input[type=search] {
 
  }
 
-
-
-@media (min-width: 768px) and (orientation: portrait) {
-    .infoPanel {
-      height: calc(100vh - 10rem);
-      top: 5rem;
-    }
-}
-
-@media (min-width: 1024px) and (orientation: portrait) {
-
-    .infoPanel {
-      height: calc(100vh - 9.5rem);
-  }
-}
-
-@media (min-width: 1024px) and (orientation: landscape) {
-    .infoPanel {
-      height: calc(100vh - 8.5rem);
-      top: 5rem;
-   }
-}
-
-@media (min-width: 1200px) and (orientation: landscape) { /*fixes height issue at around 1200px*/
-
-    .infoPanel {
-      height: calc(100vh - 8.5rem);
-      top: 5rem;
-   }
-}
-
 @media (max-width: 767px) {
   .infoPanel {
     border-right: 0;
     position: absolute;
-    top:4em;
-    min-height: calc(100vh - 7.5rem);
     min-width: 100%;
   }
 
@@ -646,3 +645,46 @@ input[type=search] {
     width: 50%;
     opacity: 0.9;
 }
+
+
+/* ========================================================================== */
+/* Mapbox */
+/* ========================================================================== */
+
+/* Custom map marker styles */
+
+.marker
+{
+    background:center center / contain no-repeat;
+    cursor:pointer;
+}
+
+/* Custom popup styling */
+
+.mapboxgl-popup
+{
+}
+
+.mapboxgl-popup-content
+{
+    max-width:285px;
+    padding:24px 18px;
+    
+    background:rgba(15, 61, 76, 0.9);
+    border-radius:0.4rem;
+    color:white;
+}
+
+.mapboxgl-popup-content > *:last-child
+{
+    margin-bottom:0;
+}
+
+.mapboxgl-popup-anchor-right        .mapboxgl-popup-tip { border-left-color:rgba(15, 61, 76, 0.9); }
+.mapboxgl-popup-anchor-left         .mapboxgl-popup-tip { border-right-color:rgba(15, 61, 76, 0.9); }
+.mapboxgl-popup-anchor-top-left     .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-top-right    .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-top          .mapboxgl-popup-tip { border-bottom-color:rgba(15, 61, 76, 0.9); }
+.mapboxgl-popup-anchor-bottom-left  .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom       .mapboxgl-popup-tip { border-top-color:rgba(15, 61, 76, 0.9); }
