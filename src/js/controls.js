@@ -1,5 +1,8 @@
+
 import MapAnalytics from 'js/analytics';
 import InfoPanel from 'js/infopanel';
+import Popups from 'js/popups';
+import Facilities from 'js/facilities';
 
 const Controls = (function() {
 
@@ -47,11 +50,13 @@ const Controls = (function() {
     // --------------------------------------------------
 
     const resetClickHandler = function() {
-
-        // TODO: remove any visible layers/markers/icons
-        // TODO: remove hash from URL
         
         _map.setBounds( _config.globalMapOptions.defaultBounds );
+
+        Popups.clearPopups();
+        InfoPanel.closeInfoPanel();
+
+        Facilities.reset();
 
         MapAnalytics.addAnalyticsEvent( 'Reset' , '' );
     }

@@ -1,33 +1,30 @@
 
-import MapInterface from 'js/mapinterface';
-import Geolocation from 'js/geolocation';
-import Controls from 'js/controls';
-import Facilities from 'js/facilities';
-import InfoPanel from 'js/infopanel';
+import MapInterface from "js/mapinterface";
+import Controls from "js/controls";
+import Facilities from "js/facilities";
+import InfoPanel from "js/infopanel";
+import Popups from "js/popups";
+import Utils from "js/utils";
+import Search from "js/search";
+import Notices from "js/notices";
 
-// import Search from 'js/search';
-
-// import MapMarkers from 'js/mapmarkers';
-// import Utils from 'js/utils';
-// import MapSearch from 'js/mapsearch';
-
-'use strict';
+"use strict";
 
 $(function() {
     
-    const config = require('../mapconfig.json');
+    const config = require("../mapconfig.json");
     
     let geoJson = null;
     let map = null;
     
     // --------------------------------------------------
-
     // initialise the map
+
     function initMap() {
 
         // Create map object
         map = new MapInterface({
-            container:'map',
+            container:"map",
             zoom: config.globalMapOptions.defaultZoom,
             maxZoom: config.globalMapOptions.maxZoom,
             minZoom: config.globalMapOptions.minZoom,
@@ -42,27 +39,35 @@ $(function() {
         // Initialise our various objects
         try {
 
-            Geolocation.init( map );
             Controls.init( map , config );
             Facilities.init( map , config );
             InfoPanel.init( map );
+            Popups.init( map );
+            Notices.init( config );
 
         } catch (e) {
             console.log(e);
         }
         
-        // Load GeoJSON
-        $.getJSON( config.geoJSONFile ).then(function( data ) {
+        // Load our GeoJSON data
+        try {
 
-            geoJson = data;
+            $.getJSON( config.geoJSONFile ).then(function( data ) {
 
-            // Initialise things that rely on the geoJson data
-            Facilities.initData( geoJson );
-            // Search.init( map , geoJson );
+                geoJson = data;
 
-        }).fail(function(err) {
-            console.log('The map data failed to load', err);
-        });
+                // Initialise things that rely on the geoJson data
+                Utils.initData( geoJson );
+                Facilities.initData( geoJson );
+                Search.init( map , geoJson );
+
+            }).fail(function(err) {
+                console.log( "The map data failed to load" , err );
+            });
+
+        } catch (e) {
+            console.log(e);
+        }
 
     }
 

@@ -1,33 +1,25 @@
 
 // load css files
-// require('./css/snazzy-info-window.css');
 require('./css/map.css');
 
 // load polysfills and shims
 require('@babel/polyfill');
 
-// load main app files
-// require('./js/pointofinterest');
-// require('./js/uoy-map');
-
 // load in Pattern Library things
-// requirejs(['app/autocomplete', 'fuse'], function(AUTOCOMPLETE, FUSE) {
-//     window.AUTOCOMPLETE = AUTOCOMPLETE;
-//     window.FUSE = FUSE;
-// });
-
+requirejs(['app/autocomplete', 'fuse'], function(AUTOCOMPLETE, FUSE) {
+    window.AUTOCOMPLETE = AUTOCOMPLETE;
+    window.FUSE = FUSE;
+});
 
 if (process.env.NODE_ENV !== 'production') {
     console.log('Development mode activated. Start the fans, please!');
 }
 
-// kick start the app (note, this loads as part of the Google Maps API callback)
+// kick start the app
 // TODO: Set event listener to launch when ready
 function initCampusMaps() {
 
-    // loads up any points of interest and global notices
-    // UOY_MAP.init();
-
     require('./js/map');
+
 }
 window.initCampusMaps = initCampusMaps;

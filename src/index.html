@@ -12,10 +12,9 @@
     <link rel="icon" type="image/x-icon" href="https://www.york.ac.uk/static/stable/img/favicon.ico">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://use.typekit.net/dvj8rpp.css">
-
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css">
     <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js"></script>
-    
+    <link rel="stylesheet" href="https://www.york.ac.uk/static/stable/css/styles.min.css" media="screen">
     <script src="https://www.york.ac.uk/static/stable/js/modernizr.min.js"></script>
     <script src="https://www.york.ac.uk/static/stable/js/app.min.js"></script>
 </head>
@@ -70,37 +69,19 @@
     <div class="map-wrapper">
       <div id="map" class="map"></div>
       <div id="control-feedback-div" class="control-div control-div-feedback is-hidden">
-          <div id="control-feedback-ui" class="control-ui--feedback" title="Click to send feedback">
-              <div id="control-feedback-text" class="control-text">
-                  <p>Feedback</p>
-              </div>
-          </div>
+          <button type="button" id="control-feedback-ui" class="control-ui control-ui--feedback" title="Click to send feedback">
+              Feedback
+          </button>
       </div>
-      <div id="control-campus-div" class="control-campus-div control-div control-div-centre is-hidden">
-          <div id="control-reset-ui" class="control-ui control-reset-ui" title="Click to reset the map">
-              <div id="control-reset-text" class="control-text">
-                  <p> <span class="is-hidden@small is-hidden@medium- ipad-fix">Reset map </span> <i class="c-icon c-icon--lg c-icon--refresh"></i> </p>
-              </div>
-          </div>
+      <div id="control-campus-div" class="control-div control-campus-div control-div-centre is-hidden">
+          <button type="button" id="control-reset-ui" class="control-ui control-reset-ui" title="Click to reset the map">
+              <span class="is-hidden@small is-hidden@medium- ipad-fix">Reset map </span> <i class="c-icon c-icon--lg c-icon--refresh"></i>
+          </button>
           <div id="control-campus-buttons" class="control-campus-div--campus-buttons is-hidden">
-              <p>
-                  Centre the map on
-              </p>
-              <div id="control-east-ui" class="control-ui" title="Centre on Campus West">
-                  <div id="control-east-text" class="control-text">
-                      Campus East
-                  </div>
-              </div>
-              <div id="control-west-ui" class="control-ui" title="Centre on Campus East">
-                  <div id="control-west-text" class="control-text">
-                      Campus West
-                  </div>
-              </div>
-              <div id="control-km-ui" class="control-ui" title="Centre on King's Manor">
-                  <div id="control-km-text" class="control-text">
-                      King's Manor
-                  </div>
-              </div>
+              <p>Centre the map on</p>
+              <button type="button" id="control-east-ui" class="control-ui" title="Centre on Campus West">Campus East</button>
+              <button type="button" id="control-west-ui" class="control-ui" title="Centre on Campus East">Campus West</button>
+              <button type="button" id="control-km-ui" class="control-ui" title="Centre on King's Manor">King's Manor</button>
           </div>
       </div>
       <div class="infoPanel">
@@ -126,7 +107,10 @@
 </div>
 
 <script>
-    initCampusMaps();
+
+    // Start up on window fully loaded
+    window.onload = function() { initCampusMaps(); };
+
 </script>
 
 </body>
