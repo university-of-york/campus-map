@@ -7,13 +7,13 @@ const Popups = (function() {
     // --------------------------------------------------
     // Variable declaration
 
-    let _map = null; 
+    let _map = null;
 
     // --------------------------------------------------
     // Initialisation
 
     const init = function(map) {
-        
+
         // Set internal map object
         _map = map;
 
@@ -28,7 +28,7 @@ const Popups = (function() {
     // GA tracking of "more info." links
 
     const moreInfoLinkHandler = function( e ) {
-        
+
         MapAnalytics.addAnalyticsEvent( 'Popup interaction' , `${ $( this ).data( 'location-title' ) } (more information)` );
 
     };
@@ -39,7 +39,7 @@ const Popups = (function() {
     const popupLinkHandler = function( e ) {
 
         e.preventDefault();
-        
+
         let locationId = $( this ).data( 'location-id' );
         let location = Utils.locationLookUp( locationId );
 
@@ -71,6 +71,9 @@ const Popups = (function() {
 
     const openLocationPopup = function( location , goto ) {
 
+        // Close all existing popups
+        clearPopups();
+
         // Open up a popup
         _map.openPopup( {
             id: location.properties.locationid,
@@ -78,7 +81,7 @@ const Popups = (function() {
             position: location.geometry.coordinates,
             content: popupContent( location ),
         } );
-        
+
         // Move the map?
         if( goto ) {
             _map.goTo( {
@@ -105,21 +108,21 @@ const Popups = (function() {
 
                 // If location is a room provide "approximate location only" message...
                 content += "<p>Approximate location only</p><p>Please allow yourself time to locate the room</p>";
-                
+
             } else if( location.properties.shortdesc ) {
 
                 // ... Otherwise use the short description if present
                 content += location.properties.shortdesc;
 
             }
-            
-            // Add link to open info panel 
+
+            // Add link to open info panel
             if( location.properties.longdesc ) {
                 content += `<p><a class="openInfoPanel more-information" href="#${ location.properties.locationid }" data-location-title="${ location.properties.title }" data-location-id="${ location.properties.locationid }">More information</a></p>`
             }
-            
-            return content;        
-            
+
+            return content;
+
         } catch (e) {
             console.log(e);
         }

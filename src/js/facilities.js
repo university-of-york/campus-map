@@ -6,31 +6,31 @@ import Popups from 'js/popups';
 const Facilities = (function() {
 
     // --------------------------------------------------
-    
+
     // Our map interface & config objects
     let _map;
     let _config;
 
     // List of our facility groups
     let _facilities;
-    
+
     // Groups of markers
     let _markerGroups = {};
-    
+
     const $panel = $( '.panel' );
     const $icon = $( '.c-icon' , '#drawerStatusButton' );
 
     // --------------------------------------------------
 
     const init = function( map , config ) {
-        
+
         // Set map interface & config objects
         _map = map;
         _config = config;
 
         // Get our facility groups
         _facilities = config.facilities;
-        
+
         // Build the controls
         renderFacilityControls();
 
@@ -55,7 +55,7 @@ const Facilities = (function() {
                 mapButtonContainer.appendChild(newLabel);
             });
         }
-        
+
         // Set up event listener for facility toggles
         $( '#map-button-container' ).on( 'click' , '[data-selectable-id]' , facilityToggleClickHandler )
     };
@@ -88,12 +88,11 @@ const Facilities = (function() {
                     },
                     popupLocationId: feature.properties.locationid,
                 } );
-                
+
                 // Add hover popup management
                 let $marker = $( marker.getElement() );
-                
+
                 $marker.on( 'mouseenter' , function() {
-                    Popups.clearPopups();
                     Popups.openLocationPopup( feature );
                 } );
 
@@ -102,16 +101,16 @@ const Facilities = (function() {
 
                 // Add our new marker to the marker groups
                 _markerGroups[ groupId ].push( marker );
-                
+
             } );
         } );
-        
+
         // Check query string for any group that should be visible by default
         let defaultGroupId = getQuerystringValue( 'facility' );
 
         // Check for facility redirects
         defaultGroupId = resolveFacilityRedirects( defaultGroupId );
-        
+
         // If present and valid, show it
         if( defaultGroupId && _markerGroups[ defaultGroupId ] !== undefined ) {
             toggleFacilityGroup( defaultGroupId , true );
@@ -127,7 +126,7 @@ const Facilities = (function() {
 
         // Prevent default action if called by an event listener
         if( e.preventDefault !== undefined ) e.preventDefault();
-        
+
         let panelOpen = $panel.hasClass('is-open') || e === 'close',
             iconRemoveClass = panelOpen ? 'c-icon--chevron-down' : 'c-icon--chevron-up',
             iconAddClass = panelOpen ? 'c-icon--chevron-up' : 'c-icon--chevron-down';
@@ -144,29 +143,29 @@ const Facilities = (function() {
     // --------------------------------------------------
 
     const facilityToggleClickHandler = function( e ) {
-        
+
         e.preventDefault();
-        
+
         // Get the group ID for the clicked toggle
-        let groupId = $(this).data( 'selectable-id' ); 
+        let groupId = $(this).data( 'selectable-id' );
 
         toggleFacilityGroup( groupId );
     };
 
     // --------------------------------------------------
-    
+
     const resolveFacilityRedirects = function( groupId ) {
 
         let match = Object.keys( _config.facilityRedirects ).find( function( key ) {
             return key == groupId;
         });
-        
+
         return match ? _config.facilityRedirects[ match ] : groupId;
-        
+
     };
 
     // --------------------------------------------------
-    
+
     const toggleFacilityGroup = function( groupId , visibility ) {
 
         // Get current state if visibility isn't set
@@ -179,7 +178,7 @@ const Facilities = (function() {
         _markerGroups[ groupId ].forEach( ( marker ) => {
             $( marker.getElement() ).toggle( visibility );
         } );
-        
+
         // Toggle checkbox state
         $( `#${groupId}` ).prop( "checked" , visibility );
 
@@ -188,7 +187,7 @@ const Facilities = (function() {
     };
 
     // --------------------------------------------------
-    
+
     const createMapInput = function(id, value) {
 
         let newInput = document.createElement('input');
@@ -237,29 +236,29 @@ const Facilities = (function() {
 
         return newLabel;
     };
-    
+
     // --------------------------------------------------
     // Reset's all facilities to hidden
 
     const reset = function() {
-        
+
         _facilities.map( function( facility ) {
-        
+
             toggleFacilityGroup( facility.id , false );
-            
+
         } );
-        
+
     };
-    
+
     // --------------------------------------------------
 
     const getQuerystringValue = function( key ) {
-      
+
         if(typeof URLSearchParams === 'function') {
 
             // Fancy new method
             let _urlParams = new URLSearchParams(window.location.search);
-           
+
             return _urlParams.has(key) ? _urlParams.get(key) : false;
 
         } else {
@@ -276,7 +275,7 @@ const Facilities = (function() {
 
         }
     };
-    
+
     // --------------------------------------------------
 
     return {
