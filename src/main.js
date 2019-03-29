@@ -16,7 +16,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // kick start the app
-// TODO: Set event listener to launch when ready
 function initCampusMaps() {
 
     require('./js/map');

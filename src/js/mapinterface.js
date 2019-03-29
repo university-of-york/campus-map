@@ -1,6 +1,6 @@
 
 class MapInterface{
-    
+
     // --------------------------------------------------
 
     constructor( settings ){
@@ -31,24 +31,24 @@ class MapInterface{
         // Add the zoom controls to bottom right
         var nav = new mapboxgl.NavigationControl( { "showCompass": false } );
         this.map.addControl( nav , "bottom-right" );
-        
+
         // Geolocation controls
         var geolocate = new mapboxgl.GeolocateControl( { positionOptions: { enableHighAccuracy: true }, trackUserLocation: true });
         this.map.addControl( geolocate , "bottom-right" );
-        
+
         // Hide irrelevant custom layers for now
-        this.map.on( 'style.load' , () => { 
-            
+        this.map.on( 'style.load' , () => {
+
             this.map.setLayoutProperty( "open-day-labels" , "visibility" , "none" );
             this.map.setLayoutProperty( "open-day-dots" , "visibility" , "none" );
 
         })
-        
+
         // We'll use this to keep track of all open popups
         this.openPopups = {};
 
     }
-    
+
     // --------------------------------------------------
     // Add a simple marker with icon to the map
 
@@ -58,7 +58,7 @@ class MapInterface{
         options = {
             position: [ -1.041749 , 53.947121 ],
             hidden: false,
-            icon: {            
+            icon: {
                 url: 'img/markers/pin.svg',
                 width: '24',
                 height: '32',
@@ -66,14 +66,14 @@ class MapInterface{
             popupLocationId: '',
         };
         */
-        
+
         // Create a DOM element for the marker
         let el = document.createElement( 'div' );
         el.className = 'marker openPopup';
         el.style.backgroundImage = `url(${options.icon.url})`;
         el.style.width = `${options.icon.width}px`;
         el.style.height = `${options.icon.height}px`;
-        
+
         el.style.display = options.hidden ? 'none' : 'block';
 
         // Create the marker
@@ -94,12 +94,12 @@ class MapInterface{
     }
 
     // --------------------------------------------------
-    
+
     setMarkerPosition( marker , position )
     {
         marker.setLngLat( position );
     }
-    
+
     // --------------------------------------------------
 
     setZoom( zoom )
@@ -127,7 +127,7 @@ class MapInterface{
         };
         */
 
-        // If id is supplied check for already open 
+        // If id is supplied check for already open
         if( options.id && this.openPopups[ options.id ] ) {
             return false;
         }
@@ -136,7 +136,7 @@ class MapInterface{
         var popup = new mapboxgl.Popup( {
             "closeOnClick" : false, // Leave popups open when clicking outside it
         } );
-        
+
         popup.setLngLat( options.position )
         popup.setHTML( options.content )
         popup.addTo( this.map );
@@ -146,8 +146,8 @@ class MapInterface{
 
             this.openPopups[ options.id ] = popup;
 
-            let that = this; // Include _this_ in event handler's scope 
-            
+            let that = this; // Include _this_ in event handler's scope
+
             popup.on( 'close' , function( e ) {
                 delete that.openPopups[ options.id ];
             });
@@ -156,22 +156,22 @@ class MapInterface{
         // All done!
         return popup;
     }
-    
+
     // --------------------------------------------------
     // Removes all popups from the map
 
     closePopup( id )
     {
         console.log( id );
-        
+
         if( this.openPopups[ id ] ) {
-            
+
             console.log( this.openPopups[ id ] );
-            
+
             this.openPopups[ id ].remove();
         }
     }
-    
+
     // --------------------------------------------------
     // Removes all popups from the map
 
@@ -183,7 +183,7 @@ class MapInterface{
             that.openPopups[ popupKey ].remove();
         } );
     }
-    
+
     // --------------------------------------------------
 
     goTo( options )
@@ -194,15 +194,15 @@ class MapInterface{
             "zoom" : 16,
         };
         */
-        
+
         this.map.flyTo( {
             "center" : options.position,
             "zoom" : options.zoom - 1,
         } );
     }
-    
+
     // --------------------------------------------------
-    
+
 }
 
 export default MapInterface;

@@ -11,12 +11,12 @@ import Notices from "js/notices";
 "use strict";
 
 $(function() {
-    
-    const config = require("../mapconfig.json");
-    
+
+    const config = require( "../mapconfig.json" );
+
     let geoJson = null;
     let map = null;
-    
+
     // --------------------------------------------------
     // initialise the map
 
@@ -48,7 +48,7 @@ $(function() {
         } catch (e) {
             console.log(e);
         }
-        
+
         // Load our GeoJSON data
         try {
 
@@ -72,6 +72,6 @@ $(function() {
     }
 
     // --------------------------------------------------
-    
+
     initMap();
 });
