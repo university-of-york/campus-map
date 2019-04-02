@@ -49,12 +49,12 @@ const Search = (function() {
 
         // Set map and geoJson data
         _map = map;
-        _geoJson = geoJson;
+        _geoJson = JSON.parse( JSON.stringify( geoJson ) ); // Copy our global object for use in search module only
 
         // Strip out categories that we won't be searching
-        // _geoJson.features = _geoJson.features.filter( ( feature ) => {
-        //     return $.inArray( feature.properties.category , _excludedCategories ) === -1;
-        // } );
+        _geoJson.features = _geoJson.features.filter( ( feature ) => {
+            return $.inArray( feature.properties.category , _excludedCategories ) === -1;
+        } );
 
         // Get our search up and running
         initSearch();
