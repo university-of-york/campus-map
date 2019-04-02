@@ -36,6 +36,11 @@ class MapInterface{
         var geolocate = new mapboxgl.GeolocateControl( { positionOptions: { enableHighAccuracy: true }, trackUserLocation: true });
         this.map.addControl( geolocate , "bottom-right" );
 
+        // Turn on geolocation automatically
+        this.map.on( 'style.load' , () => {
+            geolocate.trigger();
+        });
+
         // Hide irrelevant custom layers for now
         this.map.on( 'style.load' , () => {
 
