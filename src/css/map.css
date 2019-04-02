@@ -622,10 +622,24 @@ input[type=search] {
 
 /* Custom popup styling */
 
+.mapboxgl-popup {
+}
+
+.mapboxgl-popup-close-button {
+    font-size:2em;
+    padding:0.15em 0.2em;
+    opacity:0.5;
+}
+
+.mapboxgl-popup-close-button:hover {
+    opacity:1;
+}
+
 .mapboxgl-popup-content {
     max-width:285px;
     padding:24px 18px;
 
+    font-size: 1.15em;
     background:rgba(15, 61, 76, 0.9);
     border-radius:0.4rem;
     color:white;
