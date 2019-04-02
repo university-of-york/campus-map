@@ -341,6 +341,20 @@ body {
   }
 }
 
+/* Remove hover bg colour from facility buttons on non-hover devices */
+
+/* Fallback */
+.c-btn.c-btn--secondary:active,
+.c-btn.c-btn--secondary:hover { background:#0f3d4c; }
+
+/* Hover/active styles if supported */
+@media screen and ( pointer:hover ) {
+    .c-btn.c-btn--secondary:active { background:#175f77; }
+    .c-btn.c-btn--secondary:hover { background:#134e61; }
+}
+
+
+
 
 /* == ADD TO BASE.SCSS ====================================================== */
 
