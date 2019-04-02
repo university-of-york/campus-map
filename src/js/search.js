@@ -15,7 +15,7 @@ const Search = (function() {
     // Search form elements
     let $searchForm = $('#map-search-form');
     let $searchInput = $('#map-search-query');
-    
+
     // Fuse config
     let _fuseOptions = {
         keys: [{
@@ -55,17 +55,17 @@ const Search = (function() {
         // _geoJson.features = _geoJson.features.filter( ( feature ) => {
         //     return $.inArray( feature.properties.category , _excludedCategories ) === -1;
         // } );
-        
+
         // Get our search up and running
         initSearch();
-        
+
         // Check for a URL hash
         hashHandler();
 
         // Set search input placeholder text and adapt on resize
         searchPlaceholderText();
         $( window ).resize( searchPlaceholderText );
-        
+
     };
 
     // --------------------------------------------------
@@ -195,7 +195,7 @@ const Search = (function() {
 
     // --------------------------------------------------
     // Make a URL hash-friendly value from str
-    
+
     const makeHash = function(str) {
         // Lower case
         // Replace all spaces with '-'
@@ -211,7 +211,7 @@ const Search = (function() {
 
     // --------------------------------------------------
     // Opens either a popup or info panel
-    
+
     const openSearchResult = function( location ) {
 
         // Open an info panel if the location is a room...
@@ -220,42 +220,42 @@ const Search = (function() {
         }
         // ... or open a popup if the location is something else
         else {
-            Popups.openLocationPopup( location , true );
+            Popups.openLocationPopup( location , { "goTo" : true } );
         }
 
     };
 
     // --------------------------------------------------
     // Handle any changes to the URL hash
-    
+
     const hashHandler = function() {
 
         // Get current hash
         let currentHash = window.location.hash.replace( '#' , '' );
-        
+
         // Abandon if no hash present
         if( !currentHash ) return false;
 
         // Look up the location in the geoJson data
         let location = Utils.locationLookUp( currentHash );
-        
+
         // Quietly abandon if no location found
         if( !location ) {
             return false;
         }
-        
+
         // Open up a popup or info panel
         openSearchResult( location );
 
         return true;
     };
-    
+
     // --------------------------------------------------
 
     const searchPlaceholderText = function() {
 
         let placeholderText = ( $(window).width() < 1024 ) ? 'Search the map' : 'Search for buildings, departments and rooms';
-        
+
         $searchInput.attr( 'placeholder' , placeholderText );
 
     };

@@ -11,7 +11,7 @@ const Controls = (function() {
     // Our map interface & config objects
     let _map;
     let _config;
-    
+
     // Campus sites and reset
     let _controlCampus = $( '#control-campus-div' );
     let _controlResetButton = $( '#control-reset-ui' );
@@ -34,10 +34,10 @@ const Controls = (function() {
         // Un-hide our controls
         _controlCampus.removeClass( 'is-hidden' ).show();
         _controlFeedback.removeClass( 'is-hidden' ).show();
-        
+
         // Reset button
         _controlResetButton.click( resetClickHandler );
-        
+
         // Site buttons
         _controlEastButton.click( _config.sites.east , siteClickHandler );
         _controlWestButton.click( _config.sites.west , siteClickHandler );
@@ -50,7 +50,7 @@ const Controls = (function() {
     // --------------------------------------------------
 
     const resetClickHandler = function() {
-        
+
         _map.setBounds( _config.globalMapOptions.defaultBounds );
 
         Popups.clearPopups();
@@ -65,7 +65,7 @@ const Controls = (function() {
 
     const siteClickHandler = function( options ) {
 
-        _map.goTo( options.data );
+        _map.flyTo( options.data );
 
         MapAnalytics.addAnalyticsEvent( 'Centre on' , options.data.label );
     }

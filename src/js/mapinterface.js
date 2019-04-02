@@ -188,6 +188,13 @@ class MapInterface{
 
     goTo( options )
     {
+        this.map.panTo( options.position );
+    }
+
+    // --------------------------------------------------
+
+    flyTo( options )
+    {
         /*
         options = {
             "position" : [ -1.0501 , 53.9447 ],

@@ -93,7 +93,7 @@ const Facilities = (function() {
                 let $marker = $( marker.getElement() );
 
                 $marker.on( 'mouseenter' , function() {
-                    Popups.openLocationPopup( feature );
+                    Popups.openLocationPopup( feature , { "goTo" : false } );
                 } );
 
                 // Create an empty array for the group if none exists already

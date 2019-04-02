@@ -44,7 +44,7 @@ const Popups = (function() {
         let location = Utils.locationLookUp( locationId );
 
         if( location ) {
-            openLocationPopup( location , $( this ).hasClass( 'gotoPopup' ) );
+            openLocationPopup( location , { "goTo" : $( this ).hasClass( 'gotoPopup' ) } );
         }
     };
 
@@ -69,7 +69,7 @@ const Popups = (function() {
     // --------------------------------------------------
     // Opens a popup with location details
 
-    const openLocationPopup = function( location , goto ) {
+    const openLocationPopup = function( location , options ) {
 
         // Close all existing popups
         clearPopups();
@@ -83,10 +83,9 @@ const Popups = (function() {
         } );
 
         // Move the map?
-        if( goto ) {
+        if( options.goTo ) {
             _map.goTo( {
                 position: location.geometry.coordinates,
-                zoom: ( location.properties.zoom || 16 ), // Default zoom level to 16 if none found?
             } );
         }
 
