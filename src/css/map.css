@@ -354,8 +354,6 @@ body {
 }
 
 
-
-
 /* == ADD TO BASE.SCSS ====================================================== */
 
 input[type=search] {
@@ -636,9 +634,6 @@ input[type=search] {
 
 /* Custom popup styling */
 
-.mapboxgl-popup {
-}
-
 .mapboxgl-popup-close-button {
     font-size:2em;
     padding:0.15em 0.2em;
@@ -694,6 +689,9 @@ input[type=search] {
     width:40px;
     height:40px;
 }
+
+/* Prevents fuzzy text rendering on OSX */
+.mapboxgl-popup { will-change:auto; }
 
 /* Attribution height issue */
 
