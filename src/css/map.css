@@ -680,3 +680,31 @@ input[type=search] {
     width:40px;
     height:40px;
 }
+
+/* Attribution height issue */
+
+/* Reduce extra spacing between attribution and other controls */
+.mapboxgl-map .mapboxgl-ctrl-attrib.mapboxgl-compact { margin-top:0; }
+
+/* Ditch Mapbox's original CSS solution */
+.mapboxgl-map .mapboxgl-ctrl-attrib.mapboxgl-compact:hover .mapboxgl-ctrl-attrib-inner,
+.mapboxgl-map .mapboxgl-ctrl-attrib.mapboxgl-compact .mapboxgl-ctrl-attrib-inner {
+    display:block;
+}
+
+/* Hide/reveal inner elements instead of the whole container */
+.mapboxgl-map .mapboxgl-ctrl-attrib.mapboxgl-compact .mapboxgl-ctrl-attrib-inner > a { display:none; }
+.mapboxgl-map .mapboxgl-ctrl-attrib.mapboxgl-compact:hover .mapboxgl-ctrl-attrib-inner > a { display:inline; }
+
+/* Spacer element so all others can be hidden without collapsing the container */
+.mapboxgl-map .mapboxgl-ctrl-attrib.mapboxgl-compact .mapboxgl-ctrl-attrib-inner:before { content:'\00a0'; }
+
+/* Switch background on/off on hover */
+.mapboxgl-map .mapboxgl-ctrl-attrib.mapboxgl-compact { background:none; }
+.mapboxgl-map .mapboxgl-ctrl-attrib.mapboxgl-compact:hover { background:white; }
+
+/* Apply same padding, hovered or not */
+.mapboxgl-map .mapboxgl-ctrl-attrib.mapboxgl-compact:hover,
+.mapboxgl-map .mapboxgl-ctrl-attrib.mapboxgl-compact {
+    padding: 2px 24px 2px 4px;
+}
