@@ -673,3 +673,10 @@ input[type=search] {
 .mapboxgl-popup-anchor-bottom-left  .mapboxgl-popup-tip,
 .mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip,
 .mapboxgl-popup-anchor-bottom       .mapboxgl-popup-tip { border-top-color:rgba(15, 61, 76, 0.9); }
+
+/* Mapbox controls */
+
+.mapboxgl-ctrl-group > button {
+    width:40px;
+    height:40px;
+}
