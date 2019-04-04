@@ -33,13 +33,17 @@ class MapInterface{
         this.map.addControl( nav , "bottom-right" );
 
         // Geolocation controls
-        var geolocate = new mapboxgl.GeolocateControl( { positionOptions: { enableHighAccuracy: true }, trackUserLocation: true });
+        var geolocate = new mapboxgl.GeolocateControl( {
+            positionOptions: { enableHighAccuracy: true },
+            trackUserLocation: true
+        });
         this.map.addControl( geolocate , "bottom-right" );
 
-        // Turn on geolocation automatically
-        this.map.on( 'style.load' , () => {
-            geolocate.trigger();
-        });
+        // Turn on geolocation automatically?
+        // Problematic because re-centers map on user location
+        // this.map.on( 'style.load' , () => {
+        //     geolocate.trigger();
+        // });
 
         // Hide irrelevant custom layers for now
         this.map.on( 'style.load' , () => {
