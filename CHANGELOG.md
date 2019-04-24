@@ -1,3 +1,22 @@
+## [1.4.3](https://github.com/university-of-york/campus-map/compare/v1.4.2...v1.4.3) (2019-04-24)
+
+
+### Bug Fixes
+
+* **deps:** update babel monorepo to v7.2.3 ([0b0ff4e](https://github.com/university-of-york/campus-map/commit/0b0ff4e))
+* **deps:** update dependency [@babel](https://github.com/babel)/polyfill to v7.2.5 ([4875c46](https://github.com/university-of-york/campus-map/commit/4875c46))
+* **deps:** update dependency [@semantic-release](https://github.com/semantic-release)/git to v7.0.6 ([fcfe6bf](https://github.com/university-of-york/campus-map/commit/fcfe6bf))
+* **deps:** update dependency [@semantic-release](https://github.com/semantic-release)/github to v5.2.6 ([11b4a5e](https://github.com/university-of-york/campus-map/commit/11b4a5e))
+* **deps:** update dependency [@semantic-release](https://github.com/semantic-release)/github to v5.2.7 ([13e5789](https://github.com/university-of-york/campus-map/commit/13e5789))
+* **deps:** update dependency semantic-release to v15.12.5 ([1918d4d](https://github.com/university-of-york/campus-map/commit/1918d4d))
+* **deps:** update dependency semantic-release to v15.13.1 ([1e25d6e](https://github.com/university-of-york/campus-map/commit/1e25d6e))
+* **deps:** update dependency semantic-release to v15.13.3 ([a5a2c86](https://github.com/university-of-york/campus-map/commit/a5a2c86))
+* **deps:** update dependency webpack to v4.28.0 ([709d134](https://github.com/university-of-york/campus-map/commit/709d134))
+* **deps:** update dependency webpack to v4.28.1 ([4c59ee0](https://github.com/university-of-york/campus-map/commit/4c59ee0))
+* **deps:** update dependency webpack to v4.28.3 ([b115ba4](https://github.com/university-of-york/campus-map/commit/b115ba4))
+* **deps:** update dependency webpack to v4.28.4 ([bf05864](https://github.com/university-of-york/campus-map/commit/bf05864))
+* **deps:** update semantic-release monorepo ([3dde8d8](https://github.com/university-of-york/campus-map/commit/3dde8d8))
+
 ## [1.4.2](https://github.com/university-of-york/campus-map/compare/v1.4.1...v1.4.2) (2018-12-07)
 
 
