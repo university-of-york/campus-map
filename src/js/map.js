@@ -1,146 +1,77 @@
-import CustomControls from 'js/customcontrols';
-import Geolocation from 'js/geolocation';
-import MapMarkers from 'js/mapmarkers';
-import InfoWindows from 'js/infowindows';
-import Utils from 'js/utils';
-import MapSearch from 'js/mapsearch';
-import MapTiles from 'js/maptiles';
 
-'use strict';
+import MapInterface from "js/mapinterface";
+import Controls from "js/controls";
+import Facilities from "js/facilities";
+import InfoPanel from "js/infopanel";
+import Popups from "js/popups";
+import Utils from "js/utils";
+import Search from "js/search";
+import Notices from "js/notices";
+
+"use strict";
 
 $(function() {
 
-    // defaults
-    const GeoJSONFile = UOY_MAP.getConfig().geoJSONFile; // loads the geoJson file from the mapconfig.json file
-    let cachedGeoJson = {};
-    let map;
-    let maxZoom = 18,
-        minZoom = 8,
-        defaultZoom = 14;
-    let heslington = {
-        lat: 53.9504,
-        lng: -1.0660
-    };
-    // Google maps style that roughly matches our tiles
-    let mapStyle = UOY_MAP.getConfig().mapStyles;
-    let $window = $(window);
+    const config = require( "../mapconfig.json" );
 
+    let geoJson = null;
+    let map = null;
 
-    // load the map
-    function loadMap() {
-        return new google.maps.Map(document.getElementById('map'), {
-            zoom: defaultZoom,
-            maxZoom: maxZoom,
-            minZoom: minZoom,
-            center: heslington,
-            zoomControl: true,
-            zoomControlOptions: {
-                position: google.maps.ControlPosition.RIGHT_BOTTOM
-            },
-            scaleControl: true,
-            streetViewControl: true,
-            streetViewControlOptions: {
-                position: google.maps.ControlPosition.RIGHT_BOTTOM
-            },
-            fullscreenControl: false,
-            disableDefaultUI: true,
-            gestureHandling: 'greedy',
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            styles: mapStyle
-        });
-    }
-
-
+    // --------------------------------------------------
     // initialise the map
+
     function initMap() {
 
-        // load the map
-        map = loadMap();
+        // Create map object
+        map = new MapInterface({
+            container:"map",
+            zoom: config.globalMapOptions.defaultZoom,
+            maxZoom: config.globalMapOptions.maxZoom,
+            minZoom: config.globalMapOptions.minZoom,
+            centre: config.globalMapOptions.defaultCentre,
+            style: config.globalMapOptions.style,
+            accessToken: config.globalMapOptions.mapboxAccessToken,
+        });
 
-        // pass the map object into our global uoy_map object for its use(s)
+        // Set map to default bounds
+        map.setBounds( config.globalMapOptions.defaultBounds );
+
+        // Initialise our various objects
         try {
-            UOY_MAP.setMap(map);
-            UOY_MAP.plotPOIItems();
 
-            MapTiles.setMap(map);
-            Utils.setMap(map);
-            InfoWindows.setMap(map);
-            CustomControls.setMap(map);
-            MapMarkers.setMap(map);
-            MapSearch.setMap(map);
+            Controls.init( map , config );
+            Facilities.init( map , config );
+            InfoPanel.init( map );
+            Popups.init( map );
+            Notices.init( config );
+
         } catch (e) {
             console.log(e);
         }
 
-        // fit to campuses
-        CustomControls.setBounds();
+        // Load our GeoJSON data
+        try {
 
-        // initialise our custom map tiles
-        MapTiles.init();
+            $.getJSON( config.geoJSONFile ).then(function( data ) {
 
-        // add custom controls
-        CustomControls.customFeedbackControl();
-        CustomControls.customCampusControl();
+                geoJson = data;
 
-        // Load GeoJSON.
-        $.getJSON(GeoJSONFile).then(function(data) {
-            cachedGeoJson = data; //save the geojson in case we want to update its values
+                // Initialise things that rely on the geoJson data
+                Utils.initData( geoJson );
+                Facilities.initData( geoJson );
+                Search.init( map , geoJson );
 
-            if(!Utils.isObjectReady(data.features)) {
-                return false;
-            }
-
-            // Filter features that have contain certain terms
-            // NOTE: this feature has been moved to the custom_groovy file direct at Funnelback
-
-            // Update some wayward locations
-            $.each(cachedGeoJson.features, function(i, d) {
-                if (d.properties.codes === 'O/EXT/P-temp') {
-                    cachedGeoJson.features[i].geometry.coordinates = [-1.051738, 53.9417839];
-                    cachedGeoJson.features[i].properties.subtitle = 'Adjacent to Pavilion, Campus West';
-                }
+            }).fail(function(err) {
+                console.log( "The map data failed to load" , err );
             });
 
-            // initialise our map markers, search and Utils
-            Utils.init(cachedGeoJson);
-            Utils.checkHash();
+        } catch (e) {
+            console.log(e);
+        }
 
-            MapMarkers.init(cachedGeoJson);
-            MapMarkers.addMarkers();
+    }
 
-            MapSearch.init(cachedGeoJson);
-
-            // For testing purposes
-            // window.cachedGeoJson = cachedGeoJson;
-        }).fail(function(err) {
-            console.log('The map data failed to load', err);
-        });
-
-        google.maps.event.addListener(map, 'idle', function() {
-            google.maps.event.trigger(map, 'resize');
-        });
-        google.maps.event.addListener(map, 'tilesloaded', function() {
-
-            // show the various feedback and map location buttons
-            $('#control-feedback-div').removeClass('is-hidden');
-            $('#control-campus-buttons').removeClass('is-hidden');
-            $('#control-campus-div').removeClass('is-hidden');
-        });
-
-    } // end initMap
+    // --------------------------------------------------
 
     initMap();
-
-    $window.on('hashchange', Utils.checkHash);
-
-    $('#drawerStatusButton').click(Utils.toggleDrawer);
-
-    MapSearch.searchPlaceholderText();
-
-    // respond to resizing
-    $(window).resize(MapSearch.searchPlaceholderText);
-
-    // User location
-    Geolocation.init(map);
 });
-
