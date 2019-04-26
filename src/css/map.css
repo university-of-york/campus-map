@@ -8,23 +8,32 @@ body {
   overflow:hidden;
 }
 
+/* Accommodate the cookie banner */
+
+body {
+    display:flex;
+    flex-flow:column nowrap;
+}
+
+.wrapper { flex-grow:1; }
+
+/* re-place banner in the flow */
+.c-cookie-banner {
+    position:static;
+    z-index:auto;
+    left:auto;
+    right:auto;
+    bottom:auto;
+}
+
+/* General layout */
 
 .wrapper {
   display:flex;
   flex-direction: column;
   justify-content: flex-start;
-  height:calc(100% - 3.5rem); /* for IE 10 & 11 benefit don't use min-height */
+  height:100%;
   position: relative;
-}
-@media (min-width: 768px) {
-  .wrapper {
-    height: calc(100% - 5.5rem);  /* for IE 10 & 11 benefit don't use min-height */
-  }
-}
-@media (min-width: 923px) {
-  .wrapper {
-    height: calc(100% - 3.8rem);  /* for IE 10 & 11 benefit don't use min-height */
-  }
 }
 
 /* Map wrapper to contain the map's div + overlays (controls & info panel) */
@@ -109,30 +118,8 @@ body {
   bottom: 0;
   border-top: 2px solid #f9f9f9;
   background-color: #fff;
-  min-height: 3.5rem;
-  position: fixed;
-  z-index:2; /* Above map controls */
   padding: 0;
   width: 100%;
-}
-@media (min-width: 768px) {
-  .footer {
-    min-height:5.5rem;
-  }
-}
-@media (max-width: 767px) {
-  .panel {
-    max-height:0;
-    transition:max-height 0.4s;
-  }
-  .panel.is-open {
-    max-height:100vh;
-  }
-}
-@media (min-width: 923px) {
-  .footer {
-    min-height:3.5rem;
-  }
 }
 
 .bar {
@@ -142,6 +129,7 @@ body {
   padding: .25em;
   text-align: center;
 }
+
 .bar a {
   display: block;
   height: 100%;
@@ -315,6 +303,10 @@ body {
     .c-anchor--facility {
         /* display: none; */
     }
+
+    /* hide facility panel by default */
+    .panel { display:none; }
+
 }
 
 
