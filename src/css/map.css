@@ -315,6 +315,9 @@ body {
   .bar {
       display: none;
   }
+
+  .panel { display:block !important; } /* Override any toggling done in JS */
+
   .c-form {
       position: relative;
       left: 0;
