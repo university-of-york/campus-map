@@ -135,9 +135,16 @@ const Facilities = (function() {
 
         if (panelOpen) {
             $panel.removeClass('is-open');
+            $panel.slideUp();
+
+            // Make sure the map is redrawn at the right size
+            setTimeout( function(){ _map.resize(); } , 400 );
+
         } else {
             $panel.addClass('is-open');
+            $panel.slideDown();
         }
+
     };
 
     // --------------------------------------------------

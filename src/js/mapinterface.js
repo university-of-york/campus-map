@@ -56,6 +56,9 @@ class MapInterface{
         // We'll use this to keep track of all open popups
         this.openPopups = {};
 
+        // Add a listener for the Pattern Library cookie banner dismiss button to resize the map canvas
+        $( '.c-cookie-banner' ).on( 'click' , '.c-cookie-banner__dismiss' , this.resize.bind( this ) );
+
     }
 
     // --------------------------------------------------
@@ -215,6 +218,14 @@ class MapInterface{
             "center" : options.position,
             "zoom" : options.zoom - 1,
         } );
+    }
+
+    // --------------------------------------------------
+    // Use when canvas is resized - redraws the map at correct size
+
+    resize()
+    {
+        this.map.resize();
     }
 
     // --------------------------------------------------
