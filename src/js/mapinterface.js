@@ -46,12 +46,15 @@ class MapInterface{
         // });
 
         // Hide irrelevant custom layers for now
-        this.map.on( 'style.load' , () => {
+        // 01/05/2019 - TODO: Remove when no longer relevant
+        try {
+            this.map.on( 'style.load' , () => {
 
-            this.map.setLayoutProperty( "open-day-labels" , "visibility" , "none" );
-            this.map.setLayoutProperty( "open-day-dots" , "visibility" , "none" );
+                this.map.setLayoutProperty( "open-day-labels" , "visibility" , "none" );
+                this.map.setLayoutProperty( "open-day-dots" , "visibility" , "none" );
 
-        })
+            })
+        } catch(e) {}
 
         // We'll use this to keep track of all open popups
         this.openPopups = {};
