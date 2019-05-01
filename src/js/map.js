@@ -26,8 +26,9 @@ $(function() {
         map = new MapInterface({
             container:"map",
             zoom: config.globalMapOptions.defaultZoom,
-            maxZoom: config.globalMapOptions.maxZoom,
             minZoom: config.globalMapOptions.minZoom,
+            maxZoom: config.globalMapOptions.maxZoom,
+            maxBounds: config.globalMapOptions.maxBounds,
             centre: config.globalMapOptions.defaultCentre,
             style: config.globalMapOptions.style,
             accessToken: config.globalMapOptions.mapboxAccessToken,

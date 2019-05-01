@@ -11,6 +11,10 @@ class MapInterface{
             zoom: 14,
             minZoom: 10,
             maxZoom: 18,
+            maxBounds: [
+                [ -1.1501312255859375 , 53.921324836434714 ], // Southwest
+                [ -1.009368896484375 , 53.996468534299375 ]  // Northeast
+            ],
             centre: [ -1.041749 , 53.947121 ],
             style: 'mapbox://styles/mapbox/basic-v9',
         };
@@ -25,6 +29,7 @@ class MapInterface{
             "zoom" : settings.zoom,
             "minZoom" : settings.minZoom,
             "maxZoom" : settings.maxZoom,
+            "maxBounds" : settings.maxBounds,
             "center" : settings.centre,
         });
 

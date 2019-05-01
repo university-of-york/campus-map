@@ -4,6 +4,10 @@
     "mapTitle" : "Campus map",
     "maxZoom" : 18,
     "minZoom" : 10,
+    "maxBounds" : [
+        [ -1.1501312255859375 , 53.921324836434714 ],
+        [ -0.990142822265625 , 53.979108639593576 ]
+    ],
     "defaultZoom" : 14,
     "defaultCentre" : [ -1.041227 , 53.947017 ],
     "defaultBounds" : [
