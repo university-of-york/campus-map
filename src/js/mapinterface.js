@@ -50,8 +50,8 @@ class MapInterface{
         try {
             this.map.on( 'style.load' , () => {
 
-                this.map.setLayoutProperty( "open-day-labels" , "visibility" , "none" );
-                this.map.setLayoutProperty( "open-day-dots" , "visibility" , "none" );
+                if( this.map.getLayer( "open-day-labels" ) !== undefined ) this.map.setLayoutProperty( "open-day-labels" , "visibility" , "none" );
+                if( this.map.getLayer( "open-day-dots" ) !== undefined ) this.map.setLayoutProperty( "open-day-dots" , "visibility" , "none" );
 
             })
         } catch(e) {}
