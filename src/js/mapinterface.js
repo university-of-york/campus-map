@@ -51,6 +51,7 @@ class MapInterface{
         // });
 
         // Hide irrelevant custom layers for now
+        // 01/05/2019 - TODO: remove this when tile cache has expired as standard map no longer contains these layers
         this.map.on( 'style.load' , () => {
 
             this.map.setLayoutProperty( "open-day-labels" , "visibility" , "none" );
