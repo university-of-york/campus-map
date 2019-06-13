@@ -53,9 +53,9 @@ $(function() {
         // Load our GeoJSON data
         try {
 
-            $.getJSON( config.geoJSONFile ).then(function( data ) {
+            $.getJSON( config.data.source ).then(function( data ) {
 
-                geoJson = data;
+                geoJson = Utils.prepareGeoJson( data , config.data.fieldOverrides );
 
                 // Initialise things that rely on the geoJson data
                 Utils.initData( geoJson );

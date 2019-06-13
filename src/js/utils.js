@@ -42,8 +42,41 @@ const Utils = (function() {
     };
 
     // --------------------------------------------------
+    // Performs any additional transformations to our geoJson
+
+    const prepareGeoJson = function( geoJson , overrides ) {
+
+        // Apply field overrides
+        if( overrides != undefined ) {
+
+            // Get keys for traversing overrides
+            var keys = Object.keys( overrides );
+
+            // Apply each override in turn
+            for( var k = 0 ; k < keys.length ; k++ ){
+
+                var keyTo = keys[ k ];
+                var keyFrom = overrides[ keyTo ];
+
+                // Apply to each feature in our dataset
+                for( var i = 0 ; i < geoJson.features.length ; i++ ){
+
+                    // Only override if source exists and is not empty
+                    if( geoJson.features[ i ].properties[ keyFrom ] != undefined && geoJson.features[ i ].properties[ keyFrom ] != '' ) {
+                        geoJson.features[ i ].properties[ keyTo ] = geoJson.features[ i ].properties[ keyFrom ];
+                    }
+                }
+            }
+        }
+
+        return geoJson;
+
+    };
+
+    // --------------------------------------------------
 
     return {
+        prepareGeoJson,
         locationLookUp,
         initData
     };
