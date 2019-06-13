@@ -1,5 +1,7 @@
 {
-  "geoJSONFile": "https://york.funnelback.co.uk/s/search.html?collection=york-uni-campusmap&form=geojson&query=!padrenullquery&num_ranks=5000&MBL=800",
+  "data": {
+    "source": "https://york.funnelback.co.uk/s/search.html?collection=york-uni-campusmap&form=geojson&num_ranks=5000&MBL=800&meta_visible=1"
+  },
   "globalMapOptions": {
     "mapTitle" : "Campus map",
     "maxZoom" : 18,
