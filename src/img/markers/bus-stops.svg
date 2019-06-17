@@ -44,8 +44,7 @@
 <style
    type="text/css"
    id="style2">
-	.st0{fill:none;}
-	.st1{fill:#996699;stroke:#FFFFFF;}
+	.st0{fill:#E3000F;}
 	.st2{fill:#FFFFFF;}
 </style>
 <rect
@@ -65,7 +64,7 @@
    transform="translate(0,-2)">
 	<title
    id="title5">Layer 1</title>
-	
+
 	<path
    id="svg_1"
    class="st2"
