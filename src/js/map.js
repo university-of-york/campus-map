@@ -32,6 +32,7 @@ $(function() {
             centre: config.globalMapOptions.defaultCentre,
             style: config.globalMapOptions.style,
             accessToken: config.globalMapOptions.mapboxAccessToken,
+            hiddenLayers: config.data.hiddenLayers,
         });
 
         // Set map to default bounds
