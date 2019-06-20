@@ -33,6 +33,7 @@ $(function() {
             style: config.globalMapOptions.style,
             accessToken: config.globalMapOptions.mapboxAccessToken,
             hiddenLayers: config.data.hiddenLayers,
+            hiddenFeatures: config.data.hiddenFeatures,
         });
 
         // Set map to default bounds
