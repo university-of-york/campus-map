@@ -83,11 +83,11 @@
   "facilityRedirects" : {
     "disabled-parking" : "accessible-parking"
   },
-  "globalNotice__UNCOMMENT_TO_USE": {
+  "globalNotice": {
     "id": "openday2019",
     "placeBeforeElement": ".wrapper",
     "title": "",
-    "description": "Here for Open Day? We've got an <a href=\"https://www.york.ac.uk/map/openday\">Open Day Map</a> just for you",
+    "description": "This map shows information for our Open Day visitors. Switch to the <a href=\"https://www.york.ac.uk/map/\">full map</a> to see all locations and facilities.",
     "noticeModifierClasses": "c-global-notice--highlighted",
     "closeable": true
   }
