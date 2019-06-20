@@ -1,7 +1,8 @@
 {
   "data": {
     "source": "https://york.funnelback.co.uk/s/search.html?collection=york-uni-campusmap&form=geojson&num_ranks=5000&MBL=800&meta_visibleopenday=1",
-    "fieldOverrides": { "shortdesc": "shortdescopenday"  }
+    "fieldOverrides": { "shortdesc": "shortdescopenday" },
+    "hiddenFeatures": [ { "Colleges" : [ "Central Hall" ] } , { "Building labels" : [ "Exhibition Centre" , "Spring Lane Building" , "Ron Cooke Hub" , "Piazza Building" ] } ]
   },
   "globalMapOptions": {
     "mapTitle" : "Campus map",
