@@ -82,7 +82,7 @@
   "facilityRedirects" : {
     "disabled-parking" : "accessible-parking"
   },
-  "globalNotice": {
+  "globalNotice_________DISABLED_FOR_NOW": {
     "id": "openday2019",
     "placeBeforeElement": ".wrapper",
     "title": "",
