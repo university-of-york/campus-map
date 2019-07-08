@@ -120,8 +120,10 @@ const InfoPanel = (function() {
             let content = `<h3>${ location.properties.title }</h3>`;
  
             content += location.properties.subtitle ? `<h4>${ location.properties.subtitle }</h4>` : '';
+            content += location.properties.zone ? `<span class="campus-zone campus-zone--darkbg zone-${ location.properties.zone }"></span>`: '';
             content += location.properties.shortdesc ? `<p>${ location.properties.shortdesc }</p>` : '';
             content += location.properties.longdesc ? `<p>${ location.properties.longdesc }</p>` : '';
+            console.log(location);
 
             // If location is a room but still has a lat/long then provide link to open a popup
             if( location.properties.category == 'Room' && location.geometry.coordinates[ 0 ] != 0 && location.geometry.coordinates[ 1 ] != 0 ) {
