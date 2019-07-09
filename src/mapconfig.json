@@ -56,7 +56,7 @@
     {
       "id": "cash-machines",
       "value": "Cash machines",
-      "iconClass": "c-icon--money"
+      "iconClass": "c-icon--gbp"
     },
     {
       "id": "car-parks",
