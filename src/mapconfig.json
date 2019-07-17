@@ -61,7 +61,7 @@
     {
       "id": "cash-machines",
       "value": "Cash machines",
-      "iconClass": "c-icon--money"
+      "iconClass": "c-icon--gbp"
     },
     {
       "id": "shuttle-bus",
@@ -82,7 +82,7 @@
   "facilityRedirects" : {
     "disabled-parking" : "accessible-parking"
   },
-  "globalNotice__UNCOMMENT_TO_USE": {
+  "globalNotice_________DISABLED_FOR_NOW": {
     "id": "openday2019",
     "placeBeforeElement": ".wrapper",
     "title": "",

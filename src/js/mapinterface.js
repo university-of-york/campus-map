@@ -50,7 +50,7 @@ class MapInterface{
         //     geolocate.trigger();
         // });
 
-        // Hide irrelevant custom layers for now
+        // Apply hidden layers setting
         if( settings.hiddenLayers != undefined )
         {
           try {
@@ -60,6 +60,32 @@ class MapInterface{
                   if( this.map.getLayer( hiddenLayer ) !== undefined ) this.map.setLayoutProperty( hiddenLayer , "visibility" , "none" );
                 }
               })
+          } catch(e) {}
+        }
+
+        // Apply hidden features setting
+        if( settings.hiddenFeatures != undefined )
+        {
+          try {
+            this.map.on( 'style.load' , () => {
+
+              var layers = Object.keys( settings.hiddenFeatures );
+
+              for( var l = 0 ; l < layers.length ; l++ ) {
+
+                var layer = layers[ l ];
+                var featuresToHide = settings.hiddenFeatures[ layer ];
+
+                var featureFilter = [ 'all' ];
+
+                for( var f = 0 ; f < featuresToHide.length ; f++ ) {
+                  var feature = featuresToHide[ f ];
+                  featureFilter.push( [ '!=' , 'name' , feature ] );
+                }
+
+                this.map.setFilter( layer , featureFilter );
+              }
+            })
           } catch(e) {}
         }
 
