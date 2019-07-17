@@ -416,7 +416,7 @@ input[type=search] {
 /* ========================================================================== */
 
 .infoPanel {
-  background-color: rgba(240,242,233,0.9);
+  background-color: rgba(240,242,233,0.95);
   color: #000;
   display: none;
   padding: 2rem 1rem;
