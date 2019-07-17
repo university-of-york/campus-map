@@ -416,8 +416,8 @@ input[type=search] {
 /* ========================================================================== */
 
 .infoPanel {
-  background-color: rgba(15,61,76,0.9);
-  color: #fff;
+  background-color: rgba(240,242,233,0.9);
+  color: #000;
   display: none;
   padding: 2rem 1rem;
   width: 0;
@@ -435,7 +435,7 @@ input[type=search] {
 
 .infoPanel__content a,
 .infoPanel__content a:visited {
-  color: #e4b53c;
+  /* color: #e4b53c; */
   cursor: pointer;
   text-decoration: none;
   text-decoration: underline;
