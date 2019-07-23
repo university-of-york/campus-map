@@ -171,7 +171,7 @@ body {
 
 
 .control-campus-div--campus-buttons {
-    background-color:rgba(240,242,233,0.8);
+    background-color: rgba(240,241,244,0.95);
     border-radius: 0.4em;
     display: block;
     margin: 0 -0.35rem;
@@ -416,7 +416,7 @@ input[type=search] {
 /* ========================================================================== */
 
 .infoPanel {
-  background-color: rgba(240,242,233,0.95);
+  background-color: rgba(240,241,244,0.95);
   color: #000;
   display: none;
   padding: 2rem 1rem;
