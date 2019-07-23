@@ -120,7 +120,7 @@ const InfoPanel = (function() {
             let content = `<h3>${ location.properties.title }</h3>`;
  
             content += location.properties.subtitle ? `<h4>${ location.properties.subtitle }</h4>` : '';
-            if (location.properties.zone != 'KM') content += location.properties.zone ? `<span class="campus-zone campus-zone--darkbg zone-${ location.properties.zone }"></span>`: '';
+            if (location.properties.zone != 'KM') content += location.properties.zone ? `<div class="c-badge"><span class="c-campus-zone  zone-${ location.properties.zone }"></span><span class="c-campus-zone__label">Zone ${ location.properties.zone }</span></div>`: '';
             content += location.properties.shortdesc ? `<p>${ location.properties.shortdesc }</p>` : '';
             content += location.properties.longdesc ? `<p>${ location.properties.longdesc }</p>` : '';
             console.log(location);
