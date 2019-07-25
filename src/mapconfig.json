@@ -14,10 +14,10 @@
     "defaultZoom" : 14,
     "defaultCentre" : [ -1.041227 , 53.947017 ],
     "defaultBounds" : [
-        [ -1.058537 , 53.943157 ],
-        [ -1.024085 , 53.950877 ]
+        [ -1.0606956481933594 , 53.93970134196224 ],
+        [ -1.0147762298583984 , 53.95136406133858 ]
     ],
-    "style" : "mapbox://styles/university-of-york/cjucik6l81fmc1fprt8764pvg",
+    "style" : "mapbox://styles/university-of-york/cjwut87gf0adf1dpn8w3q7nb4",
     "mapboxAccessToken" : "pk.eyJ1IjoidW5pdmVyc2l0eS1vZi15b3JrIiwiYSI6ImNqdHNxZzNwdTAxaDQzeXF0NDFicnNyaWgifQ.DylqJj6L7qZ-26dLEsHaHw"
   },
   "sites": {
@@ -56,7 +56,7 @@
     {
       "id": "cash-machines",
       "value": "Cash machines",
-      "iconClass": "c-icon--money"
+      "iconClass": "c-icon--gbp"
     },
     {
       "id": "car-parks",
