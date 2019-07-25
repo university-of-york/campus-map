@@ -169,9 +169,8 @@ body {
     top: 0;
 }
 
-
 .control-campus-div--campus-buttons {
-    background-color:rgba(240,242,233,0.8);
+    background-color: rgba(240,241,244,0.95);
     border-radius: 0.4em;
     display: block;
     margin: 0 -0.35rem;
@@ -416,8 +415,8 @@ input[type=search] {
 /* ========================================================================== */
 
 .infoPanel {
-  background-color: rgba(15,61,76,0.9);
-  color: #fff;
+  background-color: rgba(240,241,244,0.95);
+  color: #000;
   display: none;
   padding: 2rem 1rem;
   width: 0;
@@ -435,7 +434,6 @@ input[type=search] {
 
 .infoPanel__content a,
 .infoPanel__content a:visited {
-  color: #e4b53c;
   cursor: pointer;
   text-decoration: none;
   text-decoration: underline;

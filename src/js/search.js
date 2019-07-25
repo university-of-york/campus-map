@@ -114,6 +114,7 @@ const Search = (function() {
                     fuseResult[i].item.title = feature.item.properties.title;
                     fuseResult[i].item.subtitle = feature.item.properties.subtitle;
                     fuseResult[i].item.link = '#' + makeHash(feature.item.properties.locationid);
+                    if ( feature.item.properties.zone != 'KM' && feature.item.properties.zone != undefined ) fuseResult[i].item.badge = '<div class="c-badge"><span class="c-campus-zone zone-'+ feature.item.properties.zone+'"></span><span class="c-campus-zone__label"> Zone '+ feature.item.properties.zone+'</span></div>';
                     if (i === fuseResult.length - 1) {
                         onComplete(fuseResult);
                     }
