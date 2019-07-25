@@ -32,7 +32,6 @@ body {
   display:flex;
   flex-direction: column;
   justify-content: flex-start;
-  height:100%;
   position: relative;
 }
 
@@ -172,7 +171,7 @@ body {
 
 
 .control-campus-div--campus-buttons {
-    background-color:rgba(240,242,233,0.8);
+    background-color: rgba(240,241,244,0.95);
     border-radius: 0.4em;
     display: block;
     margin: 0 -0.35rem;
@@ -417,8 +416,8 @@ input[type=search] {
 /* ========================================================================== */
 
 .infoPanel {
-  background-color: rgba(15,61,76,0.9);
-  color: #fff;
+  background-color: rgba(240,241,244,0.95);
+  color: #000;
   display: none;
   padding: 2rem 1rem;
   width: 0;
@@ -436,7 +435,6 @@ input[type=search] {
 
 .infoPanel__content a,
 .infoPanel__content a:visited {
-  color: #e4b53c;
   cursor: pointer;
   text-decoration: none;
   text-decoration: underline;
@@ -619,10 +617,13 @@ input[type=search] {
 /* Mapbox */
 /* ========================================================================== */
 
+.mapboxgl-map {
+    font-family:inherit;
+}
+
 /* Custom map marker styles */
 
-.marker
-{
+.marker {
     background:center center / contain no-repeat;
     cursor:pointer;
 }
@@ -630,7 +631,8 @@ input[type=search] {
 /* Custom popup styling */
 
 .mapboxgl-popup-close-button {
-    font-size:2em;
+    font-size:1.75em;
+    font-weight:bold;
     padding:0.15em 0.2em;
     opacity:0.5;
 }

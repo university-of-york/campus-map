@@ -112,6 +112,7 @@ const Search = (function() {
                 $.each(fuseResult, function(i, feature) {
                     // Add title, subtitle, link fields
                     fuseResult[i].item.title = feature.item.properties.title;
+                    if ( feature.item.properties.zone != 'KM' && feature.item.properties.zone != undefined ) fuseResult[i].item.badge = '<div class="c-badge"><span class="c-campus-zone zone-'+ feature.item.properties.zone+'"></span><span class="c-campus-zone__label"> Zone '+ feature.item.properties.zone+'</span></div>';
                     fuseResult[i].item.subtitle = feature.item.properties.subtitle;
                     fuseResult[i].item.link = '#' + makeHash(feature.item.properties.locationid);
                     if (i === fuseResult.length - 1) {
