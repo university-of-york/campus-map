@@ -39,7 +39,7 @@ const Search = (function() {
     let _excludedCategories = [
         'Post boxes',
         'Printers',
-        'Bus stops',
+        // 'Bus stops',
         'Study spaces'
     ];
 
