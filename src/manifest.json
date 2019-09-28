@@ -13,10 +13,10 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/",
+  "start_url": "/map",
   "background_color": "#0f3d4c",
   "display": "standalone",
-  "scope": "/",
+  "scope": "/map",
   "theme_color": "#0f3d4c",
 
   "version": "1.2"
