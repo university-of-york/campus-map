@@ -5,7 +5,7 @@
   "author": "University of York Digital Team",
   "license": "MIT",
   "dependencies": {
-    "@babel/polyfill": "7.2.5",
+    "@babel/polyfill": "7.8.3",
     "@semantic-release/changelog": "3.0.2",
     "@semantic-release/commit-analyzer": "6.1.0",
     "@semantic-release/git": "7.0.7",
@@ -25,9 +25,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "@babel/core": "7.2.2",
-    "@babel/preset-env": "7.2.3",
-    "babel-loader": "8.0.5",
+    "@babel/core": "7.8.6",
+    "@babel/preset-env": "7.8.6",
+    "babel-loader": "8.0.6",
     "clean-webpack-plugin": "1.0.0",
     "copy-webpack-plugin": "4.6.0",
     "css-loader": "2.1.0",
