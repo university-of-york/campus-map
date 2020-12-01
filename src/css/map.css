@@ -177,6 +177,11 @@ body {
     padding:0.35rem;
 }
 
+.control-campus-div .control-ui:focus {
+    outline: #00b3eb solid 2px;
+    outline-offset: -2px;
+}
+
 .control-campus-div--campus-buttons p {
     font-size: .7rem;
     font-weight: bold;
@@ -214,8 +219,13 @@ body {
 
 .control-ui--feedback {
   background-color: #a23479;
-  color: #fdfdfd;
+  color: white;
   border:none;
+}
+
+.control-ui--feedback:focus {
+    outline: #00b3eb solid 2px;
+    outline-offset: -2px;
 }
 
 .control-ui--feedback:hover {
@@ -285,9 +295,10 @@ body {
 
 .c-anchor--facility:active,
 .c-anchor--facility:focus {
-    border: none;
+    /* border: none;
     -moz-user-focus: ignore;
-    outline: none;
+    outline: none; */
+    outline-offset: -2px;
 }
 
 
@@ -322,15 +333,21 @@ body {
       top: 1.25rem;
       padding: 0;
   }
+
   .c-form__label {
       color: #fff;
   }
+
   .c-main-header__logo {
       margin-left: 0;
       margin-right: 0;
       float: right;
       padding: 0.5rem 0;
       width: 150px;
+  }
+
+  .c-main-header__logo:focus {
+     outline-offset: -2px;
   }
 }
 
@@ -640,6 +657,11 @@ input[type=search] {
     opacity:1;
 }
 
+.mapboxgl-popup-close-button:focus {
+    outline: #00b3eb solid 2px;
+    outline-offset: -2px;
+}
+
 .mapboxgl-popup-content {
     max-width:285px;
     padding:24px 18px;
@@ -684,6 +706,11 @@ input[type=search] {
 .mapboxgl-ctrl-group > button {
     width:40px;
     height:40px;
+}
+
+.mapboxgl-ctrl-group > button:focus {
+    outline: #00b3eb solid 2px;
+    outline-offset: -2px;
 }
 
 /* Prevents fuzzy text rendering on OSX */
