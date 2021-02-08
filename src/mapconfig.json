@@ -1,6 +1,6 @@
 {
   "data": {
-    "source": "https://york.funnelback.co.uk/s/search.html?collection=york-uni-campusmap&form=geojson&num_ranks=5000&MBL=800&meta_visible=1",
+    "source": "https://york.funnelback.co.uk/s/search.html?collection=york-uni-campusmap&form=geojson&num_ranks=5000&MBL=800&meta_visible=1&query=!padrenullquery",
     "hiddenLayers" : [ "open-day-labels" ]
   },
   "globalMapOptions": {
