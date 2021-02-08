@@ -39,14 +39,19 @@
   },
   "facilities":[
     {
+      "id": "information-points",
+      "value": "Information points",
+      "iconClass": "c-icon--info-circle"
+    },
+    {
+      "id": "rooms-to-view",
+      "value": "Rooms to view",
+      "iconClass": "c-icon--bed"
+    },
+    {
       "id": "food-and-drink",
       "value": "Food and drink",
       "iconClass": "c-icon--coffee"
-    },
-    {
-      "id": "study-spaces",
-      "value": "Study spaces",
-      "iconClass": "c-icon--book"
     },
     {
       "id": "shops",
@@ -59,14 +64,9 @@
       "iconClass": "c-icon--gbp"
     },
     {
-      "id": "car-parks",
-      "value": "Car parks",
-      "iconClass": "c-icon--car"
-    },
-    {
-      "id": "accessible-parking",
-      "value": "Accessible parking",
-      "iconClass": "c-icon--wheelchair"
+      "id": "shuttle-bus",
+      "value": "Shuttle bus",
+      "iconClass": "c-icon--bus"
     },
     {
       "id": "bus-stops",
@@ -74,9 +74,9 @@
       "iconClass": "c-icon--bus"
     },
     {
-      "id": "post-boxes",
-      "value": "Post boxes",
-      "iconClass": "c-icon--envelope"
+      "id": "accessible-parking",
+      "value": "Accessible parking",
+      "iconClass": "c-icon--wheelchair"
     }
   ],
   "facilityRedirects" : {
